@@ -54,6 +54,31 @@ class QualificationController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function get(Request $request) {
+        try {
+            $id = $request->input('id');
+            $qualification_point = QualificationPoint::find($id);
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'qualification_point' => $qualification_point
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function create(Request $request) {
         try {
             $name = $request->name;
@@ -76,6 +101,33 @@ class QualificationController extends Controller
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_QUALIFICATION_POINT_SUCCESS,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function update(Request $request) {
+        try {
+            $name = $request->name;
+            $type = $request->type;
+            $ambassador = $request->ambassador;
+            $id = $request->id;
+
+            QualificationPoint::where('id', '=', $id)->update(['name'=>$name, 'type' => $type, 'ambassador' => implode(",", $ambassador)]);
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_QUALIFICATION_POINT_SUCCESS,
             ]);
         } catch (Exception $e) {
             return response()->json([

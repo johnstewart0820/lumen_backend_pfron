@@ -28,7 +28,9 @@ $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function
 });
 
 $router->group(['prefix' => 'qualification', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'QualificationController@get');
     $router->post('/', 'QualificationController@create');
+    $router->put('/',  'QualificationController@update');
     $router->delete('/', 'QualificationController@delete');
 });
 
