@@ -25,6 +25,8 @@ define('FAILED_SEND_MESSAGE', 'Sorry, the confirmation email is not sent. Please
 define('SERVER_ERROR_MESSAGE','An Error is occured on the server.');
 define('EXIST_QUALIFICATION_POINT', 'Punkt kwalifikacyjny istnieje.');
 define('CREATE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacji został zapisany.');
+define('DELETE_QUALIFICATION_POINT_SUCCESS', 'Punkt kwalifikacyjny został usunięty.');
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');

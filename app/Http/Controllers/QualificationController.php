@@ -71,6 +71,7 @@ class QualificationController extends Controller
             $qualification->name = $name;
             $qualification->type = $type;
             $qualification->ambassador = implode(",", $ambassador);
+            $qualification->status = true;
             $qualification->save();
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -97,7 +98,7 @@ class QualificationController extends Controller
             $searchAmbassador = $request->input('searchAmbassador');
             $qualification_points = [];
             $qualification_point_count = 0;
-            $query = QualificationPoint::where('name', 'LIKE', "%{$searchName}%");
+            $query = QualificationPoint::where('name', 'LIKE', "%{$searchName}%")->where('status', '=', true);
             if ($searchId != '') {
                 $query = $query->where('id', '=', $searchId);
             }
@@ -128,6 +129,21 @@ class QualificationController extends Controller
         }
     }
 
+    public function delete(Request $request) {
+        try {
+            $id = $request->input('id');
+            QualificationPoint::where('id', '=', $id)->update(['status' => false]);
 
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => DELETE_QUALIFICATION_POINT_SUCCESS,
+            ]);
+        } catch(Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
 
 }

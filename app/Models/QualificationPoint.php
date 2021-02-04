@@ -16,7 +16,7 @@ class QualificationPoint extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type', 'ambassador'
+        'name', 'type', 'ambassador', 'status'
     ];
 
     /**

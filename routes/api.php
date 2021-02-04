@@ -28,7 +28,8 @@ $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function
 });
 
 $router->group(['prefix' => 'qualification', 'middleware' => ['admin']], function () use ($router) {
-    $router->post('/create', 'QualificationController@create');
+    $router->post('/', 'QualificationController@create');
+    $router->delete('/', 'QualificationController@delete');
 });
 
 

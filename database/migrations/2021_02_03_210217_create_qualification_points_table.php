@@ -18,6 +18,7 @@ class CreateQualificationPointsTable extends Migration
             $table->string('name');
             $table->string('type');
             $table->string('ambassador');
+            $table->boolean('status');
             $table->timestamps();
         });
     }
