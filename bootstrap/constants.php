@@ -26,7 +26,11 @@ define('SERVER_ERROR_MESSAGE','An Error is occured on the server.');
 define('EXIST_QUALIFICATION_POINT', 'Punkt kwalifikacyjny istnieje.');
 define('CREATE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacji został zapisany.');
 define('UPDATE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacji został zaktualizowany.');
-define('DELETE_QUALIFICATION_POINT_SUCCESS', 'Punkt kwalifikacyjny został usunięty.');
+define('DELETE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacyjny został usunięty.');
+
+define('CREATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zapisany.');
+define('UPDATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zaktualizowany.');
+define('DELETE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został usunięty.');
 
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');

@@ -34,8 +34,14 @@ $router->group(['prefix' => 'qualification', 'middleware' => ['admin']], functio
     $router->delete('/', 'QualificationController@delete');
 });
 
+$router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'SpecialistController@getInfo');
+    $router->post('/getListByOption', 'SpecialistController@getListByOption');
+});
 
-
-
-
-
+$router->group(['prefix' => 'specialist', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'SpecialistController@get');
+    $router->post('/', 'SpecialistController@create');
+    $router->put('/',  'SpecialistController@update');
+    $router->delete('/', 'SpecialistController@delete');
+});
