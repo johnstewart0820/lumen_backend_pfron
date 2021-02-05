@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->integer('id_role');
             $table->boolean('is_valid')->default(false);
             $table->string('token')->nullable();
+            $table->string('activate_status')->default(true);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

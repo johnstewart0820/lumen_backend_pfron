@@ -31,6 +31,6 @@ class Role extends Model
     protected $hidden = [
     ];
 
-    protected $primaryKey = 'id_role';
+    protected $primaryKey = 'id';
 
 }

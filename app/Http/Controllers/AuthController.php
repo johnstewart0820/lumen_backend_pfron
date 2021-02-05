@@ -43,6 +43,11 @@ class AuthController extends Controller
                     'code' => BAD_REQUEST_CODE,
                     'message' => NOT_CONFIRMED_MESSAGE
                 ]);
+            } else if ($users[0]->status == false || $users[0]->activate_status == false) {
+                return response()->json([
+                    'code' => BAD_REQUEST_CODE,
+                    'message' => NOT_CONFIRMED_MESSAGE
+                ]);
             } else {
                 if (Hash::check($password_input, $users[0]->password)) {
                     $token = Auth::attempt($input);

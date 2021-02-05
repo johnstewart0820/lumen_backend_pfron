@@ -14,10 +14,10 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['id_role' => 1, 'name' => 'admin'],
-            ['id_role' => 2, 'name' => 'ambassador'],
-            ['id_role' => 3, 'name' => 'worker'],
-            ['id_role' => 4, 'name' => 'ork'],
+            ['id' => 1, 'name' => 'Administrator'],
+            ['id' => 2, 'name' => 'Ambasador projektu'],
+            ['id' => 3, 'name' => 'Pracownik biura projektu'],
+            ['id' => 4, 'name' => 'ORK'],
         ];
         foreach($items as $item)
         {

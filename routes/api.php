@@ -45,3 +45,17 @@ $router->group(['prefix' => 'specialist', 'middleware' => ['admin']], function (
     $router->put('/',  'SpecialistController@update');
     $router->delete('/', 'SpecialistController@delete');
 });
+
+$router->group(['prefix' => 'users', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'UserController@getInfo');
+    $router->post('/getListByOption', 'UserController@getListByOption');
+    $router->get('/getProfile', 'UserController@getProfile');
+    $router->put('/updateProfile', 'UserController@updateProfile');
+});
+
+$router->group(['prefix' => 'users', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'UserController@get');
+    $router->post('/', 'UserController@create');
+    $router->put('/',  'UserController@update');
+    $router->delete('/', 'UserController@delete');
+});

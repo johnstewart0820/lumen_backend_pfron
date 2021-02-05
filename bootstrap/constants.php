@@ -32,6 +32,10 @@ define('CREATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zapisany.')
 define('UPDATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zaktualizowany.');
 define('DELETE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został usunięty.');
 
+define('CREATE_USER_SUCCESS', 'Twój użytkownik został zapisany.');
+define('UPDATE_USER_SUCCESS', 'Twój użytkownik został zaktualizowany.');
+define('DELETE_USER_SUCCESS', 'Twój użytkownik został usunięty.');
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
