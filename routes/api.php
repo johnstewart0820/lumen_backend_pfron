@@ -59,3 +59,15 @@ $router->group(['prefix' => 'users', 'middleware' => ['admin']], function () use
     $router->put('/',  'UserController@update');
     $router->delete('/', 'UserController@delete');
 });
+
+$router->group(['prefix' => 'service-list', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'ServiceListController@getInfo');
+    $router->post('/getListByOption', 'ServiceListController@getListByOption');
+});
+
+$router->group(['prefix' => 'service-list', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'ServiceListController@get');
+    $router->post('/', 'ServiceListController@create');
+    $router->put('/',  'ServiceListController@update');
+    $router->delete('/', 'ServiceListController@delete');
+});
