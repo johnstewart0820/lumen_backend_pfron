@@ -36,6 +36,10 @@ define('CREATE_USER_SUCCESS', 'Twój użytkownik został zapisany.');
 define('UPDATE_USER_SUCCESS', 'Twój użytkownik został zaktualizowany.');
 define('DELETE_USER_SUCCESS', 'Twój użytkownik został usunięty.');
 
+define('CREATE_SERVICE_SUCCESS', 'Twój usługa został zapisany.');
+define('UPDATE_SERVICE_SUCCESS', 'Twój usługa został zaktualizowany.');
+define('DELETE_SERVICE_SUCCESS', 'Twój usługa został usunięty.');
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');

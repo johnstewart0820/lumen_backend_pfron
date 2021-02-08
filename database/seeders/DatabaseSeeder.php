@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             QualificationPointTypeSeeder::class,
-            SpecialtyTypeSeeder::class
+            SpecialtyTypeSeeder::class,
+            ModuleSeeder::class,
+            UnitSeeder::class
         ]);
     }
 }
