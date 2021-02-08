@@ -63,6 +63,7 @@ $app->singleton(
 $app->configure('app');
 $app->configure('services');
 $app->configure('mail');
+$app->configure('audit');
 
 /*
 |--------------------------------------------------------------------------
@@ -105,6 +106,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->register(OwenIt\Auditing\AuditingServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -118,6 +120,7 @@ $app->register(Illuminate\Mail\MailServiceProvider::class);
 
 $app->withFacades(true, [
     Illuminate\Support\Facades\Mail::class => 'Mail',
+    Illuminate\Support\Facades\Facade::class => 'Facade',
 ]);
 
 $app->router->group([

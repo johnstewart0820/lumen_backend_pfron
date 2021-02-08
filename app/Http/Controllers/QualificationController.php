@@ -123,7 +123,7 @@ class QualificationController extends Controller
             $ambassador = $request->ambassador;
             $id = $request->id;
 
-            QualificationPoint::where('id', '=', $id)->update(['name'=>$name, 'type' => $type, 'ambassador' => implode(",", $ambassador)]);
+            QualificationPoint::find($id)->update(['name' => $name, 'type' => $type, 'ambassador' => implode(",", $ambassador)]);
 
             return response()->json([
                 'code' => SUCCESS_CODE,
