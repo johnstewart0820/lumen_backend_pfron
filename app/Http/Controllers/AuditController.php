@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Email;
 use Illuminate\Support\Facades\Auth;
-use OwenIt\Auditing\Models\Audit;
+use App\Models\Audit;
+use App\Models\Role;
+use Illuminate\Support\Carbon;
 
 class AuditController extends Controller
 {
@@ -36,6 +38,7 @@ class AuditController extends Controller
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
+                    'roles' => Role::all()
                 ]
             ]);
         } catch (Exception $e) {
@@ -61,7 +64,7 @@ class AuditController extends Controller
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'qualification_point' => $audit
+                    'audit' => $audit
                 ]
             ]);
         } catch (Exception $e) {
@@ -76,19 +79,19 @@ class AuditController extends Controller
         try {
             $columns = ["id", "name", "type", "ambassador"];
             $sort_column = $request->input('sort_column');
-            $sort_order = $request->input('sort_order');
+            $sort_order  = $request->input('sort_order');
             $count = $request->input('count');
-            $page = $request->input('page');
-            $searchId = $request->input('searchId');
+            $page  = $request->input('page');
+            $searchId       = $request->input('searchId');
             $searchUserName = $request->input('searchUserName');
-            $searchRole = $request->input('searchRole');
-            $searchDate = $request->input('searchDate');
-            $searchEvent = $request->input('searchEvent');
+            $searchRole     = $request->input('searchRole');
+            $searchDate     = $request->input('searchDate');
+            $searchEvent    = $request->input('searchEvent');
             $query = Audit::query();
             if ($searchId != '') {
                 $query->where('id', '=', $searchId);
             }
-            if (intval($searchUserName) != 0) {
+            if (!empty($searchUserName)) {
                 $query->whereHas('user', function ($query) use ($searchUserName) {
                     return $query->where('name', 'LIKE', "%{$searchUserName}%");
                 });
@@ -98,10 +101,10 @@ class AuditController extends Controller
                     return $query->where('id_role', '=', $searchRole);
                 });
             }
-            if (intval($searchDate) != 0) {
-                $query->where('created_at', '=', $searchDate);
+            if (!empty($searchDate)) {
+                $query->whereDate('created_at', '=', $searchDate);
             }
-            if (intval($searchEvent) != 0) {
+            if (!empty($searchEvent)) {
                 $query->where('event', '=', $searchEvent);
             }
             $audits = $query
@@ -110,15 +113,18 @@ class AuditController extends Controller
                 ->take($count)
                 ->get();
 
+            $audits->each->setAppends([ 'user', 'role' ]);
+
             return response()->json([
-                'code' => SUCCESS_CODE,
+                'code'    => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
-                'data' => ['audits' => $audits, 'count' => $audits->count()]
+                'data'    => ['audits' => $audits, 'count' => $audits->count()]
             ]);
         } catch(Exception $e) {
             return response()->json([
-                'code' => SERVER_ERROR_CODE,
-                'message' => SERVER_ERROR_MESSAGE
+                'code'    => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE,
+                'exception' => $e->getMessage(),
             ]);
         }
     }
