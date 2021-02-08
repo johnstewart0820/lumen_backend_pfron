@@ -120,7 +120,7 @@ $app->register(OwenIt\Auditing\AuditingServiceProvider::class);
 
 $app->withFacades(true, [
     Illuminate\Support\Facades\Mail::class => 'Mail',
-    Illuminate\Support\Facades\Facade::class => 'Facade',
+    OwenIt\Auditing\Facades\Auditor::class => 'Auditor',
 ]);
 
 $app->router->group([
