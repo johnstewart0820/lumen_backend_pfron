@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Email;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QualificationController extends Controller
 {
@@ -148,20 +149,17 @@ class QualificationController extends Controller
             $searchName = $request->input('searchName');
             $searchType = $request->input('searchType');
             $searchAmbassador = $request->input('searchAmbassador');
-            $qualification_points = [];
-            $qualification_point_count = 0;
             $query = QualificationPoint::where('name', 'LIKE', "%{$searchName}%")->where('status', '=', true);
             if ($searchId != '') {
-                $query = $query->where('id', '=', $searchId);
+                $query->where('id', '=', $searchId);
             }
             if (intval($searchType) != 0) {
-                $query = $query->where('type', '=', $searchType);
+                $query->where('type', '=', $searchType);
             }
             if (intval($searchAmbassador) != 0) {
-                $query = $query->where('ambassador', 'LIKE', "%{$searchAmbassador}%");
+                $query->where('ambassador', 'LIKE', "%{$searchAmbassador}%");
             }
-            $qualification_point_count = $query
-                ->get();
+
             $qualification_points = $query
                 ->orderBy($columns[$sort_column], $sort_order)
                 ->skip(($page - 1) * $count)
@@ -171,7 +169,7 @@ class QualificationController extends Controller
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
-                'data' => ['qualification_points' => $qualification_points, 'count' => count($qualification_point_count)]
+                'data' => [ 'qualification_points' => $qualification_points, 'count' => $qualification_points->count() ]
             ]);
         } catch(Exception $e) {
             return response()->json([
