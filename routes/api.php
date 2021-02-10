@@ -46,6 +46,16 @@ $router->group(['prefix' => 'specialist', 'middleware' => ['admin']], function (
     $router->delete('/', 'SpecialistController@delete');
 });
 
+$router->group(['prefix' => 'audit', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'AuditController@getInfo');
+    $router->post('/getListByOption', 'AuditController@getListByOption');
+});
+
+$router->group(['prefix' => 'audit', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'AuditController@get');
+    $router->delete('/', 'AuditController@delete');
+});
+
 $router->group(['prefix' => 'users', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'UserController@getInfo');
     $router->post('/getListByOption', 'UserController@getListByOption');
