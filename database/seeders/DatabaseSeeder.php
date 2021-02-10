@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             QualificationPointTypeSeeder::class,
             SpecialtyTypeSeeder::class,
             ModuleSeeder::class,
-            UnitSeeder::class
+            UnitSeeder::class,
+            RehabitationCenterQuaterSeeder::class,
+            RehabitationCenterSeeder::class
         ]);
     }
 }

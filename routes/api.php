@@ -71,3 +71,12 @@ $router->group(['prefix' => 'service-list', 'middleware' => ['admin']], function
     $router->put('/',  'ServiceListController@update');
     $router->delete('/', 'ServiceListController@delete');
 });
+
+$router->group(['prefix' => 'rehabitation-center', 'middleware' => ['auth']], function () use ($router) {
+    $router->post('/getListByOption', 'RehabitationCenterController@getListByOption');
+});
+
+$router->group(['prefix' => 'rehabitation-center', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'RehabitationCenterController@get');
+    $router->put('/',  'RehabitationCenterController@update');
+});

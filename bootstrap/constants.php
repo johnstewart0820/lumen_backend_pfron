@@ -40,6 +40,8 @@ define('CREATE_SERVICE_SUCCESS', 'Twój usługa został zapisany.');
 define('UPDATE_SERVICE_SUCCESS', 'Twój usługa został zaktualizowany.');
 define('DELETE_SERVICE_SUCCESS', 'Twój usługa został usunięty.');
 
+define('UPDATE_REHABITATION_CENTER_SUCCESS', 'Twoje centrum kwalifikacji zostało zaktualizowane.');
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
