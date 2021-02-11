@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Models\User;
 use OwenIt\Auditing\Models\Audit as ModelsAudit;
 
+/**
+ * @property object old_values;
+ */
 class Audit extends ModelsAudit
 {
     public function user()
@@ -20,5 +23,15 @@ class Audit extends ModelsAudit
     {
         $user = $this->user()->first();
         return $user ? $user->role()->first() : null;
+    }
+
+    public function getChangesAttribute()
+    {
+        $old_values = collect($this->old_values);
+        $new_values = collect($this->new_values);
+        $keys = $old_values->keys()->intersect($new_values->keys());
+        $changes = $keys->combine($old_values->zip($new_values));
+
+        return $changes;
     }
 }

@@ -113,7 +113,7 @@ class AuditController extends Controller
                 ->take($count)
                 ->get();
 
-            $audits->each->setAppends([ 'user', 'role' ]);
+            $audits->each->setAppends([ 'user', 'role', 'changes' ]);
 
             return response()->json([
                 'code'    => SUCCESS_CODE,

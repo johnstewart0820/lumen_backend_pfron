@@ -14,12 +14,6 @@ class QualificationPoint extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
 
-    protected $auditStrict = true;
-    protected $auditInclude = [
-        'title',
-        'content',
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
