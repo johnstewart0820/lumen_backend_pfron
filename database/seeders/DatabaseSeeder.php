@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             UnitSeeder::class,
             RehabitationCenterQuaterSeeder::class,
-            RehabitationCenterSeeder::class
+            RehabitationCenterSeeder::class,
+            SpecializationSeeder::class
         ]);
     }
 }

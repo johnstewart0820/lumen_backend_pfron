@@ -90,3 +90,16 @@ $router->group(['prefix' => 'rehabitation-center', 'middleware' => ['admin']], f
     $router->get('/', 'RehabitationCenterController@get');
     $router->put('/',  'RehabitationCenterController@update');
 });
+
+
+$router->group(['prefix' => 'ork-team', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'OrkTeamsController@getInfo');
+    $router->post('/getListByOption', 'OrkTeamsController@getListByOption');
+});
+
+$router->group(['prefix' => 'ork-team', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'OrkTeamsController@get');
+    $router->post('/', 'OrkTeamsController@create');
+    $router->put('/',  'OrkTeamsController@update');
+    $router->delete('/', 'OrkTeamsController@delete');
+});

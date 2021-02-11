@@ -42,6 +42,10 @@ define('DELETE_SERVICE_SUCCESS', 'Twój usługa został usunięty.');
 
 define('UPDATE_REHABITATION_CENTER_SUCCESS', 'Twoje centrum kwalifikacji zostało zaktualizowane.');
 
+define('CREATE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został zapisany.');
+define('UPDATE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został zaktualizowany.');
+define('DELETE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został usunięty.');
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
