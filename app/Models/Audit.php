@@ -27,10 +27,14 @@ class Audit extends ModelsAudit
 
     public function getChangesAttribute()
     {
-        $old_values = collect($this->old_values);
         $new_values = collect($this->new_values);
-        $keys = $old_values->keys()->intersect($new_values->keys());
-        $changes = $keys->combine($old_values->zip($new_values));
+        $old_values = collect($this->old_values);
+        $keys = $new_values->keys()->merge($old_values->keys());
+        $new_values = $new_values->only($keys);
+        $old_values = $old_values->only($keys);
+        $changes = $keys->mapWithKeys(function ($key) use ($old_values, $new_values) {
+            return [ $key => [$old_values[$key] ?? null, $new_values[$key]] ?? null ];
+        });
 
         return $changes;
     }
