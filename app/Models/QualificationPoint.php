@@ -2,17 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use OwenIt\Auditing\Contracts\Auditable;
 
 
-
-class QualificationPoint extends Model implements Auditable
+class QualificationPoint extends Model
 {
-    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
