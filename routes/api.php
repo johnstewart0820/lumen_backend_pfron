@@ -103,3 +103,27 @@ $router->group(['prefix' => 'ork-team', 'middleware' => ['admin']], function () 
     $router->put('/',  'OrkTeamsController@update');
     $router->delete('/', 'OrkTeamsController@delete');
 });
+
+$router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'PaymentController@getInfo');
+    $router->post('/getListByOption', 'PaymentController@getListByOption');
+});
+
+$router->group(['prefix' => 'payment', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'PaymentController@get');
+    $router->post('/', 'PaymentController@create');
+    $router->put('/',  'PaymentController@update');
+    $router->delete('/', 'PaymentController@delete');
+});
+
+$router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'CandidateController@getInfo');
+    $router->post('/getListByOption', 'CandidateController@getListByOption');
+});
+
+$router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'CandidateController@get');
+    $router->post('/', 'CandidateController@create');
+    $router->put('/',  'CandidateController@update');
+    $router->delete('/', 'CandidateController@delete');
+});

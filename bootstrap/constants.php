@@ -46,6 +46,15 @@ define('CREATE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został zapisany.');
 define('UPDATE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został zaktualizowany.');
 define('DELETE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został usunięty.');
 
+define('CREATE_PAYMENT_SUCCESS', 'Twój koszt został zapisany.');
+define('UPDATE_PAYMENT_SUCCESS', 'Twój koszt został zaktualizowany.');
+define('DELETE_PAYMENT_SUCCESS', 'Twój koszt został usunięty.');
+
+define('CREATE_CANDIDATE_SUCCESS', 'Twój kandydata został zapisany.');
+define('UPDATE_CANDIDATE_SUCCESS', 'Twój kandydata został zaktualizowany.');
+define('DELETE_CANDIDATE_SUCCESS', 'Twój kandydata został usunięty.');
+
+
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
