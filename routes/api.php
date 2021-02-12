@@ -115,3 +115,15 @@ $router->group(['prefix' => 'payment', 'middleware' => ['admin']], function () u
     $router->put('/',  'PaymentController@update');
     $router->delete('/', 'PaymentController@delete');
 });
+
+$router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'CandidateController@getInfo');
+    $router->post('/getListByOption', 'CandidateController@getListByOption');
+});
+
+$router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'CandidateController@get');
+    $router->post('/', 'CandidateController@create');
+    $router->put('/',  'CandidateController@update');
+    $router->delete('/', 'CandidateController@delete');
+});
