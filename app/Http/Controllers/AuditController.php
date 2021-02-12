@@ -12,7 +12,15 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Email;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Audit;
+use App\Models\Module;
+use App\Models\OrkTeam;
+use App\Models\Payment;
+use App\Models\RehabitationCenter;
 use App\Models\Role;
+use App\Models\ServiceList;
+use App\Models\Specialization;
+use App\Models\Stage;
+use App\Models\Unit;
 use Illuminate\Support\Carbon;
 
 class AuditController extends Controller
@@ -34,16 +42,24 @@ class AuditController extends Controller
      */
     public function getInfo(Request $request) {
         try {
-            $roles = Role::all();
-            $types = QualificationPointType::all();
-            $ambassadors = User::where('id_role', '=', 2)->where('status', '=', 1)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'roles' => $roles,
-                    'types'  => $types,
-                    'ambassadors' => $ambassadors,
+                    'roles'                => Role::all(),
+                    'types'                => QualificationPointType::all(),
+                    'ambassadors'          => User::where('id_role', '=', 2)->where('status', '=', 1)->get(),
+                    'stages'               => Stage::all(),
+                    'ork_teams'            => OrkTeam::all(),
+                    'specializations'      => Specialization::all(),
+                    'rehabitation_centers' => RehabitationCenter::all(),
+                    'specialists'          => Specialist::all(),
+                    'speciality_types'     => SpecialtyType::all(),
+                    'service_lists'        => ServiceList::all(),
+                    'units'                => Unit::all(),
+                    'modules'              => Module::all(),
+                    'payments'             => Payment::all(),
+                    'users'                => User::all(),
                 ]
             ]);
         } catch (Exception $e) {
