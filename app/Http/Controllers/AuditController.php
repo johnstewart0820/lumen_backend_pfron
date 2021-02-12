@@ -34,11 +34,16 @@ class AuditController extends Controller
      */
     public function getInfo(Request $request) {
         try {
+            $roles = Role::all();
+            $types = QualificationPointType::all();
+            $ambassadors = User::where('id_role', '=', 2)->where('status', '=', 1)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'roles' => Role::all()
+                    'roles' => $roles,
+                    'types'  => $types,
+                    'ambassadors' => $ambassadors,
                 ]
             ]);
         } catch (Exception $e) {
@@ -88,6 +93,9 @@ class AuditController extends Controller
             $searchDate     = $request->input('searchDate');
             $searchEvent    = $request->input('searchEvent');
             $query = Audit::query();
+            $query->where(function($query) {
+                $query->where('tags->deleted', false)->orWhere('tags->deleted', null);
+            });
             if ($searchId != '') {
                 $query->where('id', '=', $searchId);
             }
@@ -113,7 +121,7 @@ class AuditController extends Controller
                 ->take($count)
                 ->get();
 
-            $audits->each->setAppends([ 'user', 'role', 'changes' ]);
+            $audits->each->makeHidden(['user_type', 'url', 'tags'])->each->setAppends([ 'user', 'role', 'changes' ]);
 
             return response()->json([
                 'code'    => SUCCESS_CODE,
@@ -132,7 +140,7 @@ class AuditController extends Controller
     public function delete(Request $request) {
         try {
             $id = $request->input('id');
-            QualificationPoint::where('id', '=', $id)->update(['status' => false]);
+            Audit::where('id', '=', $id)->update(['tags' => ['deleted' => true]]);
 
             return response()->json([
                 'code' => SUCCESS_CODE,
