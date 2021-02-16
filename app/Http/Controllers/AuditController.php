@@ -22,6 +22,7 @@ use App\Models\Specialization;
 use App\Models\Stage;
 use App\Models\Unit;
 use Illuminate\Support\Carbon;
+use Symfony\Component\CssSelector\Node\Specificity;
 
 class AuditController extends Controller
 {
@@ -49,6 +50,7 @@ class AuditController extends Controller
                     'roles'                => Role::all(),
                     'types'                => QualificationPointType::all(),
                     'ambassadors'          => User::where('id_role', '=', 2)->where('status', '=', 1)->get(),
+                    'qualification_points' => QualificationPoint::all(),
                     'stages'               => Stage::all(),
                     'ork_teams'            => OrkTeam::all(),
                     'specializations'      => Specialization::all(),
