@@ -296,19 +296,6 @@ class CandidateController extends Controller
             $stage = $request->stage;
             $comment = $request->comment;
 
-            $candidate = new Candidate();
-            $candidate->name = $name;
-            $candidate->surname = $surname;
-            $candidate->person_id = $person_id;
-            $candidate->date_of_birth = $date_of_birth;
-            $candidate->place_of_birth = $place_of_birth;
-            $candidate->street = $street;
-            $candidate->house_number = $house_number;
-            $candidate->apartment_number = $apartment_number;
-            $candidate->post_code = $post_code;
-            $candidate->post_office = $post_office;
-            $candidate->city = $city;
-
             $id = $request->id;
 
             Candidate::find($id)->update([
