@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            EmployedTypeSeeder::class,
+            EducationsSeeder::class,
+            PlaceSeeder::class,
             UserSeeder::class,
             RoleSeeder::class,
             QualificationPointTypeSeeder::class,
@@ -23,7 +26,7 @@ class DatabaseSeeder extends Seeder
             RehabitationCenterQuaterSeeder::class,
             RehabitationCenterSeeder::class,
             SpecializationSeeder::class,
-            StageSeeder::class
+            StageSeeder::class,
         ]);
     }
 }
