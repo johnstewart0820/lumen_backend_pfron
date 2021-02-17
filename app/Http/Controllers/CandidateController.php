@@ -47,6 +47,7 @@ class CandidateController extends Controller
             $education = Educations::all();
             $county = County::all();
             $employedTypeList = EmployedType::all();
+            $qualificationPoint = QualificationPoint::where('status', '=', 1)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
@@ -56,7 +57,8 @@ class CandidateController extends Controller
                     'community' => $community,
                     'county' => $county,
                     'education' => $education,
-                    'employed_type' => $employedTypeList
+                    'employed_type' => $employedTypeList,
+                    'qualification_point' => $qualificationPoint
                 ]
             ]);
         } catch (Exception $e) {
