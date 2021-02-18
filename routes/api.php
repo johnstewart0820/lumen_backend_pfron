@@ -126,4 +126,7 @@ $router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function ()
     $router->post('/', 'CandidateController@create');
     $router->put('/',  'CandidateController@update');
     $router->delete('/', 'CandidateController@delete');
+    $router->get('/get_marker', 'CandidateController@getMarker');
+    $router->get('/candidate_info', 'CandidateController@getCandidateInfo');
+    $router->put('/candidate_info', 'CandidateController@updateCandidateInfo');
 });

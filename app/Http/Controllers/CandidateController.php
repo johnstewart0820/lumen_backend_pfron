@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Candidate;
+use App\Models\CandidateInfo;
 use App\Models\Community;
 use App\Models\County;
 use App\Models\Educations;
@@ -11,6 +12,7 @@ use App\Models\QualificationPoint;
 use App\Models\QualificationPointType;
 use App\Models\RehabitationCenter;
 use App\Models\ServiceList;
+use App\Models\Specialist;
 use App\Models\Stage;
 use App\Models\Voivodeship;
 use Database\Seeders\EmployedTypeSeeder;
@@ -48,6 +50,7 @@ class CandidateController extends Controller
             $county = County::all();
             $employedTypeList = EmployedType::all();
             $qualificationPoint = QualificationPoint::where('status', '=', 1)->get();
+            $rehabitationCenter = RehabitationCenter::all();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
@@ -58,7 +61,8 @@ class CandidateController extends Controller
                     'county' => $county,
                     'education' => $education,
                     'employed_type' => $employedTypeList,
-                    'qualification_point' => $qualificationPoint
+                    'qualification_point' => $qualificationPoint,
+                    'rehabitation_center' => $rehabitationCenter,
                 ]
             ]);
         } catch (Exception $e) {
@@ -85,6 +89,108 @@ class CandidateController extends Controller
                 'data' => [
                     'candidate' => $candidate
                 ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getMarker(Request $request) {
+        try {
+            $id = $request->input('qualification_point');
+            $doctor = Specialist::where('qualification_point', '=', $id)->where('specialty', '=', 2)->get();
+            $psycology = Specialist::where('qualification_point', '=', $id)->where('specialty', '=', 1)->get();
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'doctor' => $doctor,
+                    'psycology' => $psycology
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getCandidateInfo(Request $request) {
+        try {
+            $id = $request->input('id');
+            $candidateInfo = CandidateInfo::where('id_candidate', '=', $id)->first();
+            $candidate = Candidate::find($id);
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'candidate_info' => $candidateInfo,
+                    'candidate' => $candidate
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateCandidateInfo(Request $request) {
+        try {
+            $id = $request->input('id');
+            CandidateInfo::where('id_candidate', '=', $id)->update([
+                'gender' => $request->gender,
+                'doctor' => $request->doctor,
+                'psycology' => $request->psycology,
+                'admission' => $request->admission,
+                'doctor_recommendation' => $request->doctor_recommendation,
+                'doctor_date' => $request->doctor_date,
+                'doctor_remark' => $request->doctor_remark,
+                'psycology_recommendation' => $request->psycology_recommendation,
+                'psycology_date' => $request->psycology_date,
+                'psycology_remark' => $request->psycology_remark,
+                'decision_central_commision' => $request->decision_central_commision,
+                'date_central_commision' => $request->date_central_commision,
+                'general_remark' => $request->general_remark,
+                'date_referal' => $request->date_referal,
+                'rehabitation_center' => $request->rehabitation_center,
+                'participant_number' => $request->participant_number,
+                'date_rehabitation_center' => $request->date_rehabitation_center,
+                'type_to_stay' => $request->type_to_stay,
+                'participant_remark' => $request->participant_remark,
+            ]);
+            Candidate::find($id)->update([
+                'qualification_point' => $request->qualification_point,
+                'comment' => $request->comment,
+                'stage' => $request->stage
+            ]);
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_CANDIDATE_SUCCESS,
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -220,6 +326,9 @@ class CandidateController extends Controller
             $candidate->comment = $comment;
             $candidate->status = true;
             $candidate->save();
+            $candidate_info = new CandidateInfo();
+            $candidate_info->id_candidate = $candidate->id;
+            $candidate_info->save();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_CANDIDATE_SUCCESS,

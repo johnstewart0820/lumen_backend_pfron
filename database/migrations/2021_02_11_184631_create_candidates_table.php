@@ -71,8 +71,8 @@ class CreateCandidatesTable extends Migration
             $table->string('house_hold_adult_status');
             $table->string('uncomfortable_status');
             $table->string('stage');
-            $table->string('qualification_point')->nullable(true);
             $table->string('comment');
+            $table->string('qualification_point')->nullable(true);
             $table->boolean('status');
             $table->timestamps();
         });
