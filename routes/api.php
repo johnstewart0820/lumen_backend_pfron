@@ -22,12 +22,24 @@ $router->group(['prefix' => 'user'], function () use ($router) {
     $router->get('/validate_token', 'ProfileController@validateToken');
 });
 
+$router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'CandidateController@getInfo');
+    $router->post('/getListByOption', 'CandidateController@getListByOption');
+});
+
+$router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function () use ($router) {
+    $router->get('/', 'CandidateController@get');
+    $router->post('/', 'CandidateController@create');
+    $router->put('/',  'CandidateController@update');
+    $router->delete('/', 'CandidateController@delete');
+    $router->get('/get_marker', 'CandidateController@getMarker');
+    $router->get('/candidate_info', 'CandidateController@getCandidateInfo');
+    $router->put('/candidate_info', 'CandidateController@updateCandidateInfo');
+});
+
 $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'QualificationController@getInfo');
     $router->post('/getListByOption', 'QualificationController@getListByOption');
-});
-
-$router->group(['prefix' => 'qualification', 'middleware' => ['admin']], function () use ($router) {
     $router->get('/', 'QualificationController@get');
     $router->post('/', 'QualificationController@create');
     $router->put('/',  'QualificationController@update');
@@ -116,17 +128,4 @@ $router->group(['prefix' => 'payment', 'middleware' => ['admin']], function () u
     $router->delete('/', 'PaymentController@delete');
 });
 
-$router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
-    $router->get('/info', 'CandidateController@getInfo');
-    $router->post('/getListByOption', 'CandidateController@getListByOption');
-});
 
-$router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function () use ($router) {
-    $router->get('/', 'CandidateController@get');
-    $router->post('/', 'CandidateController@create');
-    $router->put('/',  'CandidateController@update');
-    $router->delete('/', 'CandidateController@delete');
-    $router->get('/get_marker', 'CandidateController@getMarker');
-    $router->get('/candidate_info', 'CandidateController@getCandidateInfo');
-    $router->put('/candidate_info', 'CandidateController@updateCandidateInfo');
-});

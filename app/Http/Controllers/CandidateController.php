@@ -14,6 +14,7 @@ use App\Models\RehabitationCenter;
 use App\Models\ServiceList;
 use App\Models\Specialist;
 use App\Models\Stage;
+use App\Models\Status;
 use App\Models\Voivodeship;
 use Database\Seeders\EmployedTypeSeeder;
 use Illuminate\Http\Request;
@@ -51,6 +52,8 @@ class CandidateController extends Controller
             $employedTypeList = EmployedType::all();
             $qualificationPoint = QualificationPoint::where('status', '=', 1)->get();
             $rehabitationCenter = RehabitationCenter::all();
+            $status = Status::all();
+
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
@@ -60,6 +63,7 @@ class CandidateController extends Controller
                     'community' => $community,
                     'county' => $county,
                     'education' => $education,
+                    'status' => $status,
                     'employed_type' => $employedTypeList,
                     'qualification_point' => $qualificationPoint,
                     'rehabitation_center' => $rehabitationCenter,
@@ -484,7 +488,7 @@ class CandidateController extends Controller
 
     public function getListByOption(Request $request) {
         try {
-            $columns = ["id", "name", "surname", "qualification_point", "stage", "updated_at"];
+            $columns = ["id", "name", "surname", "qualification_point", "stage", "status", "updated_at"];
             $sort_column = $request->input('sort_column');
             $sort_order = $request->input('sort_order');
             $count = $request->input('count');
@@ -494,6 +498,7 @@ class CandidateController extends Controller
             $searchSurname = $request->input('searchSurname');
             $searchQualificationPoint = $request->input('searchQualificationPoint');
             $searchStage = $request->input('searchStage');
+            $searchStatus = $request->input('searchStatus');
             $searchDateModified = $request->input('searchDateModified');
 
             $candidates = [];
@@ -507,6 +512,9 @@ class CandidateController extends Controller
             }
             if (intval($searchStage) != 0) {
                 $query->where('stage', '=', $searchStage);
+            }
+            if (intval($searchStatus) != 0) {
+                $query->where('status', '=', $searchStatus);
             }
             if ($searchDateModified['from'] != '') {
                 $query->where('updated_at', '>', $searchDateModified['from']);
