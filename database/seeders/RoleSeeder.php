@@ -15,8 +15,8 @@ class RoleSeeder extends Seeder
     {
         $items = [
             ['id' => 1, 'name' => 'Administrator'],
-            ['id' => 2, 'name' => 'Ambasador projektu'],
-            ['id' => 3, 'name' => 'Pracownik biura projektu'],
+            ['id' => 2, 'name' => 'Pracownik biura projektu'],
+            ['id' => 3, 'name' => 'Ambasador projektu'],
         ];
         foreach($items as $item)
         {

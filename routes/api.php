@@ -27,14 +27,17 @@ $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () 
     $router->post('/getListByOption', 'CandidateController@getListByOption');
 });
 
-$router->group(['prefix' => 'candidate', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'CandidateController@get');
     $router->post('/', 'CandidateController@create');
     $router->put('/',  'CandidateController@update');
     $router->delete('/', 'CandidateController@delete');
     $router->get('/get_marker', 'CandidateController@getMarker');
     $router->get('/candidate_info', 'CandidateController@getCandidateInfo');
-    $router->put('/candidate_info', 'CandidateController@updateCandidateInfo');
+    $router->put('/step1', 'CandidateController@updateStep1');
+    $router->put('/step2', 'CandidateController@updateStep2');
+    $router->put('/step3', 'CandidateController@updateStep3');
+    $router->put('/step4', 'CandidateController@updateStep4');
 });
 
 $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function () use ($router) {

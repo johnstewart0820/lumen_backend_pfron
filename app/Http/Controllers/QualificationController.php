@@ -31,7 +31,7 @@ class QualificationController extends Controller
     public function getInfo(Request $request) {
         try {
             $type = QualificationPointType::all();
-            $ambassadors = User::where('id_role', '=', 2)->where('status', '=', 1)->get();
+            $ambassadors = User::where('id_role', '=', 3)->where('status', '=', 1)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,

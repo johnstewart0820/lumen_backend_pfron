@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Candidate;
+use App\Models\CandidateComment;
 use App\Models\CandidateInfo;
 use App\Models\Community;
 use App\Models\County;
@@ -50,7 +51,18 @@ class CandidateController extends Controller
             $education = Educations::all();
             $county = County::all();
             $employedTypeList = EmployedType::all();
-            $qualificationPoint = QualificationPoint::where('status', '=', 1)->get();
+            $tempQualificationArr = QualificationPoint::where('status', '=', 1)->get();
+            $qualificationPoint = [];
+            if (Auth::user()->id_role == 3) {
+                foreach($tempQualificationArr as $item) {
+                    $arr = explode(',', $item->ambassador);
+                    if (in_array(Auth::user()->id, $arr)) {
+                        $qualificationPoint[] = $item;
+                    }
+                }
+            } else {
+                $qualificationPoint = $tempQualificationArr;
+            }
             $rehabitationCenter = RehabitationCenter::all();
             $status = Status::all();
 
@@ -162,11 +174,46 @@ class CandidateController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function updateCandidateInfo(Request $request) {
+    public function updateStep1(Request $request) {
         try {
             $id = $request->input('id');
             CandidateInfo::where('id_candidate', '=', $id)->update([
                 'gender' => $request->gender,
+            ]);
+            Candidate::find($id)->update([
+                'qualification_point' => $request->qualification_point,
+                'stage' => $request->stage,
+                'id_status' => $request->status,
+            ]);
+
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = $request->comment;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_CANDIDATE_SUCCESS,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateStep2(Request $request) {
+        try {
+            $id = $request->input('id');
+            CandidateInfo::where('id_candidate', '=', $id)->update([
                 'doctor' => $request->doctor,
                 'psycology' => $request->psycology,
                 'admission' => $request->admission,
@@ -176,9 +223,77 @@ class CandidateController extends Controller
                 'psycology_recommendation' => $request->psycology_recommendation,
                 'psycology_date' => $request->psycology_date,
                 'psycology_remark' => $request->psycology_remark,
+            ]);
+            Candidate::find($id)->update([
+                'stage' => $request->stage,
+                'id_status' => $request->status,
+            ]);
+
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = $request->comment;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_CANDIDATE_SUCCESS,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateStep3(Request $request) {
+        try {
+            $id = $request->input('id');
+            CandidateInfo::where('id_candidate', '=', $id)->update([
                 'decision_central_commision' => $request->decision_central_commision,
                 'date_central_commision' => $request->date_central_commision,
                 'general_remark' => $request->general_remark,
+            ]);
+            Candidate::find($id)->update([
+                'stage' => $request->stage,
+                'id_status' => $request->status,
+            ]);
+
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = $request->comment;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_CANDIDATE_SUCCESS,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateStep4(Request $request) {
+        try {
+            $id = $request->input('id');
+            CandidateInfo::where('id_candidate', '=', $id)->update([
                 'date_referal' => $request->date_referal,
                 'rehabitation_center' => $request->rehabitation_center,
                 'participant_number' => $request->participant_number,
@@ -187,10 +302,14 @@ class CandidateController extends Controller
                 'participant_remark' => $request->participant_remark,
             ]);
             Candidate::find($id)->update([
-                'qualification_point' => $request->qualification_point,
-                'comment' => $request->comment,
-                'stage' => $request->stage
+                'is_participant' => $request->is_participant
             ]);
+
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = $request->comment;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -268,6 +387,7 @@ class CandidateController extends Controller
             $house_hold_adult_status = $request->house_hold_adult_status;
             $uncomfortable_status = $request->uncomfortable_status;
             $stage = $request->stage;
+            $id_status = $request->id_status;
             $comment = $request->comment;
 
             $candidate = new Candidate();
@@ -327,12 +447,17 @@ class CandidateController extends Controller
             $candidate->house_hold_adult_status = $house_hold_adult_status;
             $candidate->uncomfortable_status = $uncomfortable_status;
             $candidate->stage = $stage;
-            $candidate->comment = $comment;
+            $candidate->id_status = $id_status;
             $candidate->status = true;
             $candidate->save();
             $candidate_info = new CandidateInfo();
             $candidate_info->id_candidate = $candidate->id;
             $candidate_info->save();
+            $candidate_comment = new CandidateComment();
+            $candidate_comment->id_candidate = $candidate->id;
+            $candidate_comment->description = $comment;
+            $candidate_comment->created_by = Auth::user()->id;
+            $candidate_comment->save();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_CANDIDATE_SUCCESS,
@@ -408,7 +533,6 @@ class CandidateController extends Controller
             $house_hold_status = $request->house_hold_status;
             $house_hold_adult_status = $request->house_hold_adult_status;
             $uncomfortable_status = $request->uncomfortable_status;
-            $stage = $request->stage;
             $comment = $request->comment;
 
             $id = $request->id;
@@ -469,10 +593,14 @@ class CandidateController extends Controller
                 'house_hold_status' => $house_hold_status,
                 'house_hold_adult_status' => $house_hold_adult_status,
                 'uncomfortable_status' => $uncomfortable_status,
-                'stage' => $stage,
-                'comment' => $comment,
             ]);
             Candidate::find($id)->touch();
+
+            $candidate_comment = new CandidateComment();
+            $candidate_comment->id_candidate = $id;
+            $candidate_comment->description = $comment;
+            $candidate_comment->created_by = Auth::user()->id;
+            $candidate_comment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -488,7 +616,7 @@ class CandidateController extends Controller
 
     public function getListByOption(Request $request) {
         try {
-            $columns = ["id", "name", "surname", "qualification_point", "stage", "status", "updated_at"];
+            $columns = ["id", "name", "surname", "qualification_point", "stage", "id_status", "updated_at"];
             $sort_column = $request->input('sort_column');
             $sort_order = $request->input('sort_order');
             $count = $request->input('count');
@@ -503,6 +631,7 @@ class CandidateController extends Controller
 
             $candidates = [];
             $candidates_count = [];
+
             $query = Candidate::where('name', 'LIKE', "%{$searchName}%")->where('surname', 'LIKE', "%{$searchSurname}%")->where('status', '=', true);
             if ($searchId != '') {
                 $query->where('id', '=', $searchId);
@@ -510,11 +639,24 @@ class CandidateController extends Controller
             if (intval($searchQualificationPoint) != 0) {
                 $query->where('qualification_point', '=', $searchQualificationPoint);
             }
+            $tempQualificationArr = QualificationPoint::where('status', '=', 1)->get();
+            $qualificationPoint = [];
+            if (Auth::user()->id_role == 3) {
+                foreach($tempQualificationArr as $item) {
+                    $arr = explode(',', $item->ambassador);
+                    if (in_array(Auth::user()->id, $arr)) {
+                        $qualificationPoint[] = $item->id;
+                    }
+                }
+                $query->whereIn('qualification_point', $qualificationPoint)->orWhere(function ($q) {
+                    $q->orWhere('qualification_point', '=', '')->orWhere('qualification_point', '=', null);
+                });
+            }
             if (intval($searchStage) != 0) {
                 $query->where('stage', '=', $searchStage);
             }
             if (intval($searchStatus) != 0) {
-                $query->where('status', '=', $searchStatus);
+                $query->where('id_status', '=', $searchStatus);
             }
             if ($searchDateModified['from'] != '') {
                 $query->where('updated_at', '>', $searchDateModified['from']);
