@@ -159,7 +159,7 @@ class QualificationController extends Controller
             if (intval($searchAmbassador) != 0) {
                 $query->where('ambassador', 'LIKE', "%{$searchAmbassador}%");
             }
-
+            $qualification_points_count = $query->get();
             $qualification_points = $query
                 ->orderBy($columns[$sort_column], $sort_order)
                 ->skip(($page - 1) * $count)
@@ -169,7 +169,7 @@ class QualificationController extends Controller
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
-                'data' => [ 'qualification_points' => $qualification_points, 'count' => $qualification_points->count() ]
+                'data' => [ 'qualification_points' => $qualification_points, 'count' => count($qualification_points_count) ]
             ]);
         } catch(Exception $e) {
             return response()->json([

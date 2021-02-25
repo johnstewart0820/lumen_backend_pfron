@@ -16,9 +16,7 @@ class QualificationPointTypeSeeder extends Seeder
         $items = [
             ['id' => 1, 'name' => 'PFRON'],
             ['id' => 2, 'name' => 'ZUS'],
-            ['id' => 3, 'name' => 'KRUS'],
-            ['id' => 4, 'name' => 'MSWiA'],
-            ['id' => 5, 'name' => 'Zespół ds. orzekania o niepełnosprawności'],
+            ['id' => 3, 'name' => 'POWIAT'],
         ];
         foreach($items as $item)
         {
