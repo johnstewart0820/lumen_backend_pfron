@@ -14,9 +14,13 @@ class ModuleSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['id' => 1, 'name' => 'zawodowy'],
-            ['id' => 2, 'name' => 'psychospołeczny'],
-            ['id' => 3, 'name' => 'medyczny'],
+            ['id' => 1, 'name' => 'Diagnoza i opracowanie'],
+            ['id' => 2, 'name' => 'Moduł zawodowy'],
+            ['id' => 3, 'name' => 'Moduł psychozawodowy'],
+            ['id' => 4, 'name' => 'Moduł medyczny'],
+            ['id' => 5, 'name' => 'Świadczenia opcjonalne'],
+            ['id' => 6, 'name' => 'Świadczenia towarzyszące'],
+            ['id' => 7, 'name' => 'Zarządzanie i ewaluacja'],
         ];
         foreach($items as $item)
         {

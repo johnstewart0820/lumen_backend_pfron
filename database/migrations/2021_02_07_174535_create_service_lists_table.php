@@ -18,6 +18,7 @@ class CreateServiceListsTable extends Migration
             $table->string('name');
             $table->integer('number');
             $table->integer('module');
+            $table->integer('type');
             $table->integer('amount_usage');
             $table->integer('unit');
             $table->integer('amount_takes');

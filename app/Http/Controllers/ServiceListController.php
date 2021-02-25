@@ -5,6 +5,7 @@ use App\Models\Module;
 use App\Models\QualificationPoint;
 use App\Models\QualificationPointType;
 use App\Models\ServiceList;
+use App\Models\ServiceListType;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -34,12 +35,14 @@ class ServiceListController extends Controller
         try {
             $modules = Module::all();
             $units = Unit::all();
+            $types = ServiceListType::all();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'modules' => $modules,
                     'units' => $units,
+                    'types' => $types,
                 ]
             ]);
         } catch (Exception $e) {
@@ -87,6 +90,7 @@ class ServiceListController extends Controller
             $name = $request->name;
             $number = $request->number;
             $module = $request->module;
+            $type = $request->type;
             $amount_usage = $request->amount_usage;
             $unit = $request->unit;
             $amount_takes = $request->amount_takes;
@@ -97,6 +101,7 @@ class ServiceListController extends Controller
             $service->name = $name;
             $service->number = $number;
             $service->module = $module;
+            $service->type = $type;
             $service->amount_usage = $amount_usage;
             $service->unit = $unit;
             $service->amount_takes = $amount_takes;
@@ -127,6 +132,7 @@ class ServiceListController extends Controller
             $name = $request->name;
             $number = $request->number;
             $module = $request->module;
+            $type = $request->type;
             $amount_usage = $request->amount_usage;
             $unit = $request->unit;
             $amount_takes = $request->amount_takes;
@@ -134,7 +140,7 @@ class ServiceListController extends Controller
             $not_applicable = $request->not_applicable;
             $id = $request->id;
 
-            ServiceList::where('id', '=', $id)->update(['name'=>$name, 'number' => $number, 'module' => $module, 'amount_usage' => $amount_usage, 'unit' => $unit, 'amount_takes' => $amount_takes, 'is_required' => $is_required, 'not_applicable' => $not_applicable]);
+            ServiceList::where('id', '=', $id)->update(['name'=>$name, 'number' => $number, 'module' => $module, 'type' => $type, 'amount_usage' => $amount_usage, 'unit' => $unit, 'amount_takes' => $amount_takes, 'is_required' => $is_required, 'not_applicable' => $not_applicable]);
 
             return response()->json([
                 'code' => SUCCESS_CODE,

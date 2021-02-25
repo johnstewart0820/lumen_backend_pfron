@@ -3,9 +3,7 @@
 namespace App\Models;
 
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-
-class ServiceList extends Model
+class ServiceListType extends Model
 {
 
     /**
@@ -14,7 +12,7 @@ class ServiceList extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'module', 'type', 'amount_usage', 'unit', 'amount_takes', 'is_required', 'not_applicable', 'status'
+        'name'
     ];
 
     /**
