@@ -61,7 +61,7 @@ $router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function ()
     $router->post('/getListByOption', 'SpecialistController@getListByOption');
 });
 
-$router->group(['prefix' => 'specialist', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'SpecialistController@get');
     $router->post('/', 'SpecialistController@create');
     $router->put('/',  'SpecialistController@update');
@@ -73,7 +73,7 @@ $router->group(['prefix' => 'audit', 'middleware' => ['auth']], function () use 
     $router->post('/getListByOption', 'AuditController@getListByOption');
 });
 
-$router->group(['prefix' => 'audit', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'audit', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'AuditController@get');
     $router->delete('/', 'AuditController@delete');
 });
@@ -85,7 +85,7 @@ $router->group(['prefix' => 'users', 'middleware' => ['auth']], function () use 
     $router->put('/updateProfile', 'UserController@updateProfile');
 });
 
-$router->group(['prefix' => 'users', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'users', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'UserController@get');
     $router->post('/', 'UserController@create');
     $router->put('/',  'UserController@update');
@@ -97,7 +97,7 @@ $router->group(['prefix' => 'service-list', 'middleware' => ['auth']], function 
     $router->post('/getListByOption', 'ServiceListController@getListByOption');
 });
 
-$router->group(['prefix' => 'service-list', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'service-list', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'ServiceListController@get');
     $router->post('/', 'ServiceListController@create');
     $router->put('/',  'ServiceListController@update');
@@ -108,7 +108,7 @@ $router->group(['prefix' => 'rehabitation-center', 'middleware' => ['auth']], fu
     $router->post('/getListByOption', 'RehabitationCenterController@getListByOption');
 });
 
-$router->group(['prefix' => 'rehabitation-center', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'rehabitation-center', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'RehabitationCenterController@get');
     $router->put('/',  'RehabitationCenterController@update');
 });
@@ -119,7 +119,7 @@ $router->group(['prefix' => 'ork-team', 'middleware' => ['auth']], function () u
     $router->post('/getListByOption', 'OrkTeamsController@getListByOption');
 });
 
-$router->group(['prefix' => 'ork-team', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'ork-team', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'OrkTeamsController@get');
     $router->post('/', 'OrkTeamsController@create');
     $router->put('/',  'OrkTeamsController@update');
@@ -131,7 +131,7 @@ $router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () us
     $router->post('/getListByOption', 'PaymentController@getListByOption');
 });
 
-$router->group(['prefix' => 'payment', 'middleware' => ['admin']], function () use ($router) {
+$router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/', 'PaymentController@get');
     $router->post('/', 'PaymentController@create');
     $router->put('/',  'PaymentController@update');
