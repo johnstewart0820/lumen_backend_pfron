@@ -40,6 +40,13 @@ $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () 
     $router->put('/step4', 'CandidateController@updateStep4');
 });
 
+$router->group(['prefix' => 'participant', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'ParticipantController@getInfo');
+    $router->post('/getListByOption', 'ParticipantController@getListByOption');
+    $router->get('/', 'ParticipantController@get');
+    $router->put('/',  'ParticipantController@update');
+});
+
 $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'QualificationController@getInfo');
     $router->post('/getListByOption', 'QualificationController@getListByOption');

@@ -73,6 +73,7 @@ class CreateCandidatesTable extends Migration
             $table->string('stage');
             $table->string('id_status');
             $table->string('qualification_point')->nullable(true);
+            $table->string('participant_status_type')->default(0);
             $table->boolean('is_participant')->default(false);
             $table->boolean('status');
             $table->timestamps();
