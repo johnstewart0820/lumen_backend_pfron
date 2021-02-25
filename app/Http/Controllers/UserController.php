@@ -112,7 +112,7 @@ class UserController extends Controller
             $user = Auth::user();
             $name = $request->name;
             $email = $request->email;
-            $role = $request->id_role;
+            $role = implode(',', $request->id_role);
             $activate_status = $request->activate_status;
             $password = $request->password;
             $newPassword = $request->newPassword;
@@ -157,7 +157,7 @@ class UserController extends Controller
             $user = new User();
             $user->name = $name;
             $user->email = $email;
-            $user->id_role = $role;
+            $user->id_role = implode(',',$role);
             $user->password = Hash::make('123456');
             $user->is_valid = true;
             $user->activate_status = $activate_status;
@@ -185,7 +185,7 @@ class UserController extends Controller
         try {
             $name = $request->name;
             $email = $request->email;
-            $role = $request->id_role;
+            $role = implode(',', $request->id_role);
             $activate_status = $request->activate_status;
             $id = $request->id;
 
@@ -222,7 +222,7 @@ class UserController extends Controller
                 $query = $query->where('id', '=', $searchId);
             }
             if (intval($searchRole) != 0) {
-                $query = $query->where('id_role', '=', $searchRole);
+                $query = $query->where('id_role', 'LIKE' ,"%{$searchRole}%");
             }
             if (intval($searchActivateStatus) != 0) {
                 $query = $query->where('activate_status', '=', intval($searchActivateStatus) - 1);
