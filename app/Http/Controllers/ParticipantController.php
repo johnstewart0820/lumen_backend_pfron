@@ -46,7 +46,6 @@ class ParticipantController extends Controller
      */
     public function getInfo(Request $request) {
         try {
-            $stage = Stage::all();
             $rehabitationCenter = RehabitationCenter::all();
             $participantStatusType = ParticipantStatusType::all();
 
@@ -76,11 +75,13 @@ class ParticipantController extends Controller
         try {
             $id = $request->input('id');
             $candidate = Candidate::find($id);
+            $candidate_info = CandidateInfo::where('id_candidate', '=', $id)->first();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'candidate' => $candidate
+                    'candidate' => $candidate,
+                    'candidate_info' => $candidate_info
                 ]
             ]);
         } catch (Exception $e) {
@@ -155,7 +156,7 @@ class ParticipantController extends Controller
             $house_hold_adult_status = $request->house_hold_adult_status;
             $uncomfortable_status = $request->uncomfortable_status;
             $comment = $request->comment;
-
+            $participant_status_type = $request->participant_status_type;
             $id = $request->id;
 
             Candidate::find($id)->update([
@@ -214,6 +215,7 @@ class ParticipantController extends Controller
                 'house_hold_status' => $house_hold_status,
                 'house_hold_adult_status' => $house_hold_adult_status,
                 'uncomfortable_status' => $uncomfortable_status,
+                'participant_status_type' => $participant_status_type,
             ]);
             Candidate::find($id)->touch();
 
