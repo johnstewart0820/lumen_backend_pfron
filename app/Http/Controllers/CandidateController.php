@@ -123,7 +123,7 @@ class CandidateController extends Controller
     public function getMarker(Request $request) {
         try {
             $id = $request->input('qualification_point');
-            $doctor = Specialist::where('qualification_point', '=', $id)->where('specialty', '=', 2)->get();
+            $doctor = Specialist::where('qualification_point', '=', $id)->where('specialty', '>', 1)->get();
             $psycology = Specialist::where('qualification_point', '=', $id)->where('specialty', '=', 1)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,

@@ -15,7 +15,9 @@ class SpecialtyTypeSeeder extends Seeder
     {
         $items = [
             ['id' => 1, 'name' => 'psycholog'],
-            ['id' => 2, 'name' => 'lekarz'],
+            ['id' => 2, 'name' => 'lekarz ZUS'],
+            ['id' => 2, 'name' => 'lekarz PFRON'],
+            ['id' => 2, 'name' => 'lekarz z powiatu'],
         ];
         foreach($items as $item)
         {
