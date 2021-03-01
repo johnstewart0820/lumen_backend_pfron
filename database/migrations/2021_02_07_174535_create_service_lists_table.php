@@ -19,9 +19,9 @@ class CreateServiceListsTable extends Migration
             $table->integer('number');
             $table->integer('module');
             $table->integer('type');
-            $table->integer('amount_usage');
+            $table->string('amount_usage');
             $table->integer('unit');
-            $table->integer('amount_takes');
+            $table->string('amount_takes');
             $table->boolean('is_required');
             $table->boolean('not_applicable');
             $table->boolean('status');
