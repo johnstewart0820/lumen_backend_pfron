@@ -29,7 +29,7 @@ class ProfileController extends Controller
         return response()->json([
             'code' => SUCCESS_CODE,
             'message' => SUCCESS_MESSAGE,
-            'role' => $user->id_role
+            'role' => (string)$user->id_role
         ]);
     }
 }
