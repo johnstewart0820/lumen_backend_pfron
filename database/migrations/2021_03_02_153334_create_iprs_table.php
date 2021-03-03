@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateIprsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('iprs', function (Blueprint $table) {
+            $table->id();
+            $table->integer('id_candidate');
+            $table->integer('ipr_type');
+            $table->integer('number');
+            $table->integer('id_ork_person');
+            $table->string('profession');
+            $table->dateTime('schedule_date');
+            $table->boolean('status');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('iprs');
+    }
+}

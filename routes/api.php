@@ -56,6 +56,16 @@ $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function
     $router->delete('/', 'QualificationController@delete');
 });
 
+$router->group(['prefix' => 'ipr', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'IprController@getInfo');
+    $router->get('/ork_person', 'IprController@getOrkPerson');
+    $router->post('/getListByOption', 'IprController@getListByOption');
+    $router->get('/', 'IprController@get');
+    $router->post('/', 'IprController@create');
+    $router->put('/',  'IprController@update');
+    $router->delete('/', 'IprController@delete');
+});
+
 $router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'SpecialistController@getInfo');
     $router->post('/getListByOption', 'SpecialistController@getListByOption');
