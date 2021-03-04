@@ -115,10 +115,13 @@ class IprController extends Controller
      */
     public function getPlanInfo(Request $request) {
         try {
-            $module = Module::all();
+            $id = $request->id;
+            $module = Module::where('id', '>', 1)->where('id', '<', 7)->get();
             $plan = IprPlan::leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
                 ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                ->selectRaw('ipr_plans.*, service_lists.name, service_lists.module, service_lists.amount_usage, service_lists.is_required, service_lists.not_applicable, units.name as unit')->get();
+                ->selectRaw('ipr_plans.*, service_lists.name, service_lists.module, service_lists.amount_usage, service_lists.is_required, service_lists.not_applicable, units.name as unit')
+                ->where('ipr_plans.id_ipr', '=', $id)
+                ->get();
             $id_candidate = Ipr::where('id', '=', $plan[0]->id_ipr)->first()->id_candidate;
             $rehabitation_center = CandidateInfo::where('id_candidate', '=', $id_candidate)->first()->rehabitation_center;
             $ork_team = OrkTeam::where('rehabitation_center', '=', $rehabitation_center)->where('is_accepted', '=', true)->get();
@@ -217,7 +220,7 @@ class IprController extends Controller
 
             $ipr->save();
 
-            $service_list = ServiceList::where('is_required', '=', true)->where('status', '=', true)->get();
+            $service_list = ServiceList::where('is_required', '=', true)->where('module', '>', 1)->where('module', '<', 7)->where('status', '=', true)->get();
             foreach($service_list as $service) {
                 $item = array('id_ipr' => $ipr->id, 'id_service' => $service->id);
                 IprPlan::create($item);
@@ -228,6 +231,9 @@ class IprController extends Controller
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_IPR_SUCCESS,
+                'data' => [
+                    'id' => $ipr->id
+                ]
             ]);
 
         } catch (Exception $e) {
