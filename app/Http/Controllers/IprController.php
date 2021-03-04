@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use App\Models\CandidateInfo;
 use App\Models\Ipr;
+use App\Models\IprPlan;
 use App\Models\IprType;
+use App\Models\Module;
 use App\Models\OrkTeam;
+use App\Models\ServiceList;
 use Illuminate\Http\Request;
 
 class IprController extends Controller
@@ -110,6 +113,90 @@ class IprController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function getPlanInfo(Request $request) {
+        try {
+            $module = Module::all();
+            $plan = IprPlan::leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
+                ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
+                ->selectRaw('ipr_plans.*, service_lists.name, service_lists.module, service_lists.amount_usage, service_lists.is_required, service_lists.not_applicable, units.name as unit')->get();
+            $id_candidate = Ipr::where('id', '=', $plan[0]->id_ipr)->first()->id_candidate;
+            $rehabitation_center = CandidateInfo::where('id_candidate', '=', $id_candidate)->first()->rehabitation_center;
+            $ork_team = OrkTeam::where('rehabitation_center', '=', $rehabitation_center)->where('is_accepted', '=', true)->get();
+
+            foreach($module as $item) {
+                $service_list = ServiceList::leftJoin('units', 'service_lists.unit', '=', 'units.id')->where('is_required', '=', false)
+                    ->where('status', '=', true)
+                    ->where('module', '=', $item->id)
+                    ->selectRaw('service_lists.*, units.name as unit')->get();
+                $item['ork_team'] = $ork_team;
+                $item['service_list'] = $service_list;
+            }
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'module' => $module,
+                    'plan' => $plan,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updatePlan(Request $request) {
+        try {
+            $moduleList = $request->moduleList;
+            $id = $request->id;
+            foreach($moduleList as $module) {
+                $planList = $module['plan'];
+                foreach($planList as $plan) {
+                    if (!isset($plan['id_service']))
+                        continue;
+                    $id_ork_person = '';
+                    if (isset($plan['id_ork_person'])) {
+                        if (is_integer($plan['id_ork_person']))
+                            $id_ork_person = $plan['id_ork_person'];
+                        else
+                            $id_ork_person = $plan['id_ork_person']['id'];
+                    } else
+                        $id_ork_person = null;
+                    if ($plan['new'] === true) {
+                        IprPlan::create(['id_ipr' => $id, 'id_service' => $plan['id_service']['id'], 'amount' => $plan['amount'], 'start_date' => isset($plan['start_date']) ? $plan['start_date'] : null, 'room_number' => $plan['room_number'], 'id_ork_person' => $id_ork_person, 'remarks' => $plan['remarks']]);
+                    } else {
+
+                        IprPlan::where('id', '=', $plan['id'])->update(['id_ipr' => $id, 'id_service' => $plan['id_service'], 'amount' => $plan['amount'], 'start_date' => $plan['start_date'], 'room_number' => $plan['room_number'], 'id_ork_person' => $id_ork_person, 'remarks' => $plan['remarks']]);
+                    }
+                }
+            }
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => UPDATE_IPR_SUCCESS
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function create(Request $request) {
         try {
             $id_candidate = $request->id_candidate;
@@ -129,10 +216,20 @@ class IprController extends Controller
             $ipr->status = true;
 
             $ipr->save();
+
+            $service_list = ServiceList::where('is_required', '=', true)->where('status', '=', true)->get();
+            foreach($service_list as $service) {
+                $item = array('id_ipr' => $ipr->id, 'id_service' => $service->id);
+                IprPlan::create($item);
+            }
+
+
+
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_IPR_SUCCESS,
             ]);
+
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,
