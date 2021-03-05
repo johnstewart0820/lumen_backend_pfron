@@ -5,6 +5,7 @@ use App\Models\Candidate;
 use App\Models\CandidateInfo;
 use App\Models\Ipr;
 use App\Models\IprPlan;
+use App\Models\IprSchedule;
 use App\Models\IprType;
 use App\Models\Module;
 use App\Models\OrkTeam;
@@ -113,6 +114,99 @@ class IprController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function getScheduleInfo(Request $request) {
+        try {
+            $id = $request->input('id');
+            $dates = $request->input('dates');
+            $service_list = [];
+            $module = Module::all();
+            $arr = ServiceList::where('module', '=', 1)->get();
+            foreach ($arr as $item) {
+                $service_list[] = $item;
+            }
+            $arr = IprPlan::where('id_ipr', '=', $id)->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')->selectRaw('service_lists.*')->get();
+            foreach ($arr as $item) {
+                $service_list[] = $item;
+            }
+            $arr = ServiceList::where('module', '=', 7)->get();
+            foreach ($arr as $item) {
+                $service_list[] = $item;
+            }
+
+            $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '=', $dates)->get();
+
+            foreach($service_list as $service) {
+                foreach($schedule_list as $schedule) {
+                    if ($schedule->id_service === $service->id) {
+                        $service['schedule'] = $schedule;
+                    }
+                }
+            }
+            foreach($module as $item) {
+                $_service = [];
+                foreach($service_list as $service) {
+                    if ($item->id === $service->module) {
+                        $_service[] = $service;
+                    }
+                }
+                $item['service_list'] = $_service;
+            }
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'module' => $module
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getWeekStatus(Request $request) {
+        try {
+            $id = $request->input('id');
+            $from = $request->input('from');
+            $to = $request->input('to');
+
+            $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '>', $from)->where('date', '<', $to)->get();
+            $status = 0;
+            if (count($schedule_list) !== 0) {
+                $status = $schedule_list[0]->status;
+            }
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'status' => $status
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function getPlanInfo(Request $request) {
         try {
             $id = $request->id;
@@ -183,13 +277,71 @@ class IprController extends Controller
             }
             return response()->json([
                 'code' => SUCCESS_CODE,
-                'message' => SUCCESS_MESSAGE,
+                'message' => UPDATE_IPR_SUCCESS,
             ]);
 
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,
-                'message' => UPDATE_IPR_SUCCESS
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateSchedule(Request $request) {
+        try {
+            $scheduleData = $request->schedule_data;
+            $date = $request->date;
+            $status = $request->status;
+            $id = $request->id;
+
+            foreach($scheduleData as $scheduleItem) {
+                foreach($scheduleItem['service_list'] as $service) {
+                    $break_time = '';
+                    $end_time = '';
+                    $start_time = '';
+                    $total_time = '';
+                    $total_amount = '';
+                    $id_service = $service['id'];
+
+                    if (!isset($service['schedule'])) {
+                        $break_time = '0';
+                        $start_time = '00:00';
+                        $end_time = '00:00';
+                        $total_time = '0';
+                        $total_amount = '0';
+                    } else {
+                        $break_time = isset($service['schedule']['break_time']) ? $service['schedule']['break_time'] : '0';
+                        $start_time = isset($service['schedule']['start_time']) ? $service['schedule']['start_time'] : '0';
+                        $end_time = isset($service['schedule']['end_time']) ? $service['schedule']['end_time'] : '0';
+                        $total_time = isset($service['schedule']['total_time']) ? $service['schedule']['total_time'] : '0';
+                        $total_amount = isset($service['schedule']['total_amount']) ? $service['schedule']['total_amount'] : '0';
+                    }
+
+                    $list = IprSchedule::where('id_ipr', '=', $id)->where('id_service', '=', $id_service)->where('date', 'LIKE', "%{$date}%")->get();
+                    if (count($list) === 0) {
+                        IprSchedule::create(['id_ipr' => $id, 'id_service' => $id_service, 'status' => $status, 'date' => $date, 'start_time' => $start_time, 'end_time' => $end_time, 'break_time' => $break_time, 'total_time' => $total_time, 'total_amount' => $total_amount]);
+                    } else {
+                        IprSchedule::where('id_ipr', '=', $id)->where('id_service', '=', $id_service)->where('date', 'LIKE', "%{$date}%")
+                            ->update(['id_ipr' => $id, 'id_service' => $id_service, 'status' => $status, 'date' => $date, 'start_time' => $start_time, 'end_time' => $end_time, 'break_time' => $break_time, 'total_time' => $total_time, 'total_amount' => $total_amount]);
+                    }
+                }
+            }
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_IPR_SUCCESS,
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
             ]);
         }
     }
