@@ -14,7 +14,7 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'value', 'rehabitation_center', 'service', 'status'
+        'value', 'rehabitation_center', 'service', 'status'
     ];
 
     /**
