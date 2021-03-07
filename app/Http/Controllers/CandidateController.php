@@ -17,6 +17,7 @@ use App\Models\Specialist;
 use App\Models\Stage;
 use App\Models\Status;
 use App\Models\Voivodeship;
+use Carbon\Carbon;
 use Database\Seeders\EmployedTypeSeeder;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -302,7 +303,8 @@ class CandidateController extends Controller
                 'participant_remark' => $request->participant_remark,
             ]);
             Candidate::find($id)->update([
-                'is_participant' => $request->is_participant
+                'is_participant' => $request->is_participant,
+                'created_participant_time' => Carbon::now()
             ]);
 
             $candidateComment = new CandidateComment();

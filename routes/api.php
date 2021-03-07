@@ -22,6 +22,11 @@ $router->group(['prefix' => 'user'], function () use ($router) {
     $router->get('/validate_token', 'ProfileController@validateToken');
 });
 
+$router->group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () use ($router) {
+    $router->post('/list', 'DashboardController@getList');
+    $router->delete('/', 'DashboardController@delete');
+});
+
 $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'CandidateController@getInfo');
     $router->post('/getListByOption', 'CandidateController@getListByOption');
