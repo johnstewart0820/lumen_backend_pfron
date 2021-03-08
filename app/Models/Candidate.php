@@ -19,7 +19,7 @@ class Candidate extends Model
         'education', 'academic_title', 'stay_status', 'children_applicable', 'children_amount', 'children_age', 'employed_status', 'employed_type', 'employed_in', 'occupation', 'unemployed_status',
         'have_unemployed_person_status', 'unemployed_person_id', 'long_term_employed_status', 'seek_work_status', 'passive_person_status', 'full_time_status', 'evening_student_status', 'disabled_person_status',
         'number_certificate', 'date_of_certificate', 'level_certificate', 'code_certificate', 'necessary_certificate', 'ethnic_minority_status', 'homeless_person_status', 'stay_house_status',
-        'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status', 'stage', 'id_status', 'participant_status_type', 'is_participant', 'qualification_point', 'status',
+        'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status', 'stage', 'id_status', 'participant_status_type', 'is_participant', 'qualification_point', 'status', 'created_participant_time'
     ];
 
     /**

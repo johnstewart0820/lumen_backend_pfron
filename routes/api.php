@@ -22,6 +22,11 @@ $router->group(['prefix' => 'user'], function () use ($router) {
     $router->get('/validate_token', 'ProfileController@validateToken');
 });
 
+$router->group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () use ($router) {
+    $router->post('/list', 'DashboardController@getList');
+    $router->delete('/', 'DashboardController@delete');
+});
+
 $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'CandidateController@getInfo');
     $router->post('/getListByOption', 'CandidateController@getListByOption');
@@ -54,6 +59,22 @@ $router->group(['prefix' => 'qualification', 'middleware' => ['auth']], function
     $router->post('/', 'QualificationController@create');
     $router->put('/',  'QualificationController@update');
     $router->delete('/', 'QualificationController@delete');
+});
+
+$router->group(['prefix' => 'ipr', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'IprController@getInfo');
+    $router->get('/ork_person', 'IprController@getOrkPerson');
+    $router->get('/get_plan_info', 'IprController@getPlanInfo');
+    $router->post('/get_schedule', 'IprController@getScheduleInfo');
+    $router->post('/getListByOption', 'IprController@getListByOption');
+    $router->post('/plan', 'IprController@updatePlan');
+    $router->post('/schedule', 'IprController@updateSchedule');
+    $router->post('/week_status', 'IprController@getWeekStatus');
+
+    $router->get('/', 'IprController@get');
+    $router->post('/', 'IprController@create');
+    $router->put('/',  'IprController@update');
+    $router->delete('/', 'IprController@delete');
 });
 
 $router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function () use ($router) {

@@ -76,6 +76,7 @@ class CreateCandidatesTable extends Migration
             $table->string('participant_status_type')->default(0);
             $table->boolean('is_participant')->default(false);
             $table->boolean('status');
+            $table->dateTime('created_participant_time')->nullable(true);
             $table->timestamps();
         });
     }

@@ -25,6 +25,12 @@ class SpecializationSeeder extends Seeder
             ['id' => 9, 'name' => 'Dietetyk', 'module_type' => 'moduł świadczenia opcjonalne'],
             ['id' => 10, 'name' => 'Logopeda', 'module_type' => 'moduł świadczenia opcjonalne'],
             ['id' => 11, 'name' => 'Wsparcie lekarskie specjalistyczne', 'module_type' => 'moduł świadczenia opcjonalne'],
+            ['id' => 12, 'name' => 'Specjalista ds. pilotażu'],
+            ['id' => 13, 'name' => 'Lekarz specjalista', 'module_type' => 'moduł świadczenia opcjonalne'],
+            ['id' => 14, 'name' => 'Fizjoterapeuta'],
+            ['id' => 15, 'name' => 'Pielęgniarka'],
+            ['id' => 16, 'name' => 'Sekretarka medyczna'],
+            ['id' => 17, 'name' => 'Specjalista ds. obsługi pilotażu'],
         ];
         foreach($items as $item)
         {

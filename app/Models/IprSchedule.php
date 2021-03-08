@@ -3,9 +3,7 @@
 namespace App\Models;
 
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
-
-class Payment extends Model
+class IprSchedule extends Model
 {
 
     /**
@@ -14,7 +12,7 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'value', 'rehabitation_center', 'service', 'status'
+        'id_ipr', 'id_service', 'status', 'date', 'start_time', 'end_time', 'break_time', 'total_time', 'total_amount'
     ];
 
     /**

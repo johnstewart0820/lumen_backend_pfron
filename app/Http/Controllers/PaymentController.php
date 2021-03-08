@@ -84,13 +84,11 @@ class PaymentController extends Controller
      */
     public function create(Request $request) {
         try {
-            $name = $request->name;
             $value = $request->value;
             $rehabitation_center = $request->rehabitation_center;
             $service = $request->service;
 
             $payment = new Payment();
-            $payment->name = $name;
             $payment->value = $value;
             $payment->rehabitation_center = $rehabitation_center;
             $payment->service = $service;
@@ -116,13 +114,12 @@ class PaymentController extends Controller
      */
     public function update(Request $request) {
         try {
-            $name = $request->name;
             $value = $request->value;
             $rehabitation_center = $request->rehabitation_center;
             $service = $request->service;
             $id = $request->id;
 
-            Payment::find($id)->update(['name' => $name, 'value' => $value, 'rehabitation_center' =>  $rehabitation_center, 'service' =>  $service]);
+            Payment::find($id)->update([ 'value' => $value, 'rehabitation_center' =>  $rehabitation_center, 'service' =>  $service]);
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -144,13 +141,12 @@ class PaymentController extends Controller
             $count = $request->input('count');
             $page = $request->input('page');
             $searchId = $request->input('searchId');
-            $searchName = $request->input('searchName');
             $searchValue = $request->input('searchValue');
             $searchRehabitationCenter = $request->input('searchRehabitationCenter');
             $searchService = $request->input('searchService');
             $payments = [];
             $payments_count = [];
-            $query = Payment::where('name', 'LIKE', "%{$searchName}%")->where('value', 'LIKE', "%{$searchValue}%")->where('status', '=', true);
+            $query = Payment::where('value', 'LIKE', "%{$searchValue}%")->where('status', '=', true);
             if ($searchId != '') {
                 $query->where('id', '=', $searchId);
             }
