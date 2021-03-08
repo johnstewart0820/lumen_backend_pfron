@@ -16,3 +16,7 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/candidate-pdf', function () use ($router) {
+    return view('candidate-pdf');
+});

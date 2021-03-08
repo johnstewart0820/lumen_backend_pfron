@@ -32,4 +32,20 @@ class Candidate extends Model
 
     protected $primaryKey = 'id';
 
+    public function getvoiVodeshipNameAttribute() {
+        return Voivodeship::find($this->voivodeship)->name;
+    }
+
+    public function getCommunityNameAttribute() {
+        return Community::find($this->community)->name;
+    }
+
+    public function getCountyNameAttribute() {
+        return County::find($this->county)->name;
+    }
+
+    public function getEducationNameAttribute() {
+        return Educations::find($this->education)->name;
+    }
+
 }
