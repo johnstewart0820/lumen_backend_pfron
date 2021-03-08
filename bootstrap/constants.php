@@ -28,6 +28,10 @@ define('CREATE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacji został z
 define('UPDATE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacji został zaktualizowany.');
 define('DELETE_QUALIFICATION_POINT_SUCCESS', 'Twój punkt kwalifikacyjny został usunięty.');
 
+define('CREATE_TRAINING_SUCCESS', 'Twój szkolenie został zapisany.');
+define('UPDATE_TRAINING_SUCCESS', 'Twój szkolenie został zaktualizowany.');
+define('DELETE_TRAINING_SUCCESS', 'Twój szkolenie został usunięty.');
+
 define('CREATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zapisany.');
 define('UPDATE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został zaktualizowany.');
 define('DELETE_SPECIALIST_POINT_SUCCESS', 'Twój specjalista został usunięty.');

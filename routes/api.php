@@ -89,6 +89,16 @@ $router->group(['prefix' => 'specialist', 'middleware' => ['auth']], function ()
     $router->delete('/', 'SpecialistController@delete');
 });
 
+$router->group(['prefix' => 'training', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/info', 'TrainingController@getInfo');
+    $router->get('/ork_team', 'TrainingController@getOrkTeam');
+    $router->post('/getListByOption', 'TrainingController@getListByOption');
+    $router->get('/', 'TrainingController@get');
+    $router->post('/', 'TrainingController@create');
+    $router->put('/',  'TrainingController@update');
+    $router->delete('/', 'TrainingController@delete');
+});
+
 $router->group(['prefix' => 'audit', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'AuditController@getInfo');
     $router->post('/getListByOption', 'AuditController@getListByOption');
