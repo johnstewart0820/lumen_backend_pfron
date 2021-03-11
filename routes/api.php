@@ -29,7 +29,9 @@ $router->group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () 
 
 $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'CandidateController@getInfo');
+    $router->get('/history_info', 'CandidateController@getHistoryInfo');
     $router->post('/getListByOption', 'CandidateController@getListByOption');
+    $router->post('/getHistoryListByOption', 'CandidateController@getHistoryListByOption');
 });
 
 $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {

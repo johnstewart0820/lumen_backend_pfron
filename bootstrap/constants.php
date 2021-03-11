@@ -68,3 +68,6 @@ define('JWT_TOKEN_EXPIRED', 'Token is Expired');
 define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
 
 define('SUCCESS_MESSAGE', 'The success response has been received');
+
+define('CANDIDATE_CREATE', 'Dodanie kandydata');
+define('CANDIDATE_UPDATE', 'Założenie karty informacyjnej');

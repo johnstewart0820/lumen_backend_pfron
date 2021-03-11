@@ -96,6 +96,31 @@ class CandidateController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function getHistoryInfo(Request $request) {
+        try {
+            $users = User::all();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'user' => $users
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function get(Request $request) {
         try {
             $id = $request->input('id');
@@ -188,7 +213,7 @@ class CandidateController extends Controller
             ]);
 
             $candidateComment = new CandidateComment();
-            $candidateComment->description = $request->comment;
+            $candidateComment->description = CANDIDATE_UPDATE;
             $candidateComment->created_by = Auth::user()->id;
             $candidateComment->id_candidate = $id;
             $candidateComment->save();
@@ -230,11 +255,11 @@ class CandidateController extends Controller
                 'id_status' => $request->status,
             ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = $request->comment;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+//            $candidateComment = new CandidateComment();
+//            $candidateComment->description = $request->comment;
+//            $candidateComment->created_by = Auth::user()->id;
+//            $candidateComment->id_candidate = $id;
+//            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -267,11 +292,11 @@ class CandidateController extends Controller
                 'id_status' => $request->status,
             ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = $request->comment;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+//            $candidateComment = new CandidateComment();
+//            $candidateComment->description = $request->comment;
+//            $candidateComment->created_by = Auth::user()->id;
+//            $candidateComment->id_candidate = $id;
+//            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -307,11 +332,11 @@ class CandidateController extends Controller
                 'created_participant_time' => Carbon::now()
             ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = $request->comment;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+//            $candidateComment = new CandidateComment();
+//            $candidateComment->description = $request->comment;
+//            $candidateComment->created_by = Auth::user()->id;
+//            $candidateComment->id_candidate = $id;
+//            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -457,7 +482,7 @@ class CandidateController extends Controller
             $candidate_info->save();
             $candidate_comment = new CandidateComment();
             $candidate_comment->id_candidate = $candidate->id;
-            $candidate_comment->description = $comment;
+            $candidate_comment->description = CANDIDATE_CREATE;
             $candidate_comment->created_by = Auth::user()->id;
             $candidate_comment->save();
             return response()->json([
@@ -480,6 +505,14 @@ class CandidateController extends Controller
      */
     public function update(Request $request) {
         try {
+            $array = ['name', 'surname', 'person_id', 'place_of_birth', 'date_of_birth', 'street', 'house_number', 'apartment_number', 'post_code', 'post_office', 'city', 'second_street', 'second_house_number',
+                'second_apartment_number', 'second_post_code', 'second_post_office', 'second_city', 'voivodeship', 'community', 'county', 'mobile_phone', 'home_phone', 'email', 'family_home_phone',
+                'family_mobile_phone', 'education', 'academic_title', 'stay_status', 'children_applicable', 'children_amount', 'children_age', 'employed_status', 'employed_in', 'occupation',
+                'unemployed_status', 'have_unemployed_person_status', 'unemployed_person_id', 'long_term_employed_status', 'seek_work_status', 'passive_person_status', 'full_time_status',
+                'evening_student_status', 'disabled_person_status', 'number_certificate', 'date_of_certificate', 'level_certificate', 'code_certificate', 'necessary_certificate', 'ethnic_minority_status',
+                'homeless_person_status', 'stay_house_status', 'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status', 'stage', 'id_status', 'qualification_point', 'participant_status_type',
+                'is_participant'];
+
             $name = $request->name;
             $surname = $request->surname;
             $person_id = $request->person_id;
@@ -538,6 +571,20 @@ class CandidateController extends Controller
             $comment = $request->comment;
 
             $id = $request->id;
+
+            $candidate = Candidate::find($id);
+            $description = 'Zmiana wartości ';
+            $description_array = [];
+            for($i = 0; $i < count($array); $i ++){
+                if ($candidate[$array[$i]] != $request[$array[$i]]) {
+                    if ($array[$i] == 'employed_type') {
+                        array_push($description_array,'"'.$array[$i].'" z'.' "'.$request[$array[$i]].' " na "'.implode(',',$candidate[$array[$i]]).'"');
+                    } else {
+                        array_push($description_array,'"'.$array[$i].'" z'.' "'.$request[$array[$i]].' " na "'.$candidate[$array[$i]].'"');
+                    }
+                }
+            }
+            $description = $description.implode(', ', $description_array);
 
             Candidate::find($id)->update([
                 'name' => $name,
@@ -600,7 +647,7 @@ class CandidateController extends Controller
 
             $candidate_comment = new CandidateComment();
             $candidate_comment->id_candidate = $id;
-            $candidate_comment->description = $comment;
+            $candidate_comment->description = $description;
             $candidate_comment->created_by = Auth::user()->id;
             $candidate_comment->save();
 
@@ -678,6 +725,53 @@ class CandidateController extends Controller
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [ 'candidates' => $candidates, 'count' => count($candidates_count) ]
+            ]);
+        } catch(Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    public function getHistoryListByOption(Request $request) {
+        try {
+            $columns = ["candidate_comments.id", "candidate_comments.created_at", "candidate_comments.description", "candidate_comments.created_by"];
+            $sort_column = $request->input('sort_column');
+            $sort_order = $request->input('sort_order');
+            $count = $request->input('count');
+            $page = $request->input('page');
+            $id = $request->input('id');
+            $searchId = $request->input('searchId');
+            $searchCreatedAt = $request->input('searchCreatedAt');
+            $searchDescription = $request->input('searchDescription');
+            $searchUser = $request->input('searchUser');
+
+            $query = CandidateComment::leftJoin('users', 'candidate_comments.created_by', '=', 'users.id')
+                ->where('candidate_comments.description', 'LIKE', "%{$searchDescription}%")->where('candidate_comments.id_candidate', '=', $id);
+            if ($searchId != '') {
+                $query->where('candidate_comments.id', 'LIKE', "%{$searchId}%");
+            }
+            if ($searchUser != '') {
+                $query->where('users.name', 'LIKE', "%{$searchUser}%");
+            }
+            if ($searchCreatedAt != 0) {
+                $query->where('candidate_comments.created_at', 'LIKE', "%{$searchCreatedAt}%");
+            }
+            $query->selectRaw('candidate_comments.*, users.name');
+
+            $history_count = $query->get();
+
+            $histories = $query
+                ->orderBy($columns[$sort_column], $sort_order)
+                ->skip(($page - 1) * $count)
+                ->take($count)
+                ->get();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [ 'histories' => $histories, 'count' => count($history_count) ]
             ]);
         } catch(Exception $e) {
             return response()->json([
