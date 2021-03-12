@@ -25,6 +25,18 @@ class ServiceList extends Model
     protected $hidden = [
     ];
 
+    public function ipr_plans()
+    {
+        return $this->hasMany(IprPlan::class, 'id_service', 'id');
+    }
+    public function ipr_schedules()
+    {
+        return $this->hasMany(IprSchedule::class, 'id_service', 'id');
+    }
+    public function ipr_balances()
+    {
+        return $this->hasMany(IprBalance::class, 'id_service', 'id');
+    }
     protected $primaryKey = 'id';
 
 }

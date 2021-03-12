@@ -68,10 +68,12 @@ $router->group(['prefix' => 'ipr', 'middleware' => ['auth']], function () use ($
     $router->get('/ork_person', 'IprController@getOrkPerson');
     $router->get('/get_plan_info', 'IprController@getPlanInfo');
     $router->post('/get_schedule', 'IprController@getScheduleInfo');
+    $router->get('/get_balance', 'IprController@getBalanceInfo');
     $router->post('/getListByOption', 'IprController@getListByOption');
     $router->post('/plan', 'IprController@updatePlan');
     $router->post('/schedule', 'IprController@updateSchedule');
     $router->post('/week_status', 'IprController@getWeekStatus');
+    $router->post('/ipr_balance', 'IprController@updateBalance');
 
     $router->get('/', 'IprController@get');
     $router->post('/', 'IprController@create');

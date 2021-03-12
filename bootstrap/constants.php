@@ -53,6 +53,7 @@ define('DELETE_ORK_TEAM_SUCCESS', 'Twój zespół ORK został usunięty.');
 define('CREATE_IPR_SUCCESS', 'Twój IPR został zapisany.');
 define('UPDATE_IPR_SUCCESS', 'Twój IPR został zaktualizowany.');
 define('DELETE_IPR_SUCCESS', 'Twój IPR został usunięty.');
+define('EXIST_IPR', 'PWI istnieje.');
 
 define('CREATE_PAYMENT_SUCCESS', 'Twój koszt został zapisany.');
 define('UPDATE_PAYMENT_SUCCESS', 'Twój koszt został zaktualizowany.');

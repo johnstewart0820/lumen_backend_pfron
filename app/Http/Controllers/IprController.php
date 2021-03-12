@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Candidate;
 use App\Models\CandidateInfo;
 use App\Models\Ipr;
+use App\Models\IprBalance;
 use App\Models\IprPlan;
 use App\Models\IprSchedule;
 use App\Models\IprType;
@@ -34,7 +35,7 @@ class IprController extends Controller
             $ipr_type = IprType::all();
             $participant = Candidate::leftJoin('candidate_infos', function($join) {
                 $join->on('candidates.id', '=', 'candidate_infos.id_candidate');
-            })->where('status', '=', true)->where('is_participant', '=', true)->get();
+            })->where('status', '=', true)->where('is_participant', '=', true)->selectRaw('candidates.*, candidate_infos.participant_number')->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
@@ -244,6 +245,126 @@ class IprController extends Controller
         }
     }
 
+    public function getSchedules($query, $index, $id_candidate) {
+        return $query
+            ->whereIn('id_ipr',
+                Ipr::where('iprs.id_candidate', '=', $id_candidate)
+                    ->where('iprs.status', '=', true)
+                    ->where('iprs.ipr_type', '=', $index)
+                    ->selectRaw('iprs.id')
+                    ->get()
+            )->sum('total_amount');
+    }
+
+    public function getPlans($query, $index, $id_candidate) {
+        return $query->whereIn('id_ipr',
+            Ipr::where('iprs.id_candidate', '=', $id_candidate)
+                ->where('iprs.status', '=', true)
+                ->where('iprs.ipr_type', '=', $index)
+                ->selectRaw('iprs.id')
+                ->get()
+        )->sum('amount');
+    }
+
+    public function getBalances($query, $index, $id_candidate) {
+        return $query->whereIn('id_ipr',
+            Ipr::where('iprs.id_candidate', '=', $id_candidate)
+                ->where('iprs.status', '=', true)
+                ->where('iprs.ipr_type', '=', $index)
+                ->selectRaw('iprs.id')
+                ->get()
+        )->selectRaw('sum(amount) as amount, remarks')->get()[0];
+    }
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getBalanceInfo(Request $request) {
+        try {
+            $id = $request->id;
+            $id_candidate = Ipr::where('id', '=', $id)->first()->id_candidate;
+            $module_result = [];
+
+            $module = Module::where('id', '=', 1)->first();
+            $module['service_lists'] = $module->service_lists()->get();
+            foreach($module['service_lists'] as $service_list) {
+                $service_list['schedule'] = (object)[];
+                $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $id_candidate);
+                $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $id_candidate);
+                $service_list['balance'] = $this->getBalances($service_list->ipr_balances(), 1, $id_candidate);
+            }
+            $module_result[] = $module;
+
+            $module = Module::where('id', '>', 1)->where('id', '<' ,7)->get();
+            foreach($module as $item) {
+                $item['service_lists'] = $item->service_lists()
+                    ->whereIn('id',
+                        IprPlan::leftJoin('iprs', 'ipr_plans.id_ipr', '=', 'iprs.id')
+                            ->where('iprs.id_candidate', '=', $id_candidate)
+                            ->selectRaw('ipr_plans.id_service')
+                            ->get()
+                    )->get();
+                foreach($item['service_lists'] as $service_list) {
+                     $service_list['plan'] = (object)[];
+                     $service_list['plan']->trial = $this->getPlans($service_list->ipr_plans(), 2, $id_candidate);
+                     $service_list['plan']->basic = $this->getPlans($service_list->ipr_plans(), 3, $id_candidate);
+                    $service_list['schedule'] = (object)[];
+                    $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $id_candidate);
+                    $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $id_candidate);
+                    $service_list['balance'] = $this->getBalances($service_list->ipr_balances(), 1, $id_candidate);
+                }
+                $module_result[] = $item;
+            }
+
+            $module = Module::where('id', '=', 7)->first();
+            $module['service_lists'] = $module->service_lists()->get();
+            foreach($module['service_lists'] as $service_list) {
+                $service_list['schedule'] = (object)[];
+                $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $id_candidate);
+                $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $id_candidate);
+                $service_list['balance'] = $this->getBalances($service_list->ipr_balances(), 1, $id_candidate);
+            }
+            $module_result[] = $module;
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'module' => $module_result,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    public function updateBalance(Request $request) {
+        try {
+            $moduleList = $request->moduleList;
+            $id = $request->id_ipr;
+            IprBalance::where('id_ipr', '=', $id)->delete();
+            foreach($moduleList as $module) {
+                foreach($module['service_lists'] as $service_list) {
+                    IprBalance::create(['id_ipr' => $id, 'id_service' => $service_list['id'], 'amount' => $service_list['balance']['amount'], 'remarks' => $service_list['balance']['remarks']]);
+                }
+            }
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_IPR_SUCCESS,
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
     /**
      * Verify the registered account.
      *
@@ -361,6 +482,13 @@ class IprController extends Controller
             $ork_person = $request->ork_person;
             $profession = $request->profession;
 
+            $count = Ipr::where('id_candidate', '=', $id_candidate)->where('ipr_type', '=', $ipr_type)->where('status', '=', true)->count();
+            if ($count != 0) {
+                return response()->json([
+                    'code' => BAD_REQUEST_CODE,
+                    'message' => EXIST_IPR
+                ]);
+            }
             $ipr = new Ipr();
             $ipr->id_candidate = $id_candidate;
             $ipr->ipr_type = $ipr_type;
@@ -372,13 +500,13 @@ class IprController extends Controller
 
             $ipr->save();
 
-            $service_list = ServiceList::where('is_required', '=', true)->where('module', '>', 1)->where('module', '<', 7)->where('status', '=', true)->get();
-            foreach($service_list as $service) {
-                $item = array('id_ipr' => $ipr->id, 'id_service' => $service->id);
-                IprPlan::create($item);
+            if (intval($ipr_type) != 1) {
+                $service_list = ServiceList::where('is_required', '=', true)->where('module', '>', 1)->where('module', '<', 7)->where('status', '=', true)->get();
+                foreach($service_list as $service) {
+                    $item = array('id_ipr' => $ipr->id, 'id_service' => $service->id);
+                    IprPlan::create($item);
+                }
             }
-
-
 
             return response()->json([
                 'code' => SUCCESS_CODE,

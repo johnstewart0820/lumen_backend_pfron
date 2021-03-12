@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Module extends Model
+class IprBalance extends Model
 {
 
     /**
@@ -14,7 +14,7 @@ class Module extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'id_ipr', 'id_service', 'amount', 'remarks'
     ];
 
     /**
@@ -26,10 +26,5 @@ class Module extends Model
     ];
 
     protected $primaryKey = 'id';
-
-    public function service_lists()
-    {
-        return $this->hasMany(ServiceList::class, 'module', 'id');
-    }
 
 }
