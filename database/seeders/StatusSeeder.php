@@ -16,7 +16,7 @@ class StatusSeeder extends Seeder
         $items = [
             ['id' => 1, 'name' => 'F - przyjęty formularz rekrutacyjny'],
             ['id' => 2, 'name' => 'NKW - niekwalifikowalny'],
-            ['id' => 3, 'name' => 'NK - negatywna kwalifikacyjna'],
+            ['id' => 3, 'name' => 'NK - negatywna kwalifikacja'],
             ['id' => 4, 'name' => 'O - oczekuje na skierowanie do ORK'],
         ];
         foreach($items as $item)

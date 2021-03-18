@@ -18,7 +18,7 @@ class EmployedTypeSeeder extends Seeder
             ['id' => 2, 'name' => 'MMSP'],
             ['id' => 3, 'name' => 'Własna działalność'],
             ['id' => 4, 'name' => 'NGO'],
-            ['id' => 5, 'name' => 'Duźe przedsiębiorstwo'],
+            ['id' => 5, 'name' => 'Duże przedsiębiorstwo'],
         ];
         foreach($items as $item)
         {

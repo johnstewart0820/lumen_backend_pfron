@@ -16,7 +16,7 @@ class ModuleSeeder extends Seeder
         $items = [
             ['id' => 1, 'name' => 'Diagnoza i opracowanie'],
             ['id' => 2, 'name' => 'Moduł zawodowy'],
-            ['id' => 3, 'name' => 'Moduł psychozawodowy'],
+            ['id' => 3, 'name' => 'Moduł psychospołeczny'],
             ['id' => 4, 'name' => 'Moduł medyczny'],
             ['id' => 5, 'name' => 'Świadczenia opcjonalne'],
             ['id' => 6, 'name' => 'Świadczenia towarzyszące'],

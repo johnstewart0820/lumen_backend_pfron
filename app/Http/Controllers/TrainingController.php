@@ -39,18 +39,6 @@ class TrainingController extends Controller
         try {
             $participant = Candidate::leftJoin('candidate_infos as ci', 'candidates.id', '=', 'ci.id_candidate')->where('status', '=', true)->where('is_participant', '=', true)
                 ->selectRaw('candidates.*, ci.participant_number')->get();
-            $participants_number = Candidate::leftJoin('candidate_infos as ci', 'candidates.id', '=', 'ci.id_candidate')
-                ->where('status', '=', true)->where('is_participant', '=', true)
-                ->selectRaw('candidates.*, ci.participant_number as participant_number, ci.participant_number as participant_name')->get();
-            $participants_name = Candidate::leftJoin('candidate_infos as ci', 'candidates.id', '=', 'ci.id_candidate')->where('status', '=', true)->where('is_participant', '=', true)
-                ->selectRaw('candidates.*, ci.participant_number as participant_number, candidates.name as participant_name')->get();
-            $participants = [];
-            foreach($participants_number as $item) {
-                $participants[] = $item;
-            }
-            foreach($participants_name as $item) {
-                $participants[] = $item;
-            }
 
             $rehabitation_center = RehabitationCenter::all();
             $service_list = ServiceList::where('status', '=', true)->get();
@@ -59,7 +47,6 @@ class TrainingController extends Controller
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'participant' => $participant,
-                    'participants_edit' => $participants,
                     'rehabitation_center' => $rehabitation_center,
                     'service_list' => $service_list
                 ]
