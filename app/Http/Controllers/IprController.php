@@ -125,7 +125,13 @@ class IprController extends Controller
             foreach ($arr as $item) {
                 $service_list[] = $item;
             }
-            $arr = IprPlan::where('id_ipr', '=', $id)->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')->selectRaw('service_lists.*')->get();
+            $arr = IprPlan::where('ipr_plans.id_ipr', '=', $id)
+                ->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
+                ->leftJoin('ipr_schedules', 'ipr_schedules.id_service', '=', 'ipr_plans.id_service')
+                ->where('ipr_schedules.id_ipr', '=', $id)
+                ->where('ipr_schedules.date', '!=', $dates)
+                ->groupBy('ipr_schedules.id_service')
+                ->selectRaw('service_lists.*, ipr_plans.amount as amount, sum(ipr_schedules.total_amount) as current_amount')->get();
             foreach ($arr as $item) {
                 $service_list[] = $item;
             }

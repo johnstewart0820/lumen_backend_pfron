@@ -100,6 +100,12 @@ class ParticipantController extends Controller
      */
     public function update(Request $request) {
         try {
+            $array = ['name', 'surname', 'person_id', 'place_of_birth', 'date_of_birth', 'street', 'house_number', 'apartment_number', 'post_code', 'post_office', 'city', 'second_street', 'second_house_number',
+                'second_apartment_number', 'second_post_code', 'second_post_office', 'second_city', 'voivodeship', 'community', 'county', 'mobile_phone', 'home_phone', 'email', 'family_home_phone',
+                'family_mobile_phone', 'education', 'academic_title', 'stay_status', 'children_applicable', 'children_amount', 'children_age', 'employed_status', 'employed_in', 'occupation',
+                'unemployed_status', 'have_unemployed_person_status', 'unemployed_person_id', 'long_term_employed_status', 'seek_work_status', 'passive_person_status', 'full_time_status',
+                'evening_student_status', 'disabled_person_status', 'number_certificate', 'date_of_certificate', 'level_certificate', 'code_certificate', 'necessary_certificate', 'ethnic_minority_status',
+                'homeless_person_status', 'stay_house_status', 'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status'];
             $name = $request->name;
             $surname = $request->surname;
             $person_id = $request->person_id;
@@ -218,10 +224,22 @@ class ParticipantController extends Controller
                 'participant_status_type' => $participant_status_type,
             ]);
             Candidate::find($id)->touch();
-
+            $description = 'Zmiana wartości ';
+            $description_array = [];
+            $candidate = Candidate::find($id);
+            for($i = 0; $i < count($array); $i ++){
+                if ($candidate[$array[$i]] != $request[$array[$i]]) {
+                    if ($array[$i] == 'employed_type') {
+                        array_push($description_array,'"'.$array[$i].'" z'.' "'.$request[$array[$i]].' " na "'.implode(',',$candidate[$array[$i]]).'"');
+                    } else {
+                        array_push($description_array,'"'.$array[$i].'" z'.' "'.$request[$array[$i]].' " na "'.$candidate[$array[$i]].'"');
+                    }
+                }
+            }
+            $description = $description.implode(', ', $description_array);
             $candidate_comment = new CandidateComment();
             $candidate_comment->id_candidate = $id;
-            $candidate_comment->description = $comment;
+            $candidate_comment->description = $description;
             $candidate_comment->created_by = Auth::user()->id;
             $candidate_comment->save();
 

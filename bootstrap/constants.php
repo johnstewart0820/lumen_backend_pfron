@@ -71,4 +71,7 @@ define('JWT_TOKEN_NOTFOUND', 'Authorization Token not found');
 define('SUCCESS_MESSAGE', 'The success response has been received');
 
 define('CANDIDATE_CREATE', 'Dodanie kandydata');
-define('CANDIDATE_UPDATE', 'Założenie karty informacyjnej');
+define('CANDIDATE_UPDATE_1', 'Ustanowienie karty informacyjnej krok 1');
+define('CANDIDATE_UPDATE_2', 'Ustanowienie karty informacyjnej krok 2');
+define('CANDIDATE_UPDATE_3', 'Ustanowienie karty informacyjnej krok 3');
+define('CANDIDATE_UPDATE_4', 'Ustanowienie karty informacyjnej krok 4');

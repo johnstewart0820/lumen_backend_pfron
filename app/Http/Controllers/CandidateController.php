@@ -213,7 +213,7 @@ class CandidateController extends Controller
             ]);
 
             $candidateComment = new CandidateComment();
-            $candidateComment->description = CANDIDATE_UPDATE;
+            $candidateComment->description = CANDIDATE_UPDATE_1;
             $candidateComment->created_by = Auth::user()->id;
             $candidateComment->id_candidate = $id;
             $candidateComment->save();
@@ -250,6 +250,11 @@ class CandidateController extends Controller
                 'psycology_date' => $request->psycology_date,
                 'psycology_remark' => $request->psycology_remark,
             ]);
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = CANDIDATE_UPDATE_2;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
             Candidate::find($id)->update([
                 'stage' => $request->stage,
                 'id_status' => $request->status,
@@ -292,11 +297,11 @@ class CandidateController extends Controller
                 'id_status' => $request->status,
             ]);
 
-//            $candidateComment = new CandidateComment();
-//            $candidateComment->description = $request->comment;
-//            $candidateComment->created_by = Auth::user()->id;
-//            $candidateComment->id_candidate = $id;
-//            $candidateComment->save();
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = CANDIDATE_UPDATE_3;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -332,11 +337,11 @@ class CandidateController extends Controller
                 'created_participant_time' => Carbon::now()
             ]);
 
-//            $candidateComment = new CandidateComment();
-//            $candidateComment->description = $request->comment;
-//            $candidateComment->created_by = Auth::user()->id;
-//            $candidateComment->id_candidate = $id;
-//            $candidateComment->save();
+            $candidateComment = new CandidateComment();
+            $candidateComment->description = CANDIDATE_UPDATE_4;
+            $candidateComment->created_by = Auth::user()->id;
+            $candidateComment->id_candidate = $id;
+            $candidateComment->save();
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -510,8 +515,7 @@ class CandidateController extends Controller
                 'family_mobile_phone', 'education', 'academic_title', 'stay_status', 'children_applicable', 'children_amount', 'children_age', 'employed_status', 'employed_in', 'occupation',
                 'unemployed_status', 'have_unemployed_person_status', 'unemployed_person_id', 'long_term_employed_status', 'seek_work_status', 'passive_person_status', 'full_time_status',
                 'evening_student_status', 'disabled_person_status', 'number_certificate', 'date_of_certificate', 'level_certificate', 'code_certificate', 'necessary_certificate', 'ethnic_minority_status',
-                'homeless_person_status', 'stay_house_status', 'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status', 'stage', 'id_status', 'qualification_point', 'participant_status_type',
-                'is_participant'];
+                'homeless_person_status', 'stay_house_status', 'house_hold_status', 'house_hold_adult_status', 'uncomfortable_status'];
 
             $name = $request->name;
             $surname = $request->surname;
