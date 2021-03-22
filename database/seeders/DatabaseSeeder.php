@@ -14,10 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            ServiceListSeeder::class,
+            UnitSeeder::class,
             PaymentSeeder::class,
             OrkTeamSeeder::class,
             IprTypeSeeder::class,
-            ServiceListSeeder::class,
             SpecialistSeeder::class,
             QualificationPointSeeder::class,
             ServiceListTypeSeeder::class,
@@ -30,7 +31,6 @@ class DatabaseSeeder extends Seeder
             QualificationPointTypeSeeder::class,
             SpecialtyTypeSeeder::class,
             ModuleSeeder::class,
-            UnitSeeder::class,
             RehabitationCenterQuaterSeeder::class,
             RehabitationCenterSeeder::class,
             SpecializationSeeder::class,
