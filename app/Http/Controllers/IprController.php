@@ -400,10 +400,24 @@ class IprController extends Controller
                     } else
                         $id_ork_person = null;
                     if ($plan['new'] === true) {
-                        IprPlan::create(['id_ipr' => $id, 'id_service' => $plan['id_service']['id'], 'amount' => $plan['amount'], 'start_date' => isset($plan['start_date']) ? $plan['start_date'] : null, 'room_number' => $plan['room_number'], 'id_ork_person' => $id_ork_person, 'remarks' => $plan['remarks']]);
+                        IprPlan::create([
+                            'id_ipr' => $id,
+                            'id_service' => $plan['id_service']['id'],
+                            'amount' => isset($plan['amount']) ? $plan['amount'] : 0,
+                            'start_date' => isset($plan['start_date']) ? $plan['start_date'] : null,
+                            'room_number' => isset($plan['room_number']) ? $plan['room_number'] : '',
+                            'id_ork_person' => $id_ork_person,
+                            'remarks' => isset($plan['remarks']) ? $plan['remarks'] : ''
+                        ]);
                     } else {
-
-                        IprPlan::where('id', '=', $plan['id'])->update(['id_ipr' => $id, 'id_service' => $plan['id_service'], 'amount' => $plan['amount'], 'start_date' => $plan['start_date'], 'room_number' => $plan['room_number'], 'id_ork_person' => $id_ork_person, 'remarks' => $plan['remarks']]);
+                        IprPlan::where('id', '=', $plan['id'])->update([
+                            'id_ipr' => $id,
+                            'id_service' => $plan['id_service'],
+                            'amount' => isset($plan['amount']) ? $plan['amount'] : 0,
+                            'start_date' => isset($plan['start_date']) ? $plan['start_date'] : null,
+                            'room_number' => isset($plan['room_number']) ? $plan['room_number'] : '',
+                            'id_ork_person' => $id_ork_person,
+                            'remarks' => isset($plan['remarks']) ? $plan['remarks'] : '']);
                     }
                 }
             }
