@@ -173,4 +173,8 @@ $router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () us
     $router->delete('/', 'PaymentController@delete');
 });
 
+$router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use ($router) {
+    $router->get('/service_info', 'ReportController@getServiceInfo');
+});
+
 
