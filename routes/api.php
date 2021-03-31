@@ -175,6 +175,8 @@ $router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () us
 
 $router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/service_info', 'ReportController@getServiceInfo');
+    $router->get('/service_quater', 'ReportController@getServiceQuater');
+    $router->get('/service_data', 'ReportController@getServiceData');
 });
 
 

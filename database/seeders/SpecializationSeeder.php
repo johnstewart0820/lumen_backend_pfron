@@ -30,7 +30,6 @@ class SpecializationSeeder extends Seeder
             ['id' => 14, 'name' => 'Fizjoterapeuta'],
             ['id' => 15, 'name' => 'Pielęgniarka'],
             ['id' => 16, 'name' => 'Sekretarka medyczna'],
-            ['id' => 17, 'name' => 'Specjalista ds. obsługi pilotażu'],
         ];
         foreach($items as $item)
         {
