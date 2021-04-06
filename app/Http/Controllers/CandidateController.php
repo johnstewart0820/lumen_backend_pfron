@@ -52,7 +52,9 @@ class CandidateController extends Controller
             $education = Educations::all();
             $county = County::all();
             $employedTypeList = EmployedType::all();
-            $tempQualificationArr = QualificationPoint::where('status', '=', 1)->get();
+            $tempQualificationArr = QualificationPoint::leftJoin('qualification_point_types', 'qualification_points.type', '=', 'qualification_point_types.id')
+                ->where('qualification_points.status', '=', 1)
+                ->selectRaw('qualification_points.id, qualification_points.ambassador, CONCAT(qualification_points.name, " (", qualification_point_types.name, ")") as name')->get();
             $qualificationPoint = [];
             if (Auth::user()->id_role == 3) {
                 foreach($tempQualificationArr as $item) {
