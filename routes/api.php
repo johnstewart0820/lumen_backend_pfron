@@ -179,4 +179,10 @@ $router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use
     $router->get('/service_data', 'ReportController@getServiceData');
 });
 
+$router->group(['prefix' => 'notification', 'middleware' => ['auth']], function () use ($router) {
+    $router->post('/getListByOption', 'NotificationController@getListByOption');
+    $router->get('/', 'NotificationController@getNotification');
+    $router->put('/', 'NotificationController@updateStatusNotification');
+    $router->delete('/', 'NotificationController@deleteNotification');
+});
 

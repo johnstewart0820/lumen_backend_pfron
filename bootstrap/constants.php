@@ -75,3 +75,6 @@ define('CANDIDATE_UPDATE_1', 'Ustanowienie karty informacyjnej krok 1');
 define('CANDIDATE_UPDATE_2', 'Ustanowienie karty informacyjnej krok 2');
 define('CANDIDATE_UPDATE_3', 'Ustanowienie karty informacyjnej krok 3');
 define('CANDIDATE_UPDATE_4', 'Ustanowienie karty informacyjnej krok 4');
+
+define('UPDATE_NOTIFICATION_STATUS_SUCCESS', 'Powiadomienie zostaje przyjęte.');
+define('DELETE_NOTIFICATION_SUCCESS', 'Powiadomienie zostało pomyślnie usunięte.');
