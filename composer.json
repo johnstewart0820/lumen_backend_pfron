@@ -11,6 +11,7 @@
         "laravel/lumen-framework": "^8.0",
         "laravelista/lumen-vendor-publish": "^8.0",
         "owen-it/laravel-auditing": "^12.0",
+        "rap2hpoutre/fast-excel": "^2.5",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
