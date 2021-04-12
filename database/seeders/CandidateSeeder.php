@@ -115,22 +115,20 @@ class CandidateSeeder extends Seeder
             $doctor_recommendation = ($item['doctor_recommendation'] == 'tak' ? 1 : 2);
             $doctor = $item['doctor'];
             $doctor_id = 0;
-            foreach($doctorList as $f) {
-                if ($f->name == $doctor) {
-                    $doctor_id = $f->id;
-                    break;
-                }
+            $doc_list = Specialist::where('name', '=', $doctor)->get();
+            if (count($doc_list) !== 0) {
+                $doctor_id = $doc_list[0]->id;
             }
+
             if (strlen($doctor) != 0 && $doctor_id == 0)
                 Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' doctor => '.$doctor);
             $psycology_recommendation = ($item['psycology_recommendation'] == 'tak' ? 1 : 2);
             $psycology = $item['psycology'];
             $psycology_id = 0;
-            foreach($doctorList as $g) {
-                if ($g->name == $psycology) {
-                    $psycology_id = $g->id;
-                    break;
-                }
+
+            $psyco_list = Specialist::where('name', '=', $psycology)->get();
+            if (count($psyco_list) !== 0) {
+                $psycology_id = $psyco_list[0]->id;
             }
             if (strlen($psycology) != 0 && $psycology_id == 0)
                 Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' psycology => '.$psycology);
