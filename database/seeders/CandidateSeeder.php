@@ -171,6 +171,9 @@ class CandidateSeeder extends Seeder
             else if ($participant_status == 'U') {
                 $participant_status_type = 2;
             }
+            if ($participant_status_type > 0 && $rehabitation_center == 0) {
+                Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' participant_number => ');
+            }
             $level_certificate = $item['level_certificate'];
             $code_certificate = $item['code_certificate'];
             \App\Models\Candidate::create(['name' => $name, 'surname' => $surname, 'person_id' => $person_id,

@@ -32,7 +32,10 @@ class SpecialistController extends Controller
     public function getInfo(Request $request) {
         try {
             $specialty = SpecialtyType::all();
-            $qualification = QualificationPoint::where('status', '=', 1)->get();
+            $qualification = QualificationPoint::leftJoin('qualification_point_types', 'qualification_points.type', '=', 'qualification_point_types.id')
+                ->where('qualification_points.status', '=', 1)
+                ->selectRaw('qualification_points.id as id, CONCAT(qualification_points.name, " (", qualification_point_types.name, ")") as name')
+                ->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
