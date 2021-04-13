@@ -19,6 +19,7 @@ class CreateCandidatesTable extends Migration
             $table->string('surname')->nullable(true);
             $table->string('person_id')->nullable(true);
             $table->string('place_of_birth')->nullable(true);
+            $table->string('age')->nullable(true);
             $table->date('date_of_birth')->nullable(true);
             $table->string('street')->nullable(true);
             $table->string('house_number')->nullable(true);

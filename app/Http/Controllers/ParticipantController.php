@@ -92,6 +92,88 @@ class ParticipantController extends Controller
         }
     }
 
+    public static function getAge($basePesel)
+    {
+        if (strlen($basePesel) < 11)
+            return null;
+        $arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3);
+        $intSum = 0;
+        for ($i = 0; $i < 10; $i++)
+        {
+            $intSum += $arrSteps[$i] * $basePesel[$i];
+        }
+        $int = 10 - $intSum % 10;
+        $intControlNr = ($int == 10) ? 0 : $int;
+
+        if ($intControlNr == $basePesel[10])
+        {
+            $rok = substr($basePesel, 0, 2);
+            $liczba = substr($basePesel, 2, 2);
+
+            $pesel = $basePesel;
+            if (substr($pesel, 2, 2) > 12)
+            {
+                $miesiac = (int)substr($pesel, 2, 2)-20;
+                if ($miesiac < 10)
+                {
+                    $miesiac = '0'.$miesiac;
+                }
+            } else {
+                $miesiac = substr($pesel, 2, 2);
+            }
+            $data = (substr($pesel, 2, 2) > 12 ? '20' : '19').substr($pesel, 0, 2).$miesiac.substr($pesel, 4, 2);
+
+            $dt1 = new \DateTime(date('c'));
+            $dt2 = \DateTime::createFromFormat('Ymd', $data);
+
+            $interval = $dt1->diff($dt2);
+
+            return $interval->y;
+        }
+
+        return null;
+    }
+
+    public static function getFullDate($basePesel)
+    {
+        if (strlen($basePesel) < 11)
+            return null;
+        $arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3);
+        $intSum = 0;
+        for ($i = 0; $i < 10; $i++)
+        {
+            $intSum += $arrSteps[$i] * $basePesel[$i];
+        }
+        $int = 10 - $intSum % 10;
+        $intControlNr = ($int == 10) ? 0 : $int;
+
+        if ($intControlNr == $basePesel[10])
+        {
+            $rok = substr($basePesel, 0, 2);
+            $liczba = substr($basePesel, 2, 2);
+
+            $pesel = $basePesel;
+            if (substr($pesel, 2, 2) > 12)
+            {
+                $miesiac = (int)substr($pesel, 2, 2)-20;
+                if ($miesiac < 10)
+                {
+                    $miesiac = '0'.$miesiac;
+                }
+            } else {
+                $miesiac = substr($pesel, 2, 2);
+            }
+            $data = (substr($pesel, 2, 2) > 12 ? '20' : '19').substr($pesel, 0, 2).$miesiac.substr($pesel, 4, 2);
+
+            $dt2 = \DateTime::createFromFormat('Ymd', $data);
+
+            return $dt2;
+        }
+
+        return null;
+    }
+
+
     /**
      * Verify the registered account.
      *
@@ -109,7 +191,8 @@ class ParticipantController extends Controller
             $name = $request->name;
             $surname = $request->surname;
             $person_id = $request->person_id;
-            $date_of_birth = $request->date_of_birth;
+            $date_of_birth = self::getFullDate($request->person_id);
+            $age = self::getAge($person_id);
             $place_of_birth = $request->place_of_birth;
             $street = $request->street;
             $house_number = $request->house_number;
@@ -169,6 +252,7 @@ class ParticipantController extends Controller
                 'name' => $name,
                 'surname' => $surname,
                 'person_id' => $person_id,
+                'age' => $age,
                 'date_of_birth' => $date_of_birth,
                 'place_of_birth' =>  $place_of_birth,
                 'street' => $street,

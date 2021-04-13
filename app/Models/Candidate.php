@@ -14,7 +14,7 @@ class Candidate extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'person_id', 'place_of_birth', 'date_of_birth', 'street', 'house_number', 'apartment_number', 'post_code', 'post_office', 'city', 'second_street', 'second_house_number', 'second_apartment_number',
+        'name', 'surname', 'person_id', 'age', 'place_of_birth', 'date_of_birth', 'street', 'house_number', 'apartment_number', 'post_code', 'post_office', 'city', 'second_street', 'second_house_number', 'second_apartment_number',
         'second_post_code', 'second_post_office', 'second_city', 'voivodeship', 'community', 'county', 'mobile_phone', 'home_phone', 'email', 'family_mobile_phone', 'family_home_phone',
         'education', 'academic_title', 'stay_status', 'children_applicable', 'children_amount', 'children_age', 'employed_status', 'employed_type', 'employed_in', 'occupation', 'unemployed_status',
         'have_unemployed_person_status', 'unemployed_person_id', 'long_term_employed_status', 'seek_work_status', 'passive_person_status', 'full_time_status', 'evening_student_status', 'disabled_person_status',

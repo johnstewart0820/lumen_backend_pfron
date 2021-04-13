@@ -15,6 +15,89 @@ use Storage;
 
 class CandidateSeeder extends Seeder
 {
+    public static function getAge($p)
+    {
+        $basePesel = strval($p);
+        if (strlen($basePesel) < 11)
+            return null;
+        $arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3);
+        $intSum = 0;
+        for ($i = 0; $i < 10; $i++)
+        {
+            $intSum += $arrSteps[$i] * $basePesel[$i];
+        }
+        $int = 10 - $intSum % 10;
+        $intControlNr = ($int == 10) ? 0 : $int;
+
+        if ($intControlNr == $basePesel[10])
+        {
+            $rok = substr($basePesel, 0, 2);
+            $liczba = substr($basePesel, 2, 2);
+
+            $pesel = $basePesel;
+            if (substr($pesel, 2, 2) > 12)
+            {
+                $miesiac = (int)substr($pesel, 2, 2)-20;
+                if ($miesiac < 10)
+                {
+                    $miesiac = '0'.$miesiac;
+                }
+            } else {
+                $miesiac = substr($pesel, 2, 2);
+            }
+            $data = (substr($pesel, 2, 2) > 12 ? '20' : '19').substr($pesel, 0, 2).$miesiac.substr($pesel, 4, 2);
+
+            $dt1 = new \DateTime(date('c'));
+            $dt2 = \DateTime::createFromFormat('Ymd', $data);
+
+            $interval = $dt1->diff($dt2);
+
+            return $interval->y;
+        }
+
+        return null;
+    }
+
+    public static function getFullDate($p)
+    {
+        $basePesel = strval($p);
+        if (strlen($basePesel) < 11)
+            return null;
+        $arrSteps = array(1, 3, 7, 9, 1, 3, 7, 9, 1, 3);
+        $intSum = 0;
+        for ($i = 0; $i < 10; $i++)
+        {
+            $intSum += $arrSteps[$i] * $basePesel[$i];
+        }
+        $int = 10 - $intSum % 10;
+        $intControlNr = ($int == 10) ? 0 : $int;
+
+        if ($intControlNr == $basePesel[10])
+        {
+            $rok = substr($basePesel, 0, 2);
+            $liczba = substr($basePesel, 2, 2);
+
+            $pesel = $basePesel;
+            if (substr($pesel, 2, 2) > 12)
+            {
+                $miesiac = (int)substr($pesel, 2, 2)-20;
+                if ($miesiac < 10)
+                {
+                    $miesiac = '0'.$miesiac;
+                }
+            } else {
+                $miesiac = substr($pesel, 2, 2);
+            }
+            $data = (substr($pesel, 2, 2) > 12 ? '20' : '19').substr($pesel, 0, 2).$miesiac.substr($pesel, 4, 2);
+
+            $dt2 = \DateTime::createFromFormat('Ymd', $data);
+
+            return $dt2;
+        }
+
+        return null;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -35,6 +118,12 @@ class CandidateSeeder extends Seeder
             $name = $item['name'];
             $surname = $item['surname'];
             $person_id = $item['person_id'];
+            $age = self::getAge($person_id);
+            $date_of_birth = self::getFullDate($person_id);
+            if ($age == null || $date_of_birth == null) {
+                Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' person_id => '.strval($person_id));
+            }
+
             $gender = ($item['gender'] == 'mężczyzna' ? 2 : 1);
             $voivodeship = $item['voivodeship'];
             $voivodeship_index = 0;
@@ -59,7 +148,8 @@ class CandidateSeeder extends Seeder
             $house_number = $item['house_number'];
             $apartment_number = $item['apartment_number'];
             $post_code = $item['post_code'];
-            $mobile_phone = $item['mobile_phone'];
+            $mobile_phone = '48'.$item['mobile_phone'];
+            $family_mobile_phone = '48';
             $email = $item['email'];
             $education = $item['education'];
             $education_id = 0;
@@ -176,10 +266,10 @@ class CandidateSeeder extends Seeder
             }
             $level_certificate = $item['level_certificate'];
             $code_certificate = $item['code_certificate'];
-            \App\Models\Candidate::create(['name' => $name, 'surname' => $surname, 'person_id' => $person_id,
+            \App\Models\Candidate::create(['name' => $name, 'surname' => $surname, 'person_id' => $person_id, 'age' => $age, 'date_of_birth' => $date_of_birth,
                 'street' => $street, 'house_number' => $house_number, 'apartment_number' => $apartment_number, 'post_code' => $post_code,
                 'city' => $city, 'voivodeship' => $voivodeship_index, 'community' => $community_index, 'county' => $county_index,
-                'mobile_phone' => $mobile_phone, 'email' => $email, 'education' => $education_id, 'employed_status' => $employed_status,
+                'mobile_phone' => $mobile_phone, 'family_mobile_phone' => $family_mobile_phone, 'email' => $email, 'education' => $education_id, 'employed_status' => $employed_status,
                 'have_unemployed_person_status' => $have_unemployed_person_status, 'passive_person_status' => $passive_person_status,
                 'long_term_employed_status' => $long_term_employed_status, 'employed_type' => $employed_type, 'employed_in' => $employed_in,
                 'disabled_person_status' => $disabled_person_status, 'level_certificate' => $level_certificate, 'code_certificate' => $code_certificate,
