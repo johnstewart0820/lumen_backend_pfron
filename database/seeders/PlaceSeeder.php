@@ -25,7 +25,7 @@ class PlaceSeeder extends Seeder
             if ($data[5] === 'województwo') {
                 \App\Models\Voivodeship::create(['id' => $data[0],'name' => $data[4]]);
                 $id_voivodeship = $data[0];
-            } else if ($data[5] === 'powiat') {
+            } else if ($data[5] === 'powiat' || $data[5] === 'miasto na prawach powiatu') {
                 \App\Models\County::create(['name' => $data[4], 'voivodeship_id' => $id_voivodeship]);
                 $id_county++;
             } else if ($data[5] !== 'NAZWA_DOD') {
