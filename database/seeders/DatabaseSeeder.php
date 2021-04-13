@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             StageSeeder::class,
             StatusSeeder::class,
             CandidateSeeder::class,
+            ArrivalSeeder::class,
         ]);
     }
 }

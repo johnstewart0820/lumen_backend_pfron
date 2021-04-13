@@ -55,3 +55,4 @@ Homestead.yaml
 .env
 .phpunit.result.cache
 storage/app/file.txt
+storage/app/arrival.txt
