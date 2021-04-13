@@ -14,7 +14,7 @@ class RehabitationCenter extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'leader_name', 'leader_regon_number', 'leader_nip_number', 'macroregion_number', 'contact', 'position', 'phone', 'email'
+        'name', 'contact_number', 'leader_name', 'leader_regon_number', 'leader_nip_number', 'macroregion_number', 'contact', 'position', 'phone', 'email'
     ];
 
     /**

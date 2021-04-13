@@ -54,6 +54,57 @@ class NotificationController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function getNotificationSetting(Request $request) {
+        try {
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'setting' => Auth::user()
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function updateNotificationSetting(Request $request) {
+        try {
+            $setting = $request->setting;
+            User::where('id', '=', Auth::user()->id)->update([
+                'end_service_date' => $setting['end_service_date'],
+                'undone_service_participant' => $setting['undone_service_participant'],
+                'end_stay_participant' => $setting['end_stay_participant'],
+                'amount_service_participant' => $setting['amount_service_participant']
+            ]);
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => UPDATE_NOTIFICATION_SETTING_SUCCESS,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function updateStatusNotification(Request $request) {
         try {
             $id = $request->id;

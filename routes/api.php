@@ -182,7 +182,9 @@ $router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use
 $router->group(['prefix' => 'notification', 'middleware' => ['auth']], function () use ($router) {
     $router->post('/getListByOption', 'NotificationController@getListByOption');
     $router->get('/', 'NotificationController@getNotification');
+    $router->get('/setting', 'NotificationController@getNotificationSetting');
     $router->put('/', 'NotificationController@updateStatusNotification');
+    $router->put('/setting', 'NotificationController@updateNotificationSetting');
     $router->delete('/', 'NotificationController@deleteNotification');
 });
 

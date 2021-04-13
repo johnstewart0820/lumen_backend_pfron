@@ -16,6 +16,7 @@ class CreateRehabitationCentersTable extends Migration
         Schema::create('rehabitation_centers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('contact_number')->nullable(true);
             $table->string('leader_name')->nullable(true);
             $table->string('leader_regon_number')->nullable(true);
             $table->string('leader_nip_number')->nullable(true);

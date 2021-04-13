@@ -23,6 +23,10 @@ class CreateUsersTable extends Migration
             $table->string('token')->nullable();
             $table->string('activate_status')->default(true);
             $table->boolean('status')->default(true);
+            $table->boolean('end_service_date')->default(true);
+            $table->boolean('undone_service_participant')->default(true);
+            $table->boolean('end_stay_participant')->default(true);
+            $table->boolean('amount_service_participant')->default(true);
             $table->timestamps();
         });
     }
