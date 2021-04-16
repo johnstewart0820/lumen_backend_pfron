@@ -33,7 +33,7 @@ class UserController extends Controller
     public function getInfo(Request $request) {
         try {
             $role = Role::all();
-            $activate_status = array(['id' => 2, 'name' => 'Active'], ['id' => 1, 'name' => 'Inactive']);
+            $activate_status = array(['id' => 2, 'name' => 'Aktywny'], ['id' => 1, 'name' => 'Nieaktywny']);
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,

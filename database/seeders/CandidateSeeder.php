@@ -7,6 +7,7 @@ use App\Models\Community;
 use App\Models\County;
 use App\Models\Educations;
 use App\Models\QualificationPoint;
+use App\Models\RehabitationCenterQuater;
 use App\Models\Specialist;
 use App\Models\Voivodeship;
 use Illuminate\Database\Seeder;
@@ -202,6 +203,10 @@ class CandidateSeeder extends Seeder
                 $rehabitation_center = 3;
             if (strpos($participant_number, 'M4') !== false)
                 $rehabitation_center = 4;
+            $date_referal = '';
+            if ($rehabitation_center > 0) {
+                $date_referal = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->first()->start_date;
+            }
             $doctor_recommendation = ($item['doctor_recommendation'] == 'tak' ? 1 : 2);
             $doctor = $item['doctor'];
             $doctor_id = 0;
@@ -278,7 +283,7 @@ class CandidateSeeder extends Seeder
             $id = Candidate::orderBy('id', 'desc')->first()->id;
             \App\Models\CandidateInfo::create(['id_candidate' => $id, 'gender' => $gender, 'doctor' => $doctor_id, 'psycology' => $psycology_id, 'admission' => 1,
                 'doctor_recommendation' => $doctor_recommendation, 'psycology_recommendation' => $psycology_recommendation, 'decision_central_commision' => $decision_central_commision,
-                'date_central_commision' => $date_central_commision, 'rehabitation_center' => $rehabitation_center, 'participant_number' => $participant_number]);
+                'date_central_commision' => $date_central_commision, 'rehabitation_center' => $rehabitation_center, 'participant_number' => $participant_number, 'date_referal' => $date_referal]);
         }
     }
 }

@@ -19,7 +19,7 @@ use Illuminate\Database\Seeder;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Storage;
 
-class IprSeeder extends Seeder
+class FourIprSeeder extends Seeder
 {
     /**
      * Run the database seeds.
