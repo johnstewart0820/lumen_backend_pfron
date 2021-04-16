@@ -16,6 +16,10 @@ use Storage;
 
 class ArrivalSeeder extends Seeder
 {
+    public function convertDate($str) {
+        $arr = explode('.', $str);
+        return $arr[2].'-'.$arr[1].'-'.$arr[0];
+    }
     /**
      * Run the database seeds.
      *
@@ -30,7 +34,9 @@ class ArrivalSeeder extends Seeder
                 continue;
             }
             $id = $candidate[0]->id;
-            CandidateInfo::where('id_candidate', '=', $id)->update(['date_referal' => $item['date']]);
+            $date_string = $item['date'];
+
+            CandidateInfo::where('id_candidate', '=', $id)->update(['date_referal' => self::convertDate($date_string)]);
             if (str_starts_with($item['content'], 'ST,')) {
                 CandidateInfo::where('id_candidate', '=', $id)->update(['type_to_stay' => '1']);
                 Candidate::where('id', '=', $id)->update(['stay_status' => 1]);

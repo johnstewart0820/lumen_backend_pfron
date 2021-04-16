@@ -18,7 +18,7 @@ class CreateIprSchedulesTable extends Migration
             $table->integer('id_ipr');
             $table->integer('id_service');
             $table->integer('status');
-            $table->dateTime('date');
+            $table->date('date');
             $table->string('start_time');
             $table->string('end_time');
             $table->string('break_time');

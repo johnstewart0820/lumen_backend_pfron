@@ -85,8 +85,11 @@ class ReportController extends Controller
         }
     }
 
-    public function getSchedules($query, $index, $id_candidate) {
+    public function getSchedules($query, $index, $id_candidate, $date_from, $date_to) {
+
         return $query
+            ->where('date', '>=', $date_from)
+            ->where('date', '<=', $date_to)
             ->whereIn('id_ipr',
                 Ipr::where('iprs.id_candidate', '=', $id_candidate)
                     ->where('iprs.status', '=', true)
@@ -106,8 +109,13 @@ class ReportController extends Controller
         try {
             $rehabitation_center = $request->rehabitation_center;
             $participant = $request->participant;
+            $quater = $request->quater;
             $module_result = [];
             $candidate_list = [];
+            $quater_obj = RehabitationCenterQuater::where('id', '=', $quater)->first();
+            $quater_from = $quater_obj->start_date;
+            $quater_to = $quater_obj->end_date;
+
             if ($rehabitation_center == 0 ) {
                 $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
                     ->where('candidates.id', '=', $participant)
@@ -121,7 +129,7 @@ class ReportController extends Controller
                 $candidate_list = $candidate;
             }
             foreach ($candidate_list as $candidate) {
-
+                $module_result = [];
                 $module = Module::all();
                 foreach($module as $item) {
                     $item['service_lists'] = $item->service_lists()
@@ -131,8 +139,8 @@ class ReportController extends Controller
                         ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')->get();
                     foreach($item['service_lists'] as $service_list) {
                         $service_list['schedule'] = (object)[];
-                        $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id);
-                        $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id);
+                        $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from, $quater_to);
+                        $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from, $quater_to);
                     }
                     $module_result[] = $item;
                 }

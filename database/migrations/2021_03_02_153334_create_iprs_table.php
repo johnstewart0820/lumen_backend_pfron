@@ -20,7 +20,7 @@ class CreateIprsTable extends Migration
             $table->integer('number');
             $table->integer('id_ork_person');
             $table->string('profession');
-            $table->dateTime('schedule_date');
+            $table->date('schedule_date');
             $table->boolean('status');
             $table->timestamps();
         });
