@@ -31,13 +31,19 @@ class QualificationController extends Controller
     public function getInfo(Request $request) {
         try {
             $type = QualificationPointType::all();
-            $ambassadors = User::where('id_role', '=', 3)->where('status', '=', 1)->get();
+            $ambassadors = User::where('status', '=', 1)->get();
+            $ambassador_list = [];
+            foreach($ambassadors as $ambassador) {
+                if (in_array(3, explode(',', $ambassador->id_role))) {
+                    array_push($ambassador_list, $ambassador);
+                }
+            }
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'type' => $type,
-                    'ambassadors' => $ambassadors,
+                    'ambassadors' => $ambassador_list,
                 ]
             ]);
         } catch (Exception $e) {

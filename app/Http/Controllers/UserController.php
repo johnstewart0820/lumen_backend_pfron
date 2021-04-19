@@ -33,12 +33,14 @@ class UserController extends Controller
     public function getInfo(Request $request) {
         try {
             $role = Role::all();
+            $qualification_point = QualificationPoint::where('status', '=', 1)->get();
             $activate_status = array(['id' => 2, 'name' => 'Aktywny'], ['id' => 1, 'name' => 'Nieaktywny']);
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'role' => $role,
+                    'qualification_point' => $qualification_point,
                     'activate_status' => $activate_status,
                 ]
             ]);
@@ -61,11 +63,18 @@ class UserController extends Controller
         try {
             $id = $request->input('id');
             $user = User::find($id);
+            $qualification_point = QualificationPoint::all();
+            $qualification_point_list = [];
+            foreach($qualification_point as $item) {
+                if (in_array($id, explode(',', $item->ambassador)))
+                    array_push($qualification_point_list, $item);
+            }
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'user' => $user
+                    'user' => $user,
+                    'qualification_point' => $qualification_point_list
                 ]
             ]);
         } catch (Exception $e) {
@@ -152,6 +161,7 @@ class UserController extends Controller
             $name = $request->name;
             $email = $request->email;
             $role = $request->id_role;
+            $qualification_point = $request->id_qualification_point;
             $activate_status = $request->activate_status;
 
             $user = new User();
@@ -163,6 +173,16 @@ class UserController extends Controller
             $user->activate_status = $activate_status;
             $user->status = true;
             $user->save();
+
+            if (in_array(3, $role)) {
+                foreach($qualification_point as $item) {
+                    $ambassador = QualificationPoint::where('id', '=', $item)->first()->ambassador;
+                    $ambassador_list = explode(',',$ambassador);
+                    array_push($ambassador_list, $user->id);
+                    QualificationPoint::where('id', '=', $item)->update(['ambassador' => implode(',',$ambassador_list)]);
+                }
+            }
+
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_USER_SUCCESS,
@@ -187,8 +207,28 @@ class UserController extends Controller
             $email = $request->email;
             $role = implode(',', $request->id_role);
             $activate_status = $request->activate_status;
+            $id_qualification_point = $request->id_qualification_point;
             $id = $request->id;
-
+            if (in_array(3, $request->id_role)) {
+                $qualification_point_list = QualificationPoint::all();
+                foreach ($qualification_point_list as $item) {
+                    if (in_array($id, explode(',', $item->ambassador))) {
+                        $arr = explode(',', $item->ambassador);
+                        $res = [];
+                        foreach ($arr as $i) {
+                            if ($i !== $id) {
+                                array_push($res, $i);
+                            }
+                        }
+                        QualificationPoint::where('id', '=', $item->id)->update(['ambassador' => implode(',', $res)]);
+                    }
+                }
+                foreach ($id_qualification_point as $qualification_point) {
+                    $ambassador = QualificationPoint::where('id', '=', $qualification_point)->first()->ambassador;
+                    $ambassador = $ambassador . ',' . $id;
+                    QualificationPoint::where('id', '=', $qualification_point)->update(['ambassador' => $ambassador]);
+                }
+            }
             User::where('id', '=', $id)->update(['name'=>$name, 'email' => $email, 'id_role' => $role, 'activate_status' => $activate_status]);
 
             return response()->json([
