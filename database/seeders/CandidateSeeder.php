@@ -149,6 +149,7 @@ class CandidateSeeder extends Seeder
             $house_number = $item['house_number'];
             $apartment_number = $item['apartment_number'];
             $post_code = $item['post_code'];
+            $post_office = '';
             $mobile_phone = '48'.$item['mobile_phone'];
             $family_mobile_phone = '48';
             $email = $item['email'];
@@ -265,6 +266,9 @@ class CandidateSeeder extends Seeder
             }
             else if ($participant_status == 'U') {
                 $participant_status_type = 2;
+            }
+            else if (!$participant_status) {
+                $stage = 3;
             }
             if ($participant_status_type > 0 && $rehabitation_center == 0) {
                 Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' participant_number => ');
