@@ -14,8 +14,8 @@ class NotificationSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['id' => 1, 'title' => 'Usluga 2254: Zakonczenie', 'description' => 'Uczestniki Jan Kowalski nie zrealizowal ...', 'id_service' => 1, 'activate_status' => true],
-            ['id' => 2, 'title' => 'Usluga 5548: Przekroczenie wymiaru danej uslugi', 'description' => 'description', 'id_candidate' => 1, 'activate_status' => false],
+            ['id' => 1, 'title' => 'Usługa 2254: Zakończenie', 'description' => 'Uczestniki Jan Kowalski nie zrealizowal ...', 'id_service' => 1, 'activate_status' => true],
+            ['id' => 2, 'title' => 'Usługa 5548: Przekroczenie wymiaru danej usługi', 'description' => 'description', 'id_candidate' => 1, 'activate_status' => false],
 
         ];
         foreach($items as $item)
