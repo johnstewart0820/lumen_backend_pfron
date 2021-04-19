@@ -12,6 +12,7 @@ use App\Models\Module;
 use App\Models\OrkTeam;
 use App\Models\ServiceList;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IprController extends Controller
 {
@@ -596,7 +597,7 @@ class IprController extends Controller
             $iprs = [];
             $iprs_count = 0;
             $query = Ipr::leftJoin('candidates', 'iprs.id_candidate', '=', 'candidates.id')->selectRaw('iprs.*, CONCAT(candidates.name, " ", candidates.surname) as name')
-                ->where('name', 'LIKE', "%{$searchName}%")
+                ->where(DB::raw('CONCAT(candidates.name, " ", candidates.surname)'), 'LIKE', "%{$searchName}%")
                 ->where('iprs.status', '=', true);
             if ($searchId != '') {
                 $query->where('iprs.id', '=', $searchId);
