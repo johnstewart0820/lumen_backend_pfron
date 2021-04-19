@@ -78,7 +78,10 @@ class SecondIprSeeder extends Seeder
                     $ipr_schedule->id_ipr = $id_ipr;
                     $ipr_schedule->id_service = $j;
                     $ipr_schedule->status = 0;
-                    $ipr_schedule->date = $rehabitation_center_quaters[$i]->start_date;
+                    if ($candidate_list[0]->referal_date < $rehabitation_center_quaters[$i]->start_date)
+                        $ipr_schedule->date = $rehabitation_center_quaters[$i]->start_date;
+                    else
+                        $ipr_schedule->date = $candidate_list[0]->referal_date;
                     $ipr_schedule->total_amount = $item[strval($j)];
                     $ipr_schedule->save();
 

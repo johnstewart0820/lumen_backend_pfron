@@ -159,7 +159,7 @@ class ReportController extends Controller
             $quater_from_date = $quater_from_obj->start_date;
             $quater_to_date = $quater_to_obj->end_date;
 
-            if ($rehabitation_center == 0 ) {
+            if ($participant != 0 ) {
                 $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
                     ->where('candidates.id', '=', $participant)
                     ->selectRaw('candidates.id, candidate_infos.participant_number')->first();
