@@ -825,6 +825,46 @@ class CandidateController extends Controller
         }
     }
 
+    public function getTotalCandidateList(Request $request) {
+        try {
+            $candidates = [];
+
+            $query = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')->where('candidates.status', '=', true);
+
+            $tempQualificationArr = QualificationPoint::where('status', '=', 1)->get();
+            $qualificationPoint = [];
+            if (Auth::user()->id_role == 3) {
+                foreach($tempQualificationArr as $item) {
+                    $arr = explode(',', $item->ambassador);
+                    if (in_array(Auth::user()->id, $arr)) {
+                        $qualificationPoint[] = $item->id;
+                    }
+                }
+                $query->whereIn('qualification_point', $qualificationPoint)->orWhere(function ($q) {
+                    $q->orWhere('qualification_point', '=', '')->orWhere('qualification_point', '=', null);
+                });
+            }
+
+            $candidates = $query->get();
+
+            $education_list = Educations::all();
+            $voivodeship_list = Voivodeship::all();
+            $community_list = Community::all();
+            $county_list = County::all();
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [ 'candidates' => $candidates, 'educations' => $education_list, 'voivodeships' => $voivodeship_list, 'communities' => $community_list, 'counties' => $county_list ]
+            ]);
+        } catch(Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
     public function getHistoryListByOption(Request $request) {
         try {
             $columns = ["candidate_comments.id", "candidate_comments.created_at", "candidate_comments.description", "candidate_comments.created_by"];

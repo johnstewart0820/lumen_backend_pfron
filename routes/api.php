@@ -29,6 +29,7 @@ $router->group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () 
 
 $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'CandidateController@getInfo');
+    $router->get('/total', 'CandidateController@getTotalCandidateList');
     $router->get('/history_info', 'CandidateController@getHistoryInfo');
     $router->post('/getListByOption', 'CandidateController@getListByOption');
     $router->post('/getHistoryListByOption', 'CandidateController@getHistoryListByOption');
@@ -50,6 +51,7 @@ $router->group(['prefix' => 'candidate', 'middleware' => ['auth']], function () 
 $router->group(['prefix' => 'participant', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'ParticipantController@getInfo');
     $router->post('/getListByOption', 'ParticipantController@getListByOption');
+    $router->get('/total', 'ParticipantController@getTotalParticipantList');
     $router->get('/', 'ParticipantController@get');
     $router->put('/',  'ParticipantController@update');
 });
