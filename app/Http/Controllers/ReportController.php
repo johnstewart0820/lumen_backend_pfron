@@ -113,14 +113,17 @@ class ReportController extends Controller
     public function getRecruitmentData(Request $request) {
         try {
             $rehabitation_center = $request->rehabitation_center;
-            $quater = $request->quater;
-            $quater_obj = RehabitationCenterQuater::where('id', '=', $quater)->first();
-            $quater_from = $quater_obj->start_date;
-            $quater_to = $quater_obj->end_date;
+            $quater_from = $request->quater_from;
+            $quater_to = $request->quater_to;
+            $quater_from_obj = RehabitationCenterQuater::where('id', '=', $quater_from)->first();
+            $quater_to_obj = RehabitationCenterQuater::where('id', '=', $quater_to)->first();
+            $quater_from_date = $quater_from_obj->start_date;
+            $quater_to_date = $quater_to_obj->end_date;
+
             $count = [];
-            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 1);
-            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 2);
-            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 3);
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from_date, $quater_to_date, 1);
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from_date, $quater_to_date, 2);
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from_date, $quater_to_date, 3);
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
@@ -147,12 +150,14 @@ class ReportController extends Controller
         try {
             $rehabitation_center = $request->rehabitation_center;
             $participant = $request->participant;
-            $quater = $request->quater;
+            $quater_from = $request->quater_from;
+            $quater_to = $request->quater_to;
             $module_result = [];
             $candidate_list = [];
-            $quater_obj = RehabitationCenterQuater::where('id', '=', $quater)->first();
-            $quater_from = $quater_obj->start_date;
-            $quater_to = $quater_obj->end_date;
+            $quater_from_obj = RehabitationCenterQuater::where('id', '=', $quater_from)->first();
+            $quater_to_obj = RehabitationCenterQuater::where('id', '=', $quater_to)->first();
+            $quater_from_date = $quater_from_obj->start_date;
+            $quater_to_date = $quater_to_obj->end_date;
 
             if ($rehabitation_center == 0 ) {
                 $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
@@ -177,8 +182,8 @@ class ReportController extends Controller
                         ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')->get();
                     foreach($item['service_lists'] as $service_list) {
                         $service_list['schedule'] = (object)[];
-                        $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from, $quater_to);
-                        $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from, $quater_to);
+                        $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);
+                        $service_list['schedule']->basic = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from_date, $quater_to_date);
                     }
                     $module_result[] = $item;
                 }
