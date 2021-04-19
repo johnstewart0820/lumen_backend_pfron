@@ -179,6 +179,7 @@ $router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use
     $router->get('/service_info', 'ReportController@getServiceInfo');
     $router->get('/service_quater', 'ReportController@getServiceQuater');
     $router->get('/service_data', 'ReportController@getServiceData');
+    $router->get('/recruitment_data', 'ReportController@getRecruitmentData');
 });
 
 $router->group(['prefix' => 'notification', 'middleware' => ['auth']], function () use ($router) {

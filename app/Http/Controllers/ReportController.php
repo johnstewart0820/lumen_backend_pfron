@@ -99,6 +99,44 @@ class ReportController extends Controller
             )->sum('total_amount');
     }
 
+    public function getRecuitment($rehabitation_center, $quater_from, $quater_to, $qualification_point_type) {
+        return Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
+            ->leftJoin('qualification_points', 'candidates.qualification_point', '=', 'qualification_points.id')
+            ->where('candidate_infos.rehabitation_center', '=', $rehabitation_center)
+            ->where('candidates.is_participant', '=', 1)
+            ->where('date_referal', '>=', $quater_from)
+            ->where('date_referal', '<=', $quater_to)
+            ->where('qualification_points.type', '=', $qualification_point_type)
+            ->count();
+    }
+
+    public function getRecruitmentData(Request $request) {
+        try {
+            $rehabitation_center = $request->rehabitation_center;
+            $quater = $request->quater;
+            $quater_obj = RehabitationCenterQuater::where('id', '=', $quater)->first();
+            $quater_from = $quater_obj->start_date;
+            $quater_to = $quater_obj->end_date;
+            $count = [];
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 1);
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 2);
+            $count[] = $this->getRecuitment($rehabitation_center, $quater_from, $quater_to, 3);
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'count_list' => $count,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+
     /**
      * Verify the registered account.
      *
