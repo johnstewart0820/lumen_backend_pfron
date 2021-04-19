@@ -276,7 +276,7 @@ class CandidateSeeder extends Seeder
             $level_certificate = $item['level_certificate'];
             $code_certificate = $item['code_certificate'];
             \App\Models\Candidate::create(['name' => $name, 'surname' => $surname, 'person_id' => $person_id, 'age' => $age, 'date_of_birth' => $date_of_birth,
-                'street' => $street, 'house_number' => $house_number, 'apartment_number' => $apartment_number, 'post_code' => $post_code,
+                'street' => $street, 'house_number' => $house_number, 'apartment_number' => $apartment_number, 'post_code' => $post_code, 'post_office' => $post_office,
                 'city' => $city, 'voivodeship' => $voivodeship_index, 'community' => $community_index, 'county' => $county_index,
                 'mobile_phone' => $mobile_phone, 'family_mobile_phone' => $family_mobile_phone, 'email' => $email, 'education' => $education_id, 'employed_status' => $employed_status,
                 'have_unemployed_person_status' => $have_unemployed_person_status, 'passive_person_status' => $passive_person_status,
