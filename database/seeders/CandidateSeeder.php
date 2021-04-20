@@ -287,7 +287,7 @@ class CandidateSeeder extends Seeder
             $id = Candidate::orderBy('id', 'desc')->first()->id;
             \App\Models\CandidateInfo::create(['id_candidate' => $id, 'gender' => $gender, 'doctor' => $doctor_id, 'psycology' => $psycology_id, 'admission' => 1,
                 'doctor_recommendation' => $doctor_recommendation, 'psycology_recommendation' => $psycology_recommendation, 'decision_central_commision' => $decision_central_commision,
-                'date_central_commision' => $date_central_commision, 'rehabitation_center' => $rehabitation_center, 'participant_number' => $participant_number, 'date_referal' => $date_referal]);
+                'date_central_commision' => $date_central_commision, 'rehabitation_center' => $rehabitation_center, 'participant_number' => $participant_number, 'date_rehabitation_center' => $date_referal]);
         }
     }
 }

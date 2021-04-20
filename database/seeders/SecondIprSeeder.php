@@ -39,7 +39,7 @@ class SecondIprSeeder extends Seeder
                 continue;
             }
             $id_candidate = $candidate_list[0]->id_candidate;
-            $date = $candidate_list[0]->date_referal;
+            $date = $candidate_list[0]->date_rehabitation_center;
             $ipr = new Ipr();
             $ipr->id_candidate = $id_candidate;
             $ipr->ipr_type = 3;
@@ -78,10 +78,10 @@ class SecondIprSeeder extends Seeder
                     $ipr_schedule->id_ipr = $id_ipr;
                     $ipr_schedule->id_service = $j;
                     $ipr_schedule->status = 2;
-                    if ($candidate_list[0]->date_referal < $rehabitation_center_quaters[$i]->start_date)
+                    if ($candidate_list[0]->date_rehabitation_center < $rehabitation_center_quaters[$i]->start_date)
                         $ipr_schedule->date = $rehabitation_center_quaters[$i]->start_date;
                     else
-                        $ipr_schedule->date = $candidate_list[0]->date_referal;
+                        $ipr_schedule->date = $candidate_list[0]->date_rehabitation_center;
                     $ipr_schedule->total_amount = $item[strval($j)];
                     $ipr_schedule->save();
 

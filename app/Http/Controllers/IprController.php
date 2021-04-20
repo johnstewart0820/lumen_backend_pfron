@@ -192,7 +192,7 @@ class IprController extends Controller
             $from = $request->input('from');
             $to = $request->input('to');
 
-            $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '>', $from)->where('date', '<', $to)->get();
+            $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '>=', $from)->where('date', '<=', $to)->get();
             $status = 0;
             if (count($schedule_list) !== 0) {
                 $status = $schedule_list[0]->status;

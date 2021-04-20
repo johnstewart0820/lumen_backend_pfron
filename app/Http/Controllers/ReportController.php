@@ -115,8 +115,8 @@ class ReportController extends Controller
             ->leftJoin('qualification_points', 'candidates.qualification_point', '=', 'qualification_points.id')
             ->where('candidate_infos.rehabitation_center', '=', $rehabitation_center)
             ->where('candidates.is_participant', '=', 1)
-            ->where('date_referal', '>=', $quater_from)
-            ->where('date_referal', '<=', $quater_to)
+            ->where('date_rehabitation_center', '>=', $quater_from)
+            ->where('date_rehabitation_center', '<=', $quater_to)
             ->where('qualification_points.type', '=', $qualification_point_type)
             ->count();
     }

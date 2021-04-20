@@ -36,7 +36,7 @@ class ArrivalSeeder extends Seeder
             $id = $candidate[0]->id;
             $date_string = $item['date'];
 
-            CandidateInfo::where('id_candidate', '=', $id)->update(['date_referal' => self::convertDate($date_string)]);
+            CandidateInfo::where('id_candidate', '=', $id)->update(['date_rehabitation_center' => self::convertDate($date_string)]);
             if (str_starts_with($item['content'], 'ST,')) {
                 CandidateInfo::where('id_candidate', '=', $id)->update(['type_to_stay' => '1']);
                 Candidate::where('id', '=', $id)->update(['stay_status' => 1]);
