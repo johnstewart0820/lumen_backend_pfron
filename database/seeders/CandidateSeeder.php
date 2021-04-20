@@ -141,7 +141,7 @@ class CandidateSeeder extends Seeder
             $community = $item['community'];
             $community_index = 0;
             foreach($communityList as $c) {
-                if ($c->name == $community)
+                if ($c->name == $community || $c->name.' - '.$c->type == $community)
                     $community_index = $c->id;
             }
             $city = $item['city'];

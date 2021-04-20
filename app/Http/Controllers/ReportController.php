@@ -11,6 +11,7 @@ use App\Models\QualificationPointType;
 use App\Models\RehabitationCenter;
 use App\Models\RehabitationCenterPartner;
 use App\Models\RehabitationCenterQuater;
+use App\Models\ServiceList;
 use App\Models\Specialist;
 use App\Models\SpecialtyType;
 use Illuminate\Http\Request;
@@ -97,6 +98,16 @@ class ReportController extends Controller
                     ->selectRaw('iprs.id')
                     ->get()
             )->sum('total_amount');
+    }
+
+    public function getPlans($query, $index, $id_candidate) {
+        return $query->whereIn('id_ipr',
+            Ipr::where('iprs.id_candidate', '=', $id_candidate)
+                ->where('iprs.status', '=', true)
+                ->where('iprs.ipr_type', '=', $index)
+                ->selectRaw('iprs.id')
+                ->get()
+        )->sum('amount');
     }
 
     public function getRecuitment($rehabitation_center, $quater_from, $quater_to, $qualification_point_type) {
@@ -204,4 +215,76 @@ class ReportController extends Controller
             ]);
         }
     }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getOverDoneData(Request $request) {
+        try {
+            $rehabitation_center = $request->rehabitation_center;
+            $participant = $request->participant;
+            $quater_from = $request->quater_from;
+            $quater_to = $request->quater_to;
+            $candidate_list = [];
+
+            if ($participant != 0 ) {
+                $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
+                    ->where('candidates.id', '=', $participant)
+                    ->selectRaw('candidates.id, candidate_infos.participant_number')->first();
+                $candidate_list[] = $candidate;
+                $rehabitation_center = CandidateInfo::where('id_candidate', '=', $participant)->first()->rehabitation_center;
+            } else {
+                $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
+                    ->where('candidate_infos.rehabitation_center', '=', $rehabitation_center)
+                    ->selectRaw('candidates.id, candidate_infos.participant_number')->get();
+                $candidate_list = $candidate;
+            }
+
+            $quater_from_order = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->where('id', '<=', $quater_from)->count();
+            $quater_to_order = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->where('id', '<=', $quater_to)->count();
+
+            foreach ($candidate_list as $candidate) {
+                $candidate['service_lists'] = ServiceList::leftJoin('units', 'service_lists.unit', '=', 'units.id')
+                    ->leftJoin('payments', 'payments.service', '=', 'service_lists.id')
+                    ->where('payments.rehabitation_center', '=', $rehabitation_center)
+                    ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')->get();
+                foreach($candidate['service_lists'] as $service_list) {
+                    $service_list['plan'] = (object)[];
+                    $service_list['plan']->trial = $this->getPlans($service_list->ipr_plans(), 2, $candidate->id);
+                    $service_list['plan']->basic = $this->getPlans($service_list->ipr_plans(), 3, $candidate->id);
+
+                    $service_list['schedule'] = (object)[];
+                    $service_list['schedule']->trial = [];
+                    $service_list['schedule']->basic = [];
+
+                    for ($i = $quater_from; $i <= $quater_to; $i ++) {
+                        $quater_from_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
+                        $quater_to_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
+                        $quater_from_date = $quater_from_obj->start_date;
+                        $quater_to_date = $quater_to_obj->end_date;
+                        $service_list['schedule']->trial[] = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);
+                        $service_list['schedule']->basic[] = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from_date, $quater_to_date);
+                    }
+                }
+            }
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'candidate' => $candidate_list,
+                    'start_order' => $quater_from_order,
+                    'end_order' => $quater_to_order,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
 }

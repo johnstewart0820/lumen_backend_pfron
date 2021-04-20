@@ -38,7 +38,7 @@ class TrainingController extends Controller
     public function getInfo(Request $request) {
         try {
             $participant = Candidate::leftJoin('candidate_infos as ci', 'candidates.id', '=', 'ci.id_candidate')->where('status', '=', true)->where('is_participant', '=', true)
-                ->selectRaw('candidates.*, ci.participant_number')->get();
+                ->selectRaw('candidates.id, ci.participant_number, CONCAT(candidates.name, " ", candidates.surname) as name')->get();
 
             $rehabitation_center = RehabitationCenter::all();
             $service_list = ServiceList::where('status', '=', true)->get();
