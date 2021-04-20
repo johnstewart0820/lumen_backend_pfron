@@ -81,7 +81,7 @@ class ThreeIprSeeder extends Seeder
                     $ipr_schedule = new IprSchedule();
                     $ipr_schedule->id_ipr = $id_ipr;
                     $ipr_schedule->id_service = $j;
-                    $ipr_schedule->status = 0;
+                    $ipr_schedule->status = 2;
                     if ($candidate_list[0]->date_referal < $rehabitation_center_quaters[$i]->start_date)
                         $ipr_schedule->date = $rehabitation_center_quaters[$i]->start_date;
                     else
