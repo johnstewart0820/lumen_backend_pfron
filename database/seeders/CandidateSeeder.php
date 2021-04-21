@@ -267,7 +267,7 @@ class CandidateSeeder extends Seeder
             else if ($participant_status == 'U') {
                 $participant_status_type = 2;
             }
-            else if (!$participant_status) {
+            else {
                 $stage = 3;
             }
             if ($participant_status_type > 0 && $rehabitation_center == 0) {
@@ -282,7 +282,7 @@ class CandidateSeeder extends Seeder
                 'have_unemployed_person_status' => $have_unemployed_person_status, 'passive_person_status' => $passive_person_status,
                 'long_term_employed_status' => $long_term_employed_status, 'employed_type' => $employed_type, 'employed_in' => $employed_in,
                 'disabled_person_status' => $disabled_person_status, 'level_certificate' => $level_certificate, 'code_certificate' => $code_certificate,
-                'qualification_point' => $qualification_point_id, 'is_participant' => $stage == 4, 'status' => 1, 'stage' => $stage, 'id_status' => $id_status,
+                'qualification_point' => $qualification_point_id, 'is_participant' => $participant_status_type > 0, 'status' => 1, 'stage' => $stage, 'id_status' => $id_status,
                 'participant_status_type' => $participant_status_type]);
             $id = Candidate::orderBy('id', 'desc')->first()->id;
             \App\Models\CandidateInfo::create(['id_candidate' => $id, 'gender' => $gender, 'doctor' => $doctor_id, 'psycology' => $psycology_id, 'admission' => 1,
