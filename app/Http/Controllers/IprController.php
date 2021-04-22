@@ -110,6 +110,53 @@ class IprController extends Controller
         }
     }
 
+    public function getScheduleForDay($id, $dates) {
+        $service_list = [];
+        $module = Module::all();
+        $arr = ServiceList::where('module', '=', 1)->get();
+        foreach ($arr as $item) {
+            $service_list[] = $item;
+        }
+        if (IprSchedule::all()->count() === 0) {
+            $arr = IprPlan::where('ipr_plans.id_ipr', '=', $id)
+                ->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
+                ->selectRaw('service_lists.*, ipr_plans.amount as amount')->get();
+        } else {
+            $arr = IprPlan::where('ipr_plans.id_ipr', '=', $id)
+                ->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
+                ->leftJoin('ipr_schedules', 'ipr_schedules.id_service', '=', 'ipr_plans.id_service', 'ipr_schedules.id_ipr', '=', $id, 'ipr_schedules.date', '!=', $dates)
+                ->groupBy('ipr_schedules.id_service')
+                ->selectRaw('service_lists.*, ipr_plans.amount as amount, sum(ipr_schedules.total_amount) as current_amount')->get();
+        }
+
+        foreach ($arr as $item) {
+            $service_list[] = $item;
+        }
+        $arr = ServiceList::where('module', '=', 7)->get();
+        foreach ($arr as $item) {
+            $service_list[] = $item;
+        }
+
+        $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '=', $dates)->get();
+
+        foreach($service_list as $service) {
+            foreach($schedule_list as $schedule) {
+                if ($schedule->id_service === $service->id) {
+                    $service['schedule'] = $schedule;
+                }
+            }
+        }
+        foreach($module as $item) {
+            $_service = [];
+            foreach($service_list as $service) {
+                if ($item->id === $service->module) {
+                    $_service[] = $service;
+                }
+            }
+            $item['service_list'] = $_service;
+        }
+        return $module;
+    }
     /**
      * Verify the registered account.
      *
@@ -120,50 +167,8 @@ class IprController extends Controller
         try {
             $id = $request->input('id');
             $dates = $request->input('dates');
-            $service_list = [];
-            $module = Module::all();
-            $arr = ServiceList::where('module', '=', 1)->get();
-            foreach ($arr as $item) {
-                $service_list[] = $item;
-            }
-            if (IprSchedule::all()->count() === 0) {
-                $arr = IprPlan::where('ipr_plans.id_ipr', '=', $id)
-                    ->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
-                    ->selectRaw('service_lists.*, ipr_plans.amount as amount')->get();
-            } else {
-                $arr = IprPlan::where('ipr_plans.id_ipr', '=', $id)
-                    ->leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
-                    ->leftJoin('ipr_schedules', 'ipr_schedules.id_service', '=', 'ipr_plans.id_service', 'ipr_schedules.id_ipr', '=', $id, 'ipr_schedules.date', '!=', $dates)
-                    ->groupBy('ipr_schedules.id_service')
-                    ->selectRaw('service_lists.*, ipr_plans.amount as amount, sum(ipr_schedules.total_amount) as current_amount')->get();
-            }
 
-            foreach ($arr as $item) {
-                $service_list[] = $item;
-            }
-            $arr = ServiceList::where('module', '=', 7)->get();
-            foreach ($arr as $item) {
-                $service_list[] = $item;
-            }
-
-            $schedule_list = IprSchedule::where('id_ipr', '=', $id)->where('date', '=', $dates)->get();
-
-            foreach($service_list as $service) {
-                foreach($schedule_list as $schedule) {
-                    if ($schedule->id_service === $service->id) {
-                        $service['schedule'] = $schedule;
-                    }
-                }
-            }
-            foreach($module as $item) {
-                $_service = [];
-                foreach($service_list as $service) {
-                    if ($item->id === $service->module) {
-                        $_service[] = $service;
-                    }
-                }
-                $item['service_list'] = $_service;
-            }
+            $module = $this->getScheduleForDay($id, $dates);
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -198,11 +203,48 @@ class IprController extends Controller
                 $status = $schedule_list[0]->status;
             }
 
+
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'status' => $status
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function getWeekScheduleInfo(Request $request) {
+        try {
+            $id = $request->input('id');
+            $from = $request->input('from');
+            $to = $request->input('to');
+            $date = $from;
+            $module = [];
+            $week_days = [];
+            while (strtotime($date) <= strtotime($to)) {
+                array_push($week_days, $date);
+                $module[] = $this->getScheduleForDay($id, $date);
+                $date = date ("Y-m-d", strtotime("+1 day", strtotime($date)));
+            }
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'module' => $module,
+                    'week_days' => $week_days
                 ]
             ]);
         } catch (Exception $e) {

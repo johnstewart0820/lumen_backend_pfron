@@ -70,6 +70,7 @@ $router->group(['prefix' => 'ipr', 'middleware' => ['auth']], function () use ($
     $router->get('/ork_person', 'IprController@getOrkPerson');
     $router->get('/get_plan_info', 'IprController@getPlanInfo');
     $router->post('/get_schedule', 'IprController@getScheduleInfo');
+    $router->post('/get_week_schedule', 'IprController@getWeekScheduleInfo');
     $router->get('/get_balance', 'IprController@getBalanceInfo');
     $router->post('/getListByOption', 'IprController@getListByOption');
     $router->post('/plan', 'IprController@updatePlan');
