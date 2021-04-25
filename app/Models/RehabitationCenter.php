@@ -27,4 +27,9 @@ class RehabitationCenter extends Model
 
     protected $primaryKey = 'id';
 
+    public function partners()
+    {
+        return $this->hasMany(RehabitationCenterPartner::class, 'center_id', 'id');
+    }
+
 }

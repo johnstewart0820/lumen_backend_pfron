@@ -182,6 +182,7 @@ $router->group(['prefix' => 'report', 'middleware' => ['auth']], function () use
     $router->get('/service_data', 'ReportController@getServiceData');
     $router->get('/recruitment_data', 'ReportController@getRecruitmentData');
     $router->get('/overdone_data', 'ReportController@getOverDoneData');
+    $router->get('/rehabitation_data', 'ReportController@getRehabitationData');
 });
 
 $router->group(['prefix' => 'notification', 'middleware' => ['auth']], function () use ($router) {
