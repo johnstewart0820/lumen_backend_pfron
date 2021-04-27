@@ -246,45 +246,45 @@ class CandidateSeeder extends Seeder
                 $stage = 4;
             }
             else if ($participant_status == 'R')
-                $participant_status_type = 3;
+                $participant_status_type = 1;
             else if ($participant_status == 'S') {
-                $participant_status_type = 4;
+                $participant_status_type = 2;
             }
             else if ($participant_status == 'ND') {
-                $participant_status_type = 5;
+                $participant_status_type = 3;
             }
             else if ($participant_status == 'U') {
-                $participant_status_type = 6;
+                $participant_status_type = 4;
             }
             else if ($participant_status == 'URK') {
-                $participant_status_type = 7;
+                $participant_status_type = 5;
             }
             else if ($participant_status == 'NIPR') {
-                $participant_status_type = 8;
+                $participant_status_type = 6;
             }
             else if ($participant_status == 'R1') {
-                $participant_status_type = 9;
+                $participant_status_type = 7;
             }
             else if ($participant_status == 'R2') {
-                $participant_status_type = 10;
+                $participant_status_type = 8;
             }
             else if ($participant_status == 'R3') {
-                $participant_status_type = 11;
+                $participant_status_type = 9;
             }
             else if ($participant_status == 'Z') {
-                $participant_status_type = 12;
+                $participant_status_type = 10;
             }
             else if ($participant_status == 'C') {
-                $participant_status_type = 13;
+                $participant_status_type = 11;
             }
             else if ($participant_status == 'UP') {
-                $participant_status_type = 14;
+                $participant_status_type = 12;
             }
             else if ($participant_status == 'UP+P') {
-                $participant_status_type = 15;
+                $participant_status_type = 13;
             }
             else if ($participant_status == 'ZZ') {
-                $participant_status_type = 16;
+                $participant_status_type = 14;
             }
             else {
                 $stage = 3;
