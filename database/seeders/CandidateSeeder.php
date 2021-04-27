@@ -229,43 +229,59 @@ class CandidateSeeder extends Seeder
             if (strlen($psycology) != 0 && $psycology_id == 0)
                 Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' psycology => '.$psycology);
             $decision_central_commision = ($item['decision_central_commision'] == 'tak' ? 1 : 2);
-            $date_central_commision = $item['date_central_commision'];
+            $date_central_commision_str = $item['date_central_commision'];
+            $arr_date = explode('-', $date_central_commision_str);
+            $date_central_commision = $arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0];
+
             $participant_status = $item['participant_status'];
             $participant_status_type = 0;
             $id_status = 4;
             $stage = 4;
-            if ($participant_status == 'Z')
-                $participant_status_type = 7;
-            else if ($participant_status == 'R') {
+            if ($participant_status == 'NK')
+                $participant_status_type = 1;
+            else if ($participant_status == 'O') {
+                $participant_status_type = 2;
+            }
+            else if ($participant_status == 'R')
                 $participant_status_type = 3;
-                $stage = 3;
-            }
-            else if ($participant_status == 'UP')
-                $participant_status_type = 9;
-            else if ($participant_status == 'NK') {
-                $id_status = 3;
-                $stage = 3;
-            }
-            else if ($participant_status == 'R1') {
+            else if ($participant_status == 'S') {
                 $participant_status_type = 4;
             }
-            else if ($participant_status == 'UP+P') {
-                $participant_status_type = 10;
-            }
-            else if ($participant_status == 'C') {
-                $participant_status_type = 8;
-            }
-            else if ($participant_status == 'R2') {
+            else if ($participant_status == 'ND') {
                 $participant_status_type = 5;
             }
-            else if ($participant_status == 'R3') {
+            else if ($participant_status == 'U') {
                 $participant_status_type = 6;
             }
-            else if ($participant_status == 'ND') {
-                $participant_status_type = 1;
+            else if ($participant_status == 'URK') {
+                $participant_status_type = 7;
             }
-            else if ($participant_status == 'U') {
-                $participant_status_type = 2;
+            else if ($participant_status == 'NIPR') {
+                $participant_status_type = 8;
+            }
+            else if ($participant_status == 'R1') {
+                $participant_status_type = 9;
+            }
+            else if ($participant_status == 'R2') {
+                $participant_status_type = 10;
+            }
+            else if ($participant_status == 'R3') {
+                $participant_status_type = 11;
+            }
+            else if ($participant_status == 'Z') {
+                $participant_status_type = 12;
+            }
+            else if ($participant_status == 'C') {
+                $participant_status_type = 13;
+            }
+            else if ($participant_status == 'UP') {
+                $participant_status_type = 14;
+            }
+            else if ($participant_status == 'UP+P') {
+                $participant_status_type = 15;
+            }
+            else if ($participant_status == 'ZZ') {
+                $participant_status_type = 16;
             }
             else {
                 $stage = 3;
