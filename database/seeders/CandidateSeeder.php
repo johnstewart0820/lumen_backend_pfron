@@ -237,10 +237,13 @@ class CandidateSeeder extends Seeder
             $participant_status_type = 0;
             $id_status = 4;
             $stage = 4;
-            if ($participant_status == 'NK')
-                $participant_status_type = 1;
+            if ($participant_status == 'NK') {
+                $id_status = 3;
+                $stage = 3;
+            }
             else if ($participant_status == 'O') {
-                $participant_status_type = 2;
+                $id_status = 4;
+                $stage = 4;
             }
             else if ($participant_status == 'R')
                 $participant_status_type = 3;
