@@ -290,6 +290,11 @@ class CandidateSeeder extends Seeder
                 $stage = 3;
             }
             if ($participant_status_type > 0 && $rehabitation_center == 0) {
+                $stage = 3;
+                $id_status = 3;
+                $participant_status_type = 0;
+            }
+            if ($participant_status_type > 0 && $rehabitation_center == 0) {
                 Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' participant_number => ');
             }
             $level_certificate = $item['level_certificate'];
