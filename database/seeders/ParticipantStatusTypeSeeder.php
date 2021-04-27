@@ -14,17 +14,22 @@ class ParticipantStatusTypeSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['id' => 1, 'name' => 'ND – nie dojechał'],
-            ['id' => 2, 'name' => 'U – uczestnik w ORK', 'code' => 'U'],
-            ['id' => 3, 'name' => 'URK - Uczestnik Rehabilitacji Kompleksowej (przypisany IPR)', 'code' => 'URK'],
-            ['id' => 4, 'name' => 'N IPR/R1 – negatywny IPR (po ocenie kompetencji)', 'code' => 'N IPR/R1'],
-            ['id' => 5, 'name' => 'R2 – rezygnacja po okresie próbnym', 'code' => 'R2'],
-            ['id' => 6, 'name' => 'R3 – rezygnacja późniejsza', 'code' => 'R3'],
-            ['id' => 7, 'name' => 'Z - zawieszony pobyt w ORK', 'code' => 'Z'],
-            ['id' => 8, 'name' => 'C – zawieszenie Covid ', 'code' => 'C'],
-            ['id' => 9, 'name' => 'UP – ukończony pobyt w ORK', "code" => "UP"],
-            ['id' => 10, 'name' => 'UP+P – ukończył pobyt i podjął pracę', "code" => "UP+P"],
-            ['id' => 11, 'name' => 'ZZ - zakończenie udziału w projekcie zgodnie ze ścieżką', "code" => "ZZ"],
+            ['id' => 1, 'code' => "NK", 'name' => "NK - negatywna kwalifikacja"],
+            ['id' => 2, 'code' => "O", 'name' => "O - oczekuje na skierowanie"],
+            ['id' => 3, 'code' => "R", 'name' => "R - rezygnacja przed skierowaniem"],
+            ['id' => 4, 'code' => "S", 'name' => "S - skierowany"],
+            ['id' => 5, 'code' => "ND", 'name' => "ND - nie dojechał"],
+            ['id' => 6, 'code' => "U", 'name' => "U - uczestnik"],
+            ['id' => 7, 'code' => "URK", 'name' => "URK - uczestnik rehabilitacji kompleksowej (przypisany IPR"],
+            ['id' => 8, 'code' => "NIPR", 'name' => "N IPR - negatywny IPR, po ocenie kompetencji"],
+            ['id' => 9, 'code' => "R1", 'name' => "R1 - rezygnacja przed końcem okresu próbnego"],
+            ['id' => 10, 'code' => "R2", 'name' => "R2- rezygnacja po okresie próbnym"],
+            ['id' => 11, 'code' => "R3", 'name' => "R3- rezygnacja w trakcie pobytu"],
+            ['id' => 12, 'code' => "Z", 'name' => "Z - zawieszenie pobytu w ORK"],
+            ['id' => 13, 'code' => "C", 'name' => "C - zawieszenie pobytu-COVID"],
+            ['id' => 14, 'code' => "UP", 'name' => "UP - ukończony pobyt stacjonarny"],
+            ['id' => 15, 'code' => "UP+P", 'name' => "UP+P - ukończone + podjęcie pracy"],
+            ['id' => 16, 'code' => "ZZ", 'name' => "ZZ - zakończenie udziału zgodnie ze ścieżką"],
         ];
         foreach($items as $item)
         {
