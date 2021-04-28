@@ -248,8 +248,8 @@ class TrainingController extends Controller
             if ($searchId != '') {
                 $query->where('trainings.id', '=', $searchId);
             }
-            if (intval($searchParticipant) != 0) {
-                $query->where('trainings.participant', 'LIKE', "%{$searchParticipant}%");
+            if ($searchParticipant) {
+                $query->where('trainings.participant', 'LIKE', "%{$searchParticipant['id']}%");
             }
             if (intval($searchTrainingStatus) != 0) {
                 $query->where('trainings.training_status', '=', $searchTrainingStatus);
