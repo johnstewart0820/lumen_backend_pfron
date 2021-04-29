@@ -341,7 +341,7 @@ class ParticipantController extends Controller
 
     public function getListByOption(Request $request) {
         try {
-            $columns = ["candidates.id", "name", "surname", "rehabitation_center", "participant_status_type", "updated_at"];
+            $columns = ["participant_number", "name", "surname", "rehabitation_center", "participant_status_type", "updated_at"];
             $sort_column = $request->input('sort_column');
             $sort_order = $request->input('sort_order');
             $count = $request->input('count');
@@ -360,7 +360,7 @@ class ParticipantController extends Controller
                 $join->on('candidates.id', '=', 'candidate_infos.id_candidate');
             })->where('name', 'LIKE', "%{$searchName}%")->where('surname', 'LIKE', "%{$searchSurname}%")->where('status', '=', true)->where('is_participant', '=', true);
             if ($searchId != '') {
-                $query->where('candidates.id', '=', $searchId);
+                $query->where('participant_number', 'LIKE', "%{$searchId}%");
             }
             if (intval($searchRehabitationCenter) != 0) {
                 $query->where('rehabitation_center', '=', $searchRehabitationCenter);

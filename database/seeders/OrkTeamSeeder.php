@@ -34,7 +34,7 @@ class OrkTeamSeeder extends Seeder
             ['id' => 18, 'name' => 'Daniel Plewa', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
             ['id' => 19, 'name' => 'Małgorzata Stachowiak-Grochola', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
             ['id' => 20, 'name' => 'Ewa Baranowska', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
-            ['id' => 21, 'name' => 'Katazrzyna Fleta', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
+            ['id' => 21, 'name' => 'Katarzyna Fleta', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
             ['id' => 22, 'name' => 'Karolina Kulczak Drozdowska', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
             ['id' => 23, 'name' => 'Monika Werbińska', 'rehabitation_center' => 1, 'specialization' => 4, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
             ['id' => 24, 'name' => 'Michalina Kozanecka', 'rehabitation_center' => 1, 'specialization' => 2, 'is_accepted' => 1, 'date_of_acceptance' => '2021-03-03', 'status' => 1],
