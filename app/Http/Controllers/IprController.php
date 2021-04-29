@@ -280,7 +280,7 @@ class IprController extends Controller
                     ->where('status', '=', true)
                     ->where('module', '=', $item->id)
                     ->selectRaw('service_lists.*, units.name as unit')->get();
-                $item['ork_team'] = $ork_team;
+//                $item['ork_team'] = $ork_team;
                 $item['service_list'] = $service_list;
             }
             return response()->json([
@@ -289,6 +289,7 @@ class IprController extends Controller
                 'data' => [
                     'module' => $module,
                     'plan' => $plan,
+                    'ork_team' => $ork_team
                 ]
             ]);
         } catch (Exception $e) {
