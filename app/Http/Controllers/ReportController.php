@@ -192,7 +192,9 @@ class ReportController extends Controller
                         ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
                         ->leftJoin('payments', 'payments.service', '=', 'service_lists.id')
                         ->where('payments.rehabitation_center', '=', $rehabitation_center)
-                        ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')->get();
+                        ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
+                        ->orderBy('service_lists.number')
+                        ->get();
                     foreach($item['service_lists'] as $service_list) {
                         $service_list['schedule'] = (object)[];
                         $service_list['schedule']->trial = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);

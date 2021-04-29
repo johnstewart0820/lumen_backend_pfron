@@ -268,7 +268,7 @@ class IprController extends Controller
             $module = Module::where('id', '>', 1)->where('id', '<', 7)->get();
             $plan = IprPlan::leftJoin('service_lists', 'ipr_plans.id_service', '=', 'service_lists.id')
                 ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                ->selectRaw('ipr_plans.*, service_lists.name, service_lists.module, service_lists.amount_usage, service_lists.is_required, service_lists.not_applicable, units.name as unit')
+                ->selectRaw('ipr_plans.*, service_lists.name, service_lists.number, service_lists.module, service_lists.amount_usage, service_lists.is_required, service_lists.not_applicable, units.name as unit')
                 ->where('ipr_plans.id_ipr', '=', $id)
                 ->get();
             $id_candidate = Ipr::where('id', '=', $plan[0]->id_ipr)->first()->id_candidate;

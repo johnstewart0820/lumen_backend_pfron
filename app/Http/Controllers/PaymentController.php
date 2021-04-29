@@ -34,13 +34,15 @@ class PaymentController extends Controller
     public function getInfo(Request $request) {
         try {
             $rehabitation_center = RehabitationCenter::all();
-            $service = ServiceList::all();
+            $service = ServiceList::selectRaw('CONCAT(name, " (Numer: ", number, " )") as name, id')->get();
+            $service_list = ServiceList::all();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'rehabitation_center' => $rehabitation_center,
                     'service' => $service,
+                    'service_list' => $service_list
                 ]
             ]);
         } catch (Exception $e) {
@@ -135,7 +137,7 @@ class PaymentController extends Controller
 
     public function getListByOption(Request $request) {
         try {
-            $columns = ["id", "name", "value", "rehabitation_center", "service"];
+            $columns = ["service_lists.number", "name", "value", "rehabitation_center", "service"];
             $sort_column = $request->input('sort_column');
             $sort_order = $request->input('sort_order');
             $count = $request->input('count');
@@ -146,9 +148,9 @@ class PaymentController extends Controller
             $searchService = $request->input('searchService');
             $payments = [];
             $payments_count = [];
-            $query = Payment::where('value', 'LIKE', "%{$searchValue}%")->where('status', '=', true);
+            $query = Payment::leftJoin('service_lists', 'payments.service', '=', 'service_lists.id')->where('value', 'LIKE', "%{$searchValue}%")->where('payments.status', '=', true);
             if ($searchId != '') {
-                $query->where('id', '=', $searchId);
+                $query->where('service_lists.number', 'LIKE', "%{$searchId}%");
             }
             if (intval($searchRehabitationCenter) != 0) {
                 $query->where('rehabitation_center', 'LIKE', "%{$searchRehabitationCenter}%");
@@ -163,6 +165,7 @@ class PaymentController extends Controller
                 ->orderBy($columns[$sort_column], $sort_order)
                 ->skip(($page - 1) * $count)
                 ->take($count)
+                ->selectRaw('payments.*, service_lists.number')
                 ->get();
 
             return response()->json([
