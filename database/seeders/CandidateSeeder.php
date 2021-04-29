@@ -234,7 +234,7 @@ class CandidateSeeder extends Seeder
             $date_central_commision = $arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0];
 
             $arr_doctor_date = explode('x', $item['doctor_date']);
-            $doctor_date = $arr_doctor_date[2].'-'.$arr_date[0].'-'.$arr_date[1];
+            $doctor_date = $arr_doctor_date[2].'-'.$arr_doctor_date[0].'-'.$arr_doctor_date[1];
             $participant_status = $item['participant_status'];
             $participant_status_type = 0;
             $id_status = 4;
