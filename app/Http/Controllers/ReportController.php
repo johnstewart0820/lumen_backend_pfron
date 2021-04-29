@@ -6,7 +6,6 @@ use App\Models\CandidateInfo;
 use App\Models\Ipr;
 use App\Models\IprPlan;
 use App\Models\Module;
-use App\Models\Payment;
 use App\Models\QualificationPoint;
 use App\Models\QualificationPointType;
 use App\Models\RehabitationCenter;
@@ -189,11 +188,12 @@ class ReportController extends Controller
                 $module_result = [];
                 $module = Module::all();
                 foreach($module as $item) {
-                    $payment_query = Payment::where('service', '=', $rehabitation_center);
                     $item['service_lists'] = $item->service_lists()
                         ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                        ->leftJoin($payment_query, 'payments.service', '=', 'service_lists.id')
-//                        ->where('payments.rehabitation_center', '=', $rehabitation_center)
+                        ->leftJoin('payments', function($join) use ($rehabitation_center) {
+                            $join->on('payments.service', '=', 'service_lists.id')
+                                ->where('payments.rehabitation_center', '=', $rehabitation_center);
+                        })
                         ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
                         ->orderBy('service_lists.number')
                         ->get();
@@ -256,9 +256,14 @@ class ReportController extends Controller
 
             foreach ($candidate_list as $candidate) {
                 $candidate['service_lists'] = ServiceList::leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                    ->leftJoin('payments', 'payments.service', '=', 'service_lists.id')
-                    ->where('payments.rehabitation_center', '=', $rehabitation_center)
-                    ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')->get();
+                    ->leftJoin('payments', function($join) use ($rehabitation_center) {
+                        $join->on('payments.service', '=', 'service_lists.id')
+                            ->where('payments.rehabitation_center', '=', $rehabitation_center);
+                    })
+
+                    ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
+                    ->orderBy('service_lists.number')
+                    ->get();
                 foreach($candidate['service_lists'] as $service_list) {
                     $service_list['plan'] = (object)[];
                     $service_list['plan']->trial = $this->getPlans($service_list->ipr_plans(), 2, $candidate->id);
