@@ -233,6 +233,8 @@ class CandidateSeeder extends Seeder
             $arr_date = explode('-', $date_central_commision_str);
             $date_central_commision = $arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0];
 
+            $arr_doctor_date = explode('x', $item['doctor_date']);
+            $doctor_date = $arr_doctor_date[2].'-'.$arr_date[0].'-'.$arr_date[1];
             $participant_status = $item['participant_status'];
             $participant_status_type = 0;
             $id_status = 4;
@@ -311,6 +313,7 @@ class CandidateSeeder extends Seeder
             $id = Candidate::orderBy('id', 'desc')->first()->id;
             \App\Models\CandidateInfo::create(['id_candidate' => $id, 'gender' => $gender, 'doctor' => $doctor_id, 'psycology' => $psycology_id, 'admission' => 1,
                 'doctor_recommendation' => $doctor_recommendation, 'psycology_recommendation' => $psycology_recommendation, 'decision_central_commision' => $decision_central_commision,
+                'doctor_date' => $doctor_date, 'psycology_date' => $doctor_date,
                 'date_central_commision' => $date_central_commision, 'rehabitation_center' => $rehabitation_center, 'participant_number' => $participant_number, 'date_rehabitation_center' => $date_referal]);
         }
     }
