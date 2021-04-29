@@ -6,6 +6,7 @@ use App\Models\CandidateInfo;
 use App\Models\Ipr;
 use App\Models\IprPlan;
 use App\Models\Module;
+use App\Models\Payment;
 use App\Models\QualificationPoint;
 use App\Models\QualificationPointType;
 use App\Models\RehabitationCenter;
@@ -188,10 +189,11 @@ class ReportController extends Controller
                 $module_result = [];
                 $module = Module::all();
                 foreach($module as $item) {
+                    $payment_query = Payment::where('service', '=', $rehabitation_center);
                     $item['service_lists'] = $item->service_lists()
                         ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                        ->leftJoin('payments', 'payments.service', '=', 'service_lists.id')
-                        ->where('payments.rehabitation_center', '=', $rehabitation_center)
+                        ->leftJoin($payment_query, 'payments.service', '=', 'service_lists.id')
+//                        ->where('payments.rehabitation_center', '=', $rehabitation_center)
                         ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
                         ->orderBy('service_lists.number')
                         ->get();
