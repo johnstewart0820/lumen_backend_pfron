@@ -204,7 +204,7 @@ class CandidateSeeder extends Seeder
                 $rehabitation_center = 3;
             if (strpos($participant_number, 'M4') !== false)
                 $rehabitation_center = 4;
-            $date_referal = '';
+            $date_referal = null;
             if ($rehabitation_center > 0) {
                 $date_referal = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->first()->start_date;
             }
