@@ -155,7 +155,7 @@ class ReportController extends Controller
      * Verify the registered account.
      *
      * @param  Request  $request
-     * @return Response
+     * @return  Response
      */
     public function getServiceData(Request $request) {
         try {
@@ -179,7 +179,9 @@ class ReportController extends Controller
             } else {
                 $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
                     ->where('candidate_infos.rehabitation_center', '=', $rehabitation_center)
-                    ->selectRaw('candidates.id, candidate_infos.participant_number')->get();
+                    ->selectRaw('candidates.id, candidate_infos.participant_number')
+                    ->orderBy('candidate_infos.participant_number')
+                    ->get();
                 $candidate_list = $candidate;
             }
             foreach ($candidate_list as $candidate) {
@@ -239,7 +241,9 @@ class ReportController extends Controller
             } else {
                 $candidate = Candidate::leftJoin('candidate_infos', 'candidates.id', '=', 'candidate_infos.id_candidate')
                     ->where('candidate_infos.rehabitation_center', '=', $rehabitation_center)
-                    ->selectRaw('candidates.id, candidate_infos.participant_number')->get();
+                    ->selectRaw('candidates.id, candidate_infos.participant_number')
+                    ->orderBy('candidate_infos.participant_number')
+                    ->get();
                 $candidate_list = $candidate;
             }
 
