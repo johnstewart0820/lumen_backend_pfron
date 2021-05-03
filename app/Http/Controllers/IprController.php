@@ -340,6 +340,7 @@ class IprController extends Controller
         try {
             $id = $request->id;
             $id_candidate = Ipr::where('id', '=', $id)->first()->id_candidate;
+            $balance_remark = Ipr::where('id', '=', $id)->first()->balance_remark;
             $module_result = [];
 
             $module = Module::where('id', '=', 1)->first();
@@ -388,6 +389,7 @@ class IprController extends Controller
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
                     'module' => $module_result,
+                    'balance_remark' => $balance_remark
                 ]
             ]);
         } catch (Exception $e) {
@@ -401,7 +403,9 @@ class IprController extends Controller
     public function updateBalance(Request $request) {
         try {
             $moduleList = $request->moduleList;
+            $balance_remark = $request->balance_remark;
             $id = $request->id_ipr;
+            Ipr::where('id', '=', $id)->update(['balance_remark' => $balance_remark]);
             IprBalance::where('id_ipr', '=', $id)->delete();
             foreach($moduleList as $module) {
                 foreach($module['service_lists'] as $service_list) {

@@ -21,6 +21,7 @@ class CreateIprsTable extends Migration
             $table->integer('id_ork_person');
             $table->string('profession');
             $table->date('schedule_date');
+            $table->string('balance_remark')->nullable(true);
             $table->boolean('status');
             $table->timestamps();
         });

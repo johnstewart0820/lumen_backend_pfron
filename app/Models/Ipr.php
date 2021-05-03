@@ -14,7 +14,7 @@ class Ipr extends Model
      * @var array
      */
     protected $fillable = [
-        'id_candidate', 'ipr_type', 'number', 'id_ork_person', 'profession', 'schedule_date', 'status'
+        'id_candidate', 'ipr_type', 'number', 'id_ork_person', 'profession', 'schedule_date', 'status', 'balance_remark'
     ];
 
     /**
