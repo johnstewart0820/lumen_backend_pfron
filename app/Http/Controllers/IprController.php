@@ -603,6 +603,59 @@ class IprController extends Controller
      * @param  Request  $request
      * @return Response
      */
+    public function duplicate(Request $request) {
+        try {
+            $id_ipr = $request->id_ipr;
+            $clone_ipr = Ipr::where('id', '=', $id_ipr)->first();
+            $ipr = new Ipr();
+            $ipr->id_candidate = $clone_ipr->id_candidate;
+            $ipr->ipr_type = $clone_ipr->ipr_type;
+            $ipr->number = $clone_ipr->number;
+            $ipr->schedule_date = $clone_ipr->schedule_date;
+            $ipr->id_ork_person = $clone_ipr->id_ork_person;
+            $ipr->profession = $clone_ipr->profession;
+            $ipr->status = $clone_ipr->status;
+
+            $ipr->save();
+
+            if (intval($clone_ipr->ipr_type) != 1) {
+                $ipr_plans = IprPlan::where('id_ipr', '=', $id_ipr)->get();
+                foreach($ipr_plans as $item) {
+                    $ipr_item = new IprPlan();
+                    $ipr_item->id_ipr = $ipr->id;
+                    $ipr_item->id_service = $item->id_service;
+                    $ipr_item->amount = $item->amount;
+                    $ipr_item->start_date = $item->start_date;
+                    $ipr_item->room_number = $item->room_number;
+                    $ipr_item->id_ork_person = $item->id_ork_person;
+                    $ipr_item->remarks = $item->remarks;
+                    $ipr_item->save();
+                }
+
+            }
+
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => DUPLICATE_IPR_SUCCSESS,
+                'data' => [
+                    'id' => $ipr->id
+                ]
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
+    /**
+     * Verify the registered account.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function update(Request $request) {
         try {
             $id_candidate = $request->id_candidate;

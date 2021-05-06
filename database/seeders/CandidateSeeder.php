@@ -231,8 +231,10 @@ class CandidateSeeder extends Seeder
             $decision_central_commision = ($item['decision_central_commision'] == 'tak' ? 1 : 2);
             $date_central_commision_str = $item['date_central_commision'];
             $arr_date = explode('-', $date_central_commision_str);
-            $date_central_commision = $arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0];
-
+            if (intval($arr_date[0]) > 12)
+                $date_central_commision = $arr_date[2].'-'.$arr_date[1].'-'.$arr_date[0];
+            else
+                $date_central_commision = $arr_date[2].'-'.$arr_date[0].'-'.$arr_date[1];
             $arr_doctor_date = explode('x', $item['doctor_date']);
             $doctor_date = $arr_doctor_date[2].'-'.$arr_doctor_date[0].'-'.$arr_doctor_date[1];
             $participant_status = $item['participant_status'];

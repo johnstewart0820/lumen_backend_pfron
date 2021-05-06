@@ -80,6 +80,7 @@ $router->group(['prefix' => 'ipr', 'middleware' => ['auth']], function () use ($
 
     $router->get('/', 'IprController@get');
     $router->post('/', 'IprController@create');
+    $router->post('/duplicate', 'IprController@duplicate');
     $router->put('/',  'IprController@update');
     $router->delete('/', 'IprController@delete');
 });
