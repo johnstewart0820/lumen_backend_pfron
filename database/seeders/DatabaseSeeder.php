@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             StageSeeder::class,
             StatusSeeder::class,
             CandidateSeeder::class,
+            SlSeeder::class,
             ArrivalSeeder::class,
             FourIprSeeder::class,
             ThreeIprSeeder::class,

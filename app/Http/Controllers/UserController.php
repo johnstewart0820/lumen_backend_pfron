@@ -125,11 +125,19 @@ class UserController extends Controller
             $activate_status = $request->activate_status;
             $password = $request->password;
             $newPassword = $request->newPassword;
-            if ($password == '')
-                User::where('id', '=', $user->id)->update(['name'=>$name, 'email' => $email, 'id_role' => $role, 'activate_status' => $activate_status]);
-            else {
+
+            if ($password == '') {
+                if (str_contains($role, '1'))
+                    User::where('id', '=', $user->id)->update(['name'=>$name, 'email' => $email, 'id_role' => $role, 'activate_status' => $activate_status]);
+                else
+                    User::where('id', '=', $user->id)->update(['email' => $email]);
+            } else {
                 if (Hash::check($password, $user->password)) {
-                    User::where('id', '=', $user->id)->update(['name'=>$name, 'email' => $email, 'id_role' => $role, 'activate_status' => $activate_status, 'password' => Hash::make($newPassword)]);
+                    if (str_contains($role, '1')) {
+                        User::where('id', '=', $user->id)->update(['name'=>$name, 'email' => $email, 'id_role' => $role, 'activate_status' => $activate_status, 'password' => Hash::make($newPassword)]);
+                    } else {
+                        User::where('id', '=', $user->id)->update(['email' => $email, 'password' => Hash::make($newPassword)]);
+                    }
                 } else {
                     return response()->json([
                         'code' => BAD_REQUEST_CODE,

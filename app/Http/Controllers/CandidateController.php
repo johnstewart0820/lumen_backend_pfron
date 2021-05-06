@@ -205,25 +205,34 @@ class CandidateController extends Controller
     public function updateStep1(Request $request) {
         try {
             $id = $request->input('id');
-            CandidateInfo::where('id_candidate', '=', $id)->update([
-                'gender' => $request->gender,
-            ]);
-            Candidate::find($id)->update([
-                'qualification_point' => $request->qualification_point,
-                'stage' => $request->stage,
-                'id_status' => $request->status,
-            ]);
+            $stage = Candidate::where('id', '=', $id)->first()->stage;
+            if ($stage == 1) {
+                CandidateInfo::where('id_candidate', '=', $id)->update([
+                    'gender' => $request->gender,
+                ]);
+                Candidate::find($id)->update([
+                    'qualification_point' => $request->qualification_point,
+                    'stage' => $request->stage,
+                    'id_status' => $request->status,
+                ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = CANDIDATE_UPDATE_1;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+                $candidateComment = new CandidateComment();
+                $candidateComment->description = CANDIDATE_UPDATE_1;
+                $candidateComment->created_by = Auth::user()->id;
+                $candidateComment->id_candidate = $id;
+                $candidateComment->save();
 
-            return response()->json([
-                'code' => SUCCESS_CODE,
-                'message' => UPDATE_CANDIDATE_SUCCESS,
-            ]);
+                return response()->json([
+                    'code' => SUCCESS_CODE,
+                    'message' => UPDATE_CANDIDATE_SUCCESS,
+                ]);
+            } else {
+                return response()->json([
+                    'code' => SERVER_ERROR_CODE,
+                    'message' => UPDATE_CANDIDATE_FAILED,
+                ]);
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,
@@ -241,26 +250,28 @@ class CandidateController extends Controller
     public function updateStep2(Request $request) {
         try {
             $id = $request->input('id');
-            CandidateInfo::where('id_candidate', '=', $id)->update([
-                'doctor' => $request->doctor,
-                'psycology' => $request->psycology,
-                'admission' => $request->admission,
-                'doctor_recommendation' => $request->doctor_recommendation,
-                'doctor_date' => $request->doctor_date,
-                'doctor_remark' => $request->doctor_remark,
-                'psycology_recommendation' => $request->psycology_recommendation,
-                'psycology_date' => $request->psycology_date,
-                'psycology_remark' => $request->psycology_remark,
-            ]);
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = CANDIDATE_UPDATE_2;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
-            Candidate::find($id)->update([
-                'stage' => $request->stage,
-                'id_status' => $request->status,
-            ]);
+            $stage = Candidate::where('id', '=', $id)->first()->stage;
+            if ($stage == 2) {
+                CandidateInfo::where('id_candidate', '=', $id)->update([
+                    'doctor' => $request->doctor,
+                    'psycology' => $request->psycology,
+                    'admission' => $request->admission,
+                    'doctor_recommendation' => $request->doctor_recommendation,
+                    'doctor_date' => $request->doctor_date,
+                    'doctor_remark' => $request->doctor_remark,
+                    'psycology_recommendation' => $request->psycology_recommendation,
+                    'psycology_date' => $request->psycology_date,
+                    'psycology_remark' => $request->psycology_remark,
+                ]);
+                $candidateComment = new CandidateComment();
+                $candidateComment->description = CANDIDATE_UPDATE_2;
+                $candidateComment->created_by = Auth::user()->id;
+                $candidateComment->id_candidate = $id;
+                $candidateComment->save();
+                Candidate::find($id)->update([
+                    'stage' => $request->stage,
+                    'id_status' => $request->status,
+                ]);
 
 //            $candidateComment = new CandidateComment();
 //            $candidateComment->description = $request->comment;
@@ -268,10 +279,17 @@ class CandidateController extends Controller
 //            $candidateComment->id_candidate = $id;
 //            $candidateComment->save();
 
-            return response()->json([
-                'code' => SUCCESS_CODE,
-                'message' => UPDATE_CANDIDATE_SUCCESS,
-            ]);
+                return response()->json([
+                    'code' => SUCCESS_CODE,
+                    'message' => UPDATE_CANDIDATE_SUCCESS,
+                ]);
+            } else {
+                return response()->json([
+                    'code' => SERVER_ERROR_CODE,
+                    'message' => UPDATE_CANDIDATE_FAILED,
+                ]);
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,
@@ -289,26 +307,35 @@ class CandidateController extends Controller
     public function updateStep3(Request $request) {
         try {
             $id = $request->input('id');
-            CandidateInfo::where('id_candidate', '=', $id)->update([
-                'decision_central_commision' => $request->decision_central_commision,
-                'date_central_commision' => $request->date_central_commision,
-                'general_remark' => $request->general_remark,
-            ]);
-            Candidate::find($id)->update([
-                'stage' => $request->stage,
-                'id_status' => $request->status,
-            ]);
+            $stage = Candidate::where('id', '=', $id)->first()->stage;
+            if ($stage == 3) {
+                CandidateInfo::where('id_candidate', '=', $id)->update([
+                    'decision_central_commision' => $request->decision_central_commision,
+                    'date_central_commision' => $request->date_central_commision,
+                    'general_remark' => $request->general_remark,
+                ]);
+                Candidate::find($id)->update([
+                    'stage' => $request->stage,
+                    'id_status' => $request->status,
+                ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = CANDIDATE_UPDATE_3;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+                $candidateComment = new CandidateComment();
+                $candidateComment->description = CANDIDATE_UPDATE_3;
+                $candidateComment->created_by = Auth::user()->id;
+                $candidateComment->id_candidate = $id;
+                $candidateComment->save();
 
-            return response()->json([
-                'code' => SUCCESS_CODE,
-                'message' => UPDATE_CANDIDATE_SUCCESS,
-            ]);
+                return response()->json([
+                    'code' => SUCCESS_CODE,
+                    'message' => UPDATE_CANDIDATE_SUCCESS,
+                ]);
+            } else {
+                return response()->json([
+                    'code' => SERVER_ERROR_CODE,
+                    'message' => UPDATE_CANDIDATE_FAILED,
+                ]);
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,
@@ -326,29 +353,38 @@ class CandidateController extends Controller
     public function updateStep4(Request $request) {
         try {
             $id = $request->input('id');
-            CandidateInfo::where('id_candidate', '=', $id)->update([
-                'date_referal' => $request->date_referal,
-                'rehabitation_center' => $request->rehabitation_center,
-                'participant_number' => $request->participant_number,
-                'date_rehabitation_center' => $request->date_rehabitation_center,
-                'type_to_stay' => $request->type_to_stay,
-                'participant_remark' => $request->participant_remark,
-            ]);
-            Candidate::find($id)->update([
-                'is_participant' => $request->is_participant,
-                'created_participant_time' => Carbon::now()
-            ]);
+            $stage = Candidate::where('id', '=', $id)->first()->stage;
+            if ($stage == 4) {
+                CandidateInfo::where('id_candidate', '=', $id)->update([
+                    'date_referal' => $request->date_referal,
+                    'rehabitation_center' => $request->rehabitation_center,
+                    'participant_number' => $request->participant_number,
+                    'date_rehabitation_center' => $request->date_rehabitation_center,
+                    'type_to_stay' => $request->type_to_stay,
+                    'participant_remark' => $request->participant_remark,
+                ]);
+                Candidate::find($id)->update([
+                    'is_participant' => $request->is_participant,
+                    'created_participant_time' => Carbon::now()
+                ]);
 
-            $candidateComment = new CandidateComment();
-            $candidateComment->description = CANDIDATE_UPDATE_4;
-            $candidateComment->created_by = Auth::user()->id;
-            $candidateComment->id_candidate = $id;
-            $candidateComment->save();
+                $candidateComment = new CandidateComment();
+                $candidateComment->description = CANDIDATE_UPDATE_4;
+                $candidateComment->created_by = Auth::user()->id;
+                $candidateComment->id_candidate = $id;
+                $candidateComment->save();
 
-            return response()->json([
-                'code' => SUCCESS_CODE,
-                'message' => UPDATE_CANDIDATE_SUCCESS,
-            ]);
+                return response()->json([
+                    'code' => SUCCESS_CODE,
+                    'message' => UPDATE_CANDIDATE_SUCCESS,
+                ]);
+            } else {
+                return response()->json([
+                    'code' => SERVER_ERROR_CODE,
+                    'message' => UPDATE_CANDIDATE_FAILED,
+                ]);
+            }
+
         } catch (Exception $e) {
             return response()->json([
                 'code' => SERVER_ERROR_CODE,

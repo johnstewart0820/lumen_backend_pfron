@@ -63,6 +63,7 @@ define('CREATE_CANDIDATE_SUCCESS', 'Twój kandydata został zapisany.');
 define('UPDATE_CANDIDATE_SUCCESS', 'Twój kandydata został zaktualizowany.');
 define('DELETE_CANDIDATE_SUCCESS', 'Twój kandydata został usunięty.');
 
+define('UPDATE_CANDIDATE_FAILED', 'Nie masz uprawnień do aktualizowania tego kandydata.');
 
 define('JWT_TOKEN_INVALID', 'Token is Invalid');
 define('JWT_TOKEN_EXPIRED', 'Token is Expired');

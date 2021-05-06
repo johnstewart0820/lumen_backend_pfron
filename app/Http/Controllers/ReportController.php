@@ -872,7 +872,17 @@ class ReportController extends Controller
                             ->where('rehabitation_center', '=', $rehabitation_center)
                             ->where('schedule_date', '>=', $quater_from_date)
                             ->where('schedule_date', '<=', $quater_to_date)
-                            ->sum('amount');
+                            ->groupBy('iprs.id_candidate')
+                            ->get()
+                            ->count();
+                        $service['asc_plan'] = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                            ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
+                            ->where('id_service', '=', $service['id'])
+                            ->where('rehabitation_center', '=', $rehabitation_center)
+                            ->where('schedule_date', '<=', $quater_to_date)
+                            ->groupBy('iprs.id_candidate')
+                            ->get()
+                            ->count();
                         $plan_arr = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                             ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
                             ->where('ipr_plans.id_service', '=', $service['id'])
@@ -893,13 +903,14 @@ class ReportController extends Controller
                             foreach($schedule_arr as $schedule_item) {
                                 if ($item->id_candidate == $schedule_item->id_candidate) {
                                     if ($item->plan >= $schedule_item->schedule) {
-                                       $service['continue'] += floatval($schedule_item->schedule);
+                                       $service['continue']++;
                                     } else {
-                                        $service['ended'] += floatval($schedule_item->schedule);
+                                        $service['ended']++;
                                     }
                                 }
                             }
                         }
+                        $service['started'] = $service['plan'] - $service['continue'] - $service['ended'];
 
                         $plan_asc_arr = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                             ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
@@ -919,13 +930,15 @@ class ReportController extends Controller
                             foreach($schedule_asc_arr as $schedule_item) {
                                 if ($item->id_candidate == $schedule_item->id_candidate) {
                                     if ($item->plan >= $schedule_item->schedule) {
-                                        $service['asc_continue'] += floatval($schedule_item->schedule);
+                                        $service['asc_continue'] ++;
                                     } else {
-                                        $service['asc_ended'] += floatval($schedule_item->schedule);
+                                        $service['asc_ended'] ++;
                                     }
                                 }
                             }
                         }
+
+                        $service['asc_started'] = $service['asc_plan'] - $service['asc_continue'] - $service['asc_ended'];
                     }
                     else {
                         $service['plan'] = '';
@@ -947,39 +960,59 @@ class ReportController extends Controller
                         $service['week'] = 0;
                         $service['asc'] = 0;
                     } else {
-                        $service['plan'] = 0;
                         if ($service['type'] === 'hours') {
-                            $service['week'] = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                            $service['plan'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                                ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
+                                ->where('ipr_plans.id_service', '=', $service['id'])
+                                ->where('rehabitation_center', '=', $rehabitation_center)
+                                ->where('schedule_date', '<=', $quater_to_date)
+                                ->where('schedule_date', '>=', $quater_from_date)
+                                ->sum('amount'),2);
+                            $service['week'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                                 ->leftJoin('ipr_schedules', 'iprs.id', '=', 'ipr_schedules.id_ipr')
                                 ->where('ipr_schedules.id_service', '=', $service['id'])
                                 ->where('rehabitation_center', '=', $rehabitation_center)
                                 ->where('schedule_date', '<=', $quater_to_date)
                                 ->where('schedule_date', '>=', $quater_from_date)
-                                ->groupBy('iprs.id_candidate')
-                                ->sum('total_time');
-                            $service['asc'] = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                                ->sum('total_amount'), 2);
+                            $service['asc'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                                 ->leftJoin('ipr_schedules', 'iprs.id', '=', 'ipr_schedules.id_ipr')
                                 ->where('ipr_schedules.id_service', '=', $service['id'])
                                 ->where('rehabitation_center', '=', $rehabitation_center)
                                 ->where('schedule_date', '<=', $quater_to_date)
-                                ->groupBy('iprs.id_candidate')
-                                ->sum('total_time');
+                                ->sum('total_amount'), 2);
                         } else {
-                            $service['week'] = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                            $participant_count = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                                ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
+                                ->where('id_service', '=', $service['id'])
+                                ->where('rehabitation_center', '=', $rehabitation_center)
+                                ->where('schedule_date', '>=', $quater_from_date)
+                                ->where('schedule_date', '<=', $quater_to_date)
+                                ->groupBy('iprs.id_candidate')
+                                ->get()
+                                ->count();
+                            if ($participant_count == 0)
+                                $participant_count = 1;
+                            $service['plan'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                                ->leftJoin('ipr_plans', 'iprs.id', '=', 'ipr_plans.id_ipr')
+                                ->where('ipr_plans.id_service', '=', $service['id'])
+                                ->where('rehabitation_center', '=', $rehabitation_center)
+                                ->where('schedule_date', '<=', $quater_to_date)
+                                ->where('schedule_date', '>=', $quater_from_date)
+                                ->sum('amount') / $participant_count, 2);
+                            $service['week'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                                 ->leftJoin('ipr_schedules', 'iprs.id', '=', 'ipr_schedules.id_ipr')
                                 ->where('ipr_schedules.id_service', '=', $service['id'])
                                 ->where('rehabitation_center', '=', $rehabitation_center)
                                 ->where('schedule_date', '<=', $quater_to_date)
                                 ->where('schedule_date', '>=', $quater_from_date)
-                                ->groupBy('iprs.id_candidate')
-                                ->avg('total_time');
-                            $service['asc'] = Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
+                                ->sum('total_amount') / $participant_count, 2);
+                            $service['asc'] = round(Ipr::leftJoin('candidate_infos', 'iprs.id_candidate', '=', 'candidate_infos.id_candidate')
                                 ->leftJoin('ipr_schedules', 'iprs.id', '=', 'ipr_schedules.id_ipr')
                                 ->where('ipr_schedules.id_service', '=', $service['id'])
                                 ->where('rehabitation_center', '=', $rehabitation_center)
                                 ->where('schedule_date', '<=', $quater_to_date)
-                                ->groupBy('iprs.id_candidate')
-                                ->avg('total_time');
+                                ->sum('total_amount') / $participant_count, 2);
                         }
                     }
                 }
