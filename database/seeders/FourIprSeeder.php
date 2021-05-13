@@ -50,7 +50,7 @@ class FourIprSeeder extends Seeder
             $ipr->schedule_date = $date;
             $ipr->save();
             $id_ipr = $ipr->id;
-            for ($i = 12; $i <= 40; $i ++) {
+            for ($i = 12; $i <= 42; $i ++) {
                 $ipr_plan = new IprPlan();
                 $ipr_plan->id_ipr = $id_ipr;
                 $ipr_plan->id_service =  $i;

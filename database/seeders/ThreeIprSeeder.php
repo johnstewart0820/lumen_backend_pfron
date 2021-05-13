@@ -50,7 +50,7 @@ class ThreeIprSeeder extends Seeder
             $ipr->schedule_date = $date;
             $ipr->save();
             $id_ipr = $ipr->id;
-            for ($i = 12; $i <= 34; $i ++) {
+            for ($i = 12; $i <= 42; $i ++) {
                 if (!isset($item[strval($i)]))
                     continue;
                 $ipr_plan = new IprPlan();

@@ -17,7 +17,7 @@ class CreateIprPlansTable extends Migration
             $table->id();
             $table->integer('id_ipr');
             $table->integer('id_service');
-            $table->integer('amount')->nullable(true);
+            $table->float('amount')->nullable(true);
             $table->date('start_date')->nullable(true);
             $table->string('room_number')->nullable(true);
             $table->integer('id_ork_person')->nullable(true);

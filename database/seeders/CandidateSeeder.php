@@ -121,9 +121,6 @@ class CandidateSeeder extends Seeder
             $person_id = $item['person_id'];
             $age = self::getAge($person_id);
             $date_of_birth = self::getFullDate($person_id);
-            if ($age == null || $date_of_birth == null) {
-                Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' person_id => '.strval($person_id));
-            }
 
             $gender = ($item['gender'] == 'mężczyzna' ? 2 : 1);
             $voivodeship = $item['voivodeship'];
@@ -298,12 +295,9 @@ class CandidateSeeder extends Seeder
                 $id_status = 3;
                 $participant_status_type = 0;
             }
-            if ($participant_status_type > 0 && $rehabitation_center == 0) {
-                Storage::append('file.txt', 'name => '.$name.' surname => '.$surname.' participant_number => ');
-            }
             $level_certificate = $item['level_certificate'];
             $code_certificate = $item['code_certificate'];
-            \App\Models\Candidate::create(['name' => $name, 'surname' => $surname, 'person_id' => $person_id, 'age' => $age, 'date_of_birth' => $date_of_birth,
+            \App\Models\Candidate::create(['name' => mb_convert_case($name, MB_CASE_TITLE, 'UTF-8'), 'surname' => mb_convert_case($surname, MB_CASE_TITLE, 'UTF-8'), 'person_id' => $person_id, 'age' => $age, 'date_of_birth' => $date_of_birth,
                 'street' => $street, 'house_number' => $house_number, 'apartment_number' => $apartment_number, 'post_code' => $post_code, 'post_office' => $post_office,
                 'city' => $city, 'voivodeship' => $voivodeship_index, 'community' => $community_index, 'county' => $county_index,
                 'mobile_phone' => $mobile_phone, 'family_mobile_phone' => $family_mobile_phone, 'email' => $email, 'education' => $education_id, 'employed_status' => $employed_status,
