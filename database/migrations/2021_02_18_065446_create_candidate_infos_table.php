@@ -15,26 +15,26 @@ class CreateCandidateInfosTable extends Migration
     {
         Schema::create('candidate_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('id_candidate')->nullable(true);
-            $table->string('gender')->nullable(true);
-            $table->string('doctor')->nullable(true);
-            $table->string('psycology')->nullable(true);
-            $table->string('admission')->nullable(true);
-            $table->string('doctor_recommendation')->nullable(true);
-            $table->date('doctor_date')->nullable(true);
-            $table->string('doctor_remark')->nullable(true);
-            $table->string('psycology_recommendation')->nullable(true);
-            $table->date('psycology_date')->nullable(true);
-            $table->string('psycology_remark')->nullable(true);
-            $table->string('decision_central_commision')->nullable(true);
-            $table->date('date_central_commision')->nullable(true);
-            $table->string('general_remark')->nullable(true);
-            $table->date('date_referal')->nullable(true);
-            $table->string('rehabitation_center')->nullable(true);
-            $table->string('participant_number')->nullable(true);
-            $table->date('date_rehabitation_center')->nullable(true);
-            $table->string('type_to_stay')->nullable(true);
-            $table->string('participant_remark')->nullable(true);
+            $table->string('id_candidate')->nullable(true)->index();
+            $table->string('gender')->nullable(true)->index();
+            $table->string('doctor')->nullable(true)->index();
+            $table->string('psycology')->nullable(true)->index();
+            $table->string('admission')->nullable(true)->index();
+            $table->string('doctor_recommendation')->nullable(true)->index();
+            $table->date('doctor_date')->nullable(true)->index();
+            $table->string('doctor_remark')->nullable(true)->index();
+            $table->string('psycology_recommendation')->nullable(true)->index();
+            $table->date('psycology_date')->nullable(true)->index();
+            $table->string('psycology_remark')->nullable(true)->index();
+            $table->string('decision_central_commision')->nullable(true)->index();
+            $table->date('date_central_commision')->nullable(true)->index();
+            $table->string('general_remark')->nullable(true)->index();
+            $table->date('date_referal')->nullable(true)->index();
+            $table->string('rehabitation_center')->nullable(true)->index();
+            $table->string('participant_number')->nullable(true)->index();
+            $table->date('date_rehabitation_center')->nullable(true)->index();
+            $table->string('type_to_stay')->nullable(true)->index();
+            $table->string('participant_remark')->nullable(true)->index();
             $table->timestamps();
         });
     }

@@ -15,10 +15,10 @@ class CreateQualificationPointsTable extends Migration
     {
         Schema::create('qualification_points', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('type');
-            $table->string('ambassador')->nullable(true);
-            $table->boolean('status')->default(true);
+            $table->string('name')->index();
+            $table->string('type')->index();
+            $table->string('ambassador')->nullable(true)->index();
+            $table->boolean('status')->default(true)->index();
             $table->timestamps();
         });
     }

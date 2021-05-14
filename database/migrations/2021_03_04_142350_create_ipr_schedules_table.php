@@ -15,15 +15,15 @@ class CreateIprSchedulesTable extends Migration
     {
         Schema::create('ipr_schedules', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_ipr');
-            $table->integer('id_service');
-            $table->integer('status');
-            $table->date('date');
-            $table->string('start_time');
-            $table->string('end_time');
-            $table->string('break_time');
-            $table->string('total_time');
-            $table->string('total_amount');
+            $table->integer('id_ipr')->index();
+            $table->integer('id_service')->index();
+            $table->integer('status')->index();
+            $table->date('date')->index();
+            $table->string('start_time')->index();
+            $table->string('end_time')->index();
+            $table->string('break_time')->index();
+            $table->string('total_time')->index();
+            $table->string('total_amount')->index();
             $table->timestamps();
         });
     }

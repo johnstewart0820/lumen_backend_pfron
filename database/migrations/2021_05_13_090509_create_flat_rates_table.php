@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSpecialtyTypesTable extends Migration
+class CreateFlatRatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateSpecialtyTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('specialty_types', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('name')->index();
+        Schema::create('flat_rates', function (Blueprint $table) {
+            $table->id();
+            $table->integer('payment_id')->index();
+            $table->integer('quater_id')->index();
+            $table->integer('price')->index();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateSpecialtyTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('specialty_types');
+        Schema::dropIfExists('flat_rates');
     }
 }

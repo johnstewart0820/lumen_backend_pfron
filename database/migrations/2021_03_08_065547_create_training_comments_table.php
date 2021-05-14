@@ -15,9 +15,9 @@ class CreateTrainingCommentsTable extends Migration
     {
         Schema::create('training_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('id_training');
-            $table->string('description');
-            $table->string('created_by');
+            $table->string('id_training')->index();
+            $table->string('description')->index();
+            $table->string('created_by')->index();
             $table->timestamps();
         });
     }

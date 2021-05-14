@@ -15,12 +15,12 @@ class CreateNotificationsTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
-            $table->integer('id_service')->nullable(true);
-            $table->integer('id_candidate')->nullable(true);
-            $table->boolean('activate_status')->default(false);
-            $table->boolean('status')->default(true);
+            $table->string('title')->index();
+            $table->string('description')->index();
+            $table->integer('id_service')->nullable(true)->index();
+            $table->integer('id_candidate')->nullable(true)->index();
+            $table->boolean('activate_status')->default(false)->index();
+            $table->boolean('status')->default(true)->index();
             $table->timestamps();
         });
     }

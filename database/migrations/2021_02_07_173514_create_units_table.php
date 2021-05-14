@@ -15,8 +15,8 @@ class CreateUnitsTable extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->boolean('countable');
+            $table->string('name')->index();
+            $table->boolean('countable')->index();
             $table->integer('minutes')->default(0);
             $table->timestamps();
         });

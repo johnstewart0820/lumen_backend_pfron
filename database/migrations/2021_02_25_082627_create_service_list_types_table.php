@@ -15,7 +15,7 @@ class CreateServiceListTypesTable extends Migration
     {
         Schema::create('service_list_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->index();
             $table->timestamps();
         });
     }

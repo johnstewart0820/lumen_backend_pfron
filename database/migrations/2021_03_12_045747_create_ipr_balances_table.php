@@ -15,10 +15,10 @@ class CreateIprBalancesTable extends Migration
     {
         Schema::create('ipr_balances', function (Blueprint $table) {
             $table->id();
-            $table->string('id_ipr');
-            $table->string('id_service');
-            $table->string('amount')->nullable(true);
-            $table->string('remarks')->nullable(true);
+            $table->string('id_ipr')->index();
+            $table->string('id_service')->index();
+            $table->string('amount')->nullable(true)->index();
+            $table->string('remarks')->nullable(true)->index();
             $table->timestamps();
         });
     }

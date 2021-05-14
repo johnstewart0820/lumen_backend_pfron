@@ -15,9 +15,9 @@ class CreateCommunitiesTable extends Migration
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
-            $table->integer('county_id');
-            $table->string('name');
-            $table->string('type');
+            $table->integer('county_id')->index();
+            $table->string('name')->index();
+            $table->string('type')->index();
             $table->timestamps();
         });
     }

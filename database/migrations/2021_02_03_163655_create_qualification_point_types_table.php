@@ -15,7 +15,7 @@ class CreateQualificationPointTypesTable extends Migration
     {
         Schema::create('qualification_point_types', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name');
+            $table->string('name')->index();
             $table->timestamps();
         });
     }

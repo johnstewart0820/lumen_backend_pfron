@@ -15,8 +15,8 @@ class CreateParticipantStatusTypesTable extends Migration
     {
         Schema::create('participant_status_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->nullable(true);
+            $table->string('name')->index();
+            $table->string('code')->nullable(true)->index();
             $table->timestamps();
         });
     }

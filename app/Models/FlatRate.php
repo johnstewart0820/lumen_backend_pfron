@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Payment extends Model
+class FlatRate extends Model
 {
 
     /**
@@ -14,7 +14,7 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'value', 'rehabitation_center', 'service', 'pricelist_amount', 'pricelist_cost', 'is_flatrate_service', 'status'
+        'payment_id', 'quater_id', 'price'
     ];
 
     /**

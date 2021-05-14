@@ -15,10 +15,10 @@ class CreateRehabitationCenterPartnersTable extends Migration
     {
         Schema::create('rehabitation_center_partners', function (Blueprint $table) {
             $table->id();
-            $table->integer('center_id');
-            $table->string('name')->nullable(true);
-            $table->string('regon');
-            $table->string('nip');
+            $table->integer('center_id')->index();
+            $table->string('name')->nullable(true)->index();
+            $table->string('regon')->index();
+            $table->string('nip')->index();
             $table->timestamps();
         });
     }

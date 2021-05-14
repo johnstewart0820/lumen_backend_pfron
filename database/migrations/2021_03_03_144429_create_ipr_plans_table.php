@@ -15,13 +15,13 @@ class CreateIprPlansTable extends Migration
     {
         Schema::create('ipr_plans', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_ipr');
-            $table->integer('id_service');
-            $table->float('amount')->nullable(true);
-            $table->date('start_date')->nullable(true);
-            $table->string('room_number')->nullable(true);
-            $table->integer('id_ork_person')->nullable(true);
-            $table->string('remarks')->nullable(true);
+            $table->integer('id_ipr')->index();
+            $table->integer('id_service')->index();
+            $table->float('amount')->nullable(true)->index();
+            $table->date('start_date')->nullable(true)->index();
+            $table->string('room_number')->nullable(true)->index();
+            $table->integer('id_ork_person')->nullable(true)->index();
+            $table->string('remarks')->nullable(true)->index();
             $table->timestamps();
         });
     }

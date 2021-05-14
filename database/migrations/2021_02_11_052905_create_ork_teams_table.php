@@ -15,12 +15,12 @@ class CreateOrkTeamsTable extends Migration
     {
         Schema::create('ork_teams', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('rehabitation_center');
-            $table->string('specialization');
-            $table->boolean('is_accepted');
-            $table->date('date_of_acceptance');
-            $table->boolean('status');
+            $table->string('name')->index();
+            $table->string('rehabitation_center')->index();
+            $table->string('specialization')->index();
+            $table->boolean('is_accepted')->index();
+            $table->date('date_of_acceptance')->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }

@@ -15,14 +15,14 @@ class CreateIprsTable extends Migration
     {
         Schema::create('iprs', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_candidate');
-            $table->integer('ipr_type');
-            $table->integer('number');
-            $table->integer('id_ork_person');
-            $table->string('profession');
-            $table->date('schedule_date');
-            $table->string('balance_remark')->nullable(true);
-            $table->boolean('status');
+            $table->integer('id_candidate')->index();
+            $table->integer('ipr_type')->index();
+            $table->integer('number')->index();
+            $table->integer('id_ork_person')->index();
+            $table->string('profession')->index();
+            $table->date('schedule_date')->index();
+            $table->string('balance_remark')->nullable(true)->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }

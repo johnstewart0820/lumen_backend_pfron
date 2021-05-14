@@ -15,10 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
-            $table->integer('rehabitation_center');
-            $table->integer('service');
-            $table->boolean('status');
+            $table->string('value')->index();
+            $table->integer('rehabitation_center')->index();
+            $table->integer('service')->index();
+            $table->integer('pricelist_amount')->nullable(true)->index();
+            $table->integer('pricelist_cost')->nullable(true)->index();
+            $table->boolean('is_flatrate_service')->nullable(true)->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }

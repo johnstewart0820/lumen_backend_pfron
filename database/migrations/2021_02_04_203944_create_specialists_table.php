@@ -15,10 +15,10 @@ class CreateSpecialistsTable extends Migration
     {
         Schema::create('specialists', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('qualification_point');
-            $table->integer('specialty');
-            $table->boolean('status');
+            $table->string('name')->index();
+            $table->integer('qualification_point')->index();
+            $table->integer('specialty')->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }

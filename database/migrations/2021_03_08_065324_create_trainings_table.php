@@ -15,13 +15,13 @@ class CreateTrainingsTable extends Migration
     {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('number');
-            $table->string('rehabitation_center');
-            $table->string('service');
-            $table->string('participant');
-            $table->string('training_status');
-            $table->boolean('status');
+            $table->string('name')->index();
+            $table->string('number')->index();
+            $table->string('rehabitation_center')->index();
+            $table->string('service')->index();
+            $table->string('participant')->index();
+            $table->string('training_status')->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }

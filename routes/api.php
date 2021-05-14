@@ -167,6 +167,7 @@ $router->group(['prefix' => 'ork-team', 'middleware' => ['auth']], function () u
 
 $router->group(['prefix' => 'payment', 'middleware' => ['auth']], function () use ($router) {
     $router->get('/info', 'PaymentController@getInfo');
+    $router->get('/quater_list', 'PaymentController@getQuaterList');
     $router->post('/getListByOption', 'PaymentController@getListByOption');
 });
 

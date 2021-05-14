@@ -190,12 +190,18 @@ class ReportController extends Controller
                 foreach($module as $item) {
                     $item['service_lists'] = $item->service_lists()
                         ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                        ->leftJoin('payments', function($join) use ($rehabitation_center) {
+                        ->leftJoin('payments', function($join) use ($quater_to, $quater_from, $rehabitation_center) {
                             $join->on('payments.service', '=', 'service_lists.id')
-                                ->where('payments.rehabitation_center', '=', $rehabitation_center);
+                                ->where('payments.rehabitation_center', '=', $rehabitation_center)
+                                ->leftJoin('flat_rates', function ($q) use ($quater_to, $quater_from) {
+                                    $q->on('payments.id', '=', 'flat_rates.payment_id')
+                                        ->where('flat_rates.quater_id', '>=', $quater_from)
+                                        ->where('flat_rates.quater_id', '<=', $quater_to);
+                                });
                         })
-                        ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
+                        ->groupBy('service_lists.id')
                         ->orderBy('service_lists.number')
+                        ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost, sum(flat_rates.price) as total_quater_amount')
                         ->get();
                     foreach($item['service_lists'] as $service_list) {
                         $service_list['schedule'] = (object)[];

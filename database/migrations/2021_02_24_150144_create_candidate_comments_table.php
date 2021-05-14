@@ -15,9 +15,9 @@ class CreateCandidateCommentsTable extends Migration
     {
         Schema::create('candidate_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('id_candidate');
-            $table->string('description');
-            $table->string('created_by');
+            $table->string('id_candidate')->index();
+            $table->string('description')->index();
+            $table->string('created_by')->index();
             $table->timestamps();
         });
     }

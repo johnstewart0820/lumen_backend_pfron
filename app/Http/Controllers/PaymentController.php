@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\FlatRate;
 use App\Models\Payment;
 use App\Models\QualificationPoint;
 use App\Models\QualificationPointType;
 use App\Models\RehabitationCenter;
+use App\Models\RehabitationCenterQuater;
 use App\Models\ServiceList;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -53,6 +55,25 @@ class PaymentController extends Controller
         }
     }
 
+    public function getQuaterList(Request $request) {
+        try {
+            $rehabitation_center = $request->rehabitation_center;
+            $quater_list = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->get();
+            return response()->json([
+                'code' => SUCCESS_CODE,
+                'message' => SUCCESS_MESSAGE,
+                'data' => [
+                    'quater_list' => $quater_list,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => SERVER_ERROR_CODE,
+                'message' => SERVER_ERROR_MESSAGE
+            ]);
+        }
+    }
+
     /**
      * Verify the registered account.
      *
@@ -63,11 +84,13 @@ class PaymentController extends Controller
         try {
             $id = $request->input('id');
             $payment = Payment::find($id);
+            $flat_list = FlatRate::where('payment_id', '=', $id)->get();
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => SUCCESS_MESSAGE,
                 'data' => [
-                    'payment' => $payment
+                    'payment' => $payment,
+                    'flat_rate' => $flat_list
                 ]
             ]);
         } catch (Exception $e) {
@@ -89,13 +112,28 @@ class PaymentController extends Controller
             $value = $request->value;
             $rehabitation_center = $request->rehabitation_center;
             $service = $request->service;
+            $pricelist_amount = $request->pricelist_amount;
+            $pricelist_cost = $request->pricelist_cost;
+            $is_flatrate_service = $request->is_flatrate_service;
+            $value_list = $request->value_list;
 
             $payment = new Payment();
             $payment->value = $value;
             $payment->rehabitation_center = $rehabitation_center;
             $payment->service = $service;
+            $payment->pricelist_amount = $pricelist_amount;
+            $payment->pricelist_cost = $pricelist_cost;
+            $payment->is_flatrate_service = $is_flatrate_service;
             $payment->status = true;
             $payment->save();
+
+            foreach($value_list as $item) {
+                $flat_rate = new FlatRate();
+                $flat_rate->payment_id = $payment->id;
+                $flat_rate->quater_id = $item['quater'];
+                $flat_rate->price = $item['value'];
+                $flat_rate->save();
+            }
             return response()->json([
                 'code' => SUCCESS_CODE,
                 'message' => CREATE_QUALIFICATION_POINT_SUCCESS,
@@ -119,9 +157,30 @@ class PaymentController extends Controller
             $value = $request->value;
             $rehabitation_center = $request->rehabitation_center;
             $service = $request->service;
+            $pricelist_amount = $request->pricelist_amount;
+            $pricelist_cost = $request->pricelist_cost;
+            $is_flatrate_service = $request->is_flatrate_service;
+            $value_list = $request->value_list;
+
             $id = $request->id;
 
-            Payment::find($id)->update([ 'value' => $value, 'rehabitation_center' =>  $rehabitation_center, 'service' =>  $service]);
+            Payment::find($id)->update([ 'value' => $value,
+                'rehabitation_center' =>  $rehabitation_center,
+                'service' =>  $service,
+                'pricelist_amount' => $pricelist_amount,
+                'pricelist_cost' => $pricelist_cost,
+                'is_flatrate_service' => $is_flatrate_service
+            ]);
+
+            FlatRate::where('payment_id', '=', $id)->delete();
+
+            foreach($value_list as $item) {
+                $flat_rate = new FlatRate();
+                $flat_rate->payment_id = $id;
+                $flat_rate->quater_id = $item['quater'];
+                $flat_rate->price = $item['value'];
+                $flat_rate->save();
+            }
 
             return response()->json([
                 'code' => SUCCESS_CODE,
@@ -185,6 +244,7 @@ class PaymentController extends Controller
         try {
             $id = $request->input('id');
             Payment::where('id', '=', $id)->update(['status' => false]);
+            FlatRate::where('payment_id', '=', $id)->delete();
 
             return response()->json([
                 'code' => SUCCESS_CODE,

@@ -15,16 +15,16 @@ class CreateServiceListsTable extends Migration
     {
         Schema::create('service_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('number');
-            $table->integer('module');
-            $table->integer('type');
-            $table->string('amount_usage');
-            $table->integer('unit');
-            $table->string('amount_takes');
-            $table->boolean('is_required');
-            $table->boolean('not_applicable');
-            $table->boolean('status');
+            $table->string('name')->index();
+            $table->integer('number')->index();
+            $table->integer('module')->index();
+            $table->integer('type')->index();
+            $table->string('amount_usage')->index();
+            $table->integer('unit')->index();
+            $table->string('amount_takes')->index();
+            $table->boolean('is_required')->index();
+            $table->boolean('not_applicable')->index();
+            $table->boolean('status')->index();
             $table->timestamps();
         });
     }
