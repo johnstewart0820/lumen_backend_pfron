@@ -200,7 +200,7 @@ class ReportController extends Controller
                                 });
                         })
                         ->groupBy('service_lists.id')
-                        ->orderBy('service_lists.number')
+                        ->orderBy('service_lists.id')
                         ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost, sum(flat_rates.price) as total_quater_amount')
                         ->get();
                     foreach($item['service_lists'] as $service_list) {

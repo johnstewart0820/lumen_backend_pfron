@@ -17,7 +17,7 @@ class CreateFlatRatesTable extends Migration
             $table->id();
             $table->integer('payment_id')->index();
             $table->integer('quater_id')->index();
-            $table->integer('price')->index();
+            $table->float('price')->index();
             $table->timestamps();
         });
     }
