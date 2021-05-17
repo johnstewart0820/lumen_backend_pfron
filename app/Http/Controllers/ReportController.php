@@ -261,33 +261,39 @@ class ReportController extends Controller
             $quater_to_order = RehabitationCenterQuater::where('center_id', '=', $rehabitation_center)->where('id', '<=', $quater_to)->count();
 
             foreach ($candidate_list as $candidate) {
-                $candidate['service_lists'] = ServiceList::leftJoin('units', 'service_lists.unit', '=', 'units.id')
-                    ->leftJoin('payments', function($join) use ($rehabitation_center) {
-                        $join->on('payments.service', '=', 'service_lists.id')
-                            ->where('payments.rehabitation_center', '=', $rehabitation_center);
-                    })
+                $module_result = [];
+                $module = Module::all();
+                foreach($module as $item) {
+                    $item['service_lists'] = $item->service_lists()
+                        ->leftJoin('units', 'service_lists.unit', '=', 'units.id')
+                        ->leftJoin('payments', function($join) use ($rehabitation_center) {
+                            $join->on('payments.service', '=', 'service_lists.id')
+                                ->where('payments.rehabitation_center', '=', $rehabitation_center);
+                        })
+                        ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
+                        ->orderBy('service_lists.id')
+                        ->get();
+                    foreach($item['service_lists'] as $service_list) {
+                        $service_list['plan'] = (object)[];
+                        $service_list['plan']->trial = $this->getPlans($service_list->ipr_plans(), 2, $candidate->id);
+                        $service_list['plan']->basic = $this->getPlans($service_list->ipr_plans(), 3, $candidate->id);
 
-                    ->selectRaw('service_lists.*, units.name as unit_name, payments.value as cost')
-                    ->orderBy('service_lists.number')
-                    ->get();
-                foreach($candidate['service_lists'] as $service_list) {
-                    $service_list['plan'] = (object)[];
-                    $service_list['plan']->trial = $this->getPlans($service_list->ipr_plans(), 2, $candidate->id);
-                    $service_list['plan']->basic = $this->getPlans($service_list->ipr_plans(), 3, $candidate->id);
+                        $service_list['schedule'] = (object)[];
+                        $service_list['schedule']->trial = [];
+                        $service_list['schedule']->basic = [];
 
-                    $service_list['schedule'] = (object)[];
-                    $service_list['schedule']->trial = [];
-                    $service_list['schedule']->basic = [];
-
-                    for ($i = $quater_from; $i <= $quater_to; $i ++) {
-                        $quater_from_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
-                        $quater_to_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
-                        $quater_from_date = $quater_from_obj->start_date;
-                        $quater_to_date = $quater_to_obj->end_date;
-                        $service_list['schedule']->trial[] = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);
-                        $service_list['schedule']->basic[] = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from_date, $quater_to_date);
+                        for ($i = $quater_from; $i <= $quater_to; $i ++) {
+                            $quater_from_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
+                            $quater_to_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
+                            $quater_from_date = $quater_from_obj->start_date;
+                            $quater_to_date = $quater_to_obj->end_date;
+                            $service_list['schedule']->trial[] = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);
+                            $service_list['schedule']->basic[] = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from_date, $quater_to_date);
+                        }
                     }
+                    $module_result[] = $item;
                 }
+                $candidate['module'] = $module_result;
             }
             return response()->json([
                 'code' => SUCCESS_CODE,
