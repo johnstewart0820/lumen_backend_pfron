@@ -290,7 +290,7 @@ class FlatRateSeeder extends Seeder
         ];
         foreach($items as $item)
         {
-            \App\Models\Payment::create($item);
+            \App\Models\FlatRate::create($item);
         }
     }
 }
