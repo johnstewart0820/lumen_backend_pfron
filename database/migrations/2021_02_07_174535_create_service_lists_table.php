@@ -16,7 +16,7 @@ class CreateServiceListsTable extends Migration
         Schema::create('service_lists', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->integer('number')->index();
+            $table->string('number')->index();
             $table->integer('module')->index();
             $table->integer('type')->index();
             $table->string('amount_usage')->index();

@@ -25,7 +25,9 @@ class UnitSeeder extends Seeder
             ['id' => 9, 'name' => 'doba', 'countable' => false],
             ['id' => 10, 'name' => 'dzień', 'countable' => false],
             ['id' => 11, 'name' => 'wizyta 1 osoby', 'countable' => false],
-
+            ['id' => 12, 'name' => 'pakiet', 'countable' => false],
+            ['id' => 13, 'name' => 'zajęcia', 'countable' => false],
+            ['id' => 14, 'name' => 'para', 'countable' => false],
         ];
         foreach($items as $item)
         {
