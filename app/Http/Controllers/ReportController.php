@@ -284,9 +284,8 @@ class ReportController extends Controller
 
                         for ($i = $quater_from; $i <= $quater_to; $i ++) {
                             $quater_from_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
-                            $quater_to_obj = RehabitationCenterQuater::where('id', '=', $i)->first();
                             $quater_from_date = $quater_from_obj->start_date;
-                            $quater_to_date = $quater_to_obj->end_date;
+                            $quater_to_date = $quater_from_obj->end_date;
                             $service_list['schedule']->trial[] = $this->getSchedules($service_list->ipr_schedules(), 2, $candidate->id, $quater_from_date, $quater_to_date);
                             $service_list['schedule']->basic[] = $this->getSchedules($service_list->ipr_schedules(), 3, $candidate->id, $quater_from_date, $quater_to_date);
                         }
