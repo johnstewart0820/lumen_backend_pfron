@@ -64,7 +64,7 @@ class FirstIprSeeder extends Seeder
             }
         }
         $arr = ['week_1.xlsx', 'week_2.xlsx', 'week_3.xlsx', 'week_4.xlsx', 'week_5.xlsx', 'week_6.xlsx'];
-        for ($i = 0; $i < 5; $i ++ ){
+        for ($i = 0; $i < 6; $i ++ ){
             $collection_schedule = (new FastExcel)->import(storage_path('/app/iprs/1/'.$arr[$i]));
             foreach($collection_schedule as $item) {
                 $participant_number = str_replace(' ', '', $item['id']);
