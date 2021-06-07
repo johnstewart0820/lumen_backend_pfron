@@ -28,9 +28,9 @@ class FirstIprSeeder extends Seeder
      */
     public function run()
     {
-        Ipr::delete();
-        IprSchedule::delete();
-        IprPlan::delete();
+        Ipr::all()->delete();
+        IprSchedule::all()->delete();
+        IprPlan::all()->delete();
         $collection = (new FastExcel)->import(storage_path('/app/iprs/1/iprs.xlsx'));
         foreach($collection as $item) {
             $participant_number = str_replace(' ', '', $item['id']);
