@@ -41,10 +41,10 @@ class DatabaseSeeder extends Seeder
             CandidateSeeder::class,
             SlSeeder::class,
             ArrivalSeeder::class,
-            FourIprSeeder::class,
-            ThreeIprSeeder::class,
             FirstIprSeeder::class,
             SecondIprSeeder::class,
+            ThreeIprSeeder::class,
+            FourIprSeeder::class,
         ]);
     }
 }
