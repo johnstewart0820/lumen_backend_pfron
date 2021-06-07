@@ -58,7 +58,7 @@ class FourIprSeeder extends Seeder
                 $ipr_plan->save();
             }
         }
-        $arr = ['week_1.xlsx', 'week_2.xlsx', 'week_3.xlsx', 'week_4.xlsx', 'week_5.xlsx'];
+        $arr = ['week_1.xlsx', 'week_2.xlsx', 'week_3.xlsx', 'week_4.xlsx', 'week_5.xlsx', 'week_6.xlsx'];
         for ($i = 0; $i < 5; $i ++ ){
             $collection_schedule = (new FastExcel)->import(storage_path('/app/iprs/4/'.$arr[$i]));
             foreach($collection_schedule as $item) {
