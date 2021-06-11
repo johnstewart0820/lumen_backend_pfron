@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             PaymentSeeder::class,
             FlatRateSeeder::class,
+            RemainFlatRateSeeder::class,
             OrkTeamSeeder::class,
             IprTypeSeeder::class,
             SpecialistSeeder::class,
