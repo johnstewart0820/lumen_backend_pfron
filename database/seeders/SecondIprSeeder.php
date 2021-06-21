@@ -72,7 +72,10 @@ class SecondIprSeeder extends Seeder
                 }
                 $id_candidate = $candidate_list[0]->id_candidate;
                 $rehabitation_center_quaters = RehabitationCenterQuater::where('center_id', '=', 2)->get();
+                echo 'cid:'.$candidate_list[0]->participant_number."\n";
                 $id_ipr= Ipr::where('id_candidate', '=', $id_candidate)->where('ipr_type', '=', 3)->first()->id;
+                
+
                 for ($j = 1; $j <= 40; $j ++) {
                     $ipr_schedule = new IprSchedule();
                     $ipr_schedule->id_ipr = $id_ipr;
@@ -84,7 +87,6 @@ class SecondIprSeeder extends Seeder
                         $ipr_schedule->date = $candidate_list[0]->date_rehabitation_center;
                     $ipr_schedule->total_amount = $item[strval($j)];
                     $ipr_schedule->save();
-
                 }
             }
         }

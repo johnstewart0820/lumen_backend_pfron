@@ -287,6 +287,12 @@ class FlatRateSeeder extends Seeder
             ['payment_id' => 203, 'quater_id' => 52, 'price' => 1],
             ['payment_id' => 203, 'quater_id' => 53, 'price' => 0],
 
+
+            ['payment_id' => 115, 'quater_id' => 22, 'price' => 3],
+            ['payment_id' => 117, 'quater_id' => 22, 'price' => 0],
+            ['payment_id' => 121, 'quater_id' => 22, 'price' => 2.7],
+            ['payment_id' => 134, 'quater_id' => 22, 'price' => 3],
+            ['payment_id' => 136, 'quater_id' => 22, 'price' => 9]
         ];
         foreach($items as $item)
         {
@@ -294,3 +300,4 @@ class FlatRateSeeder extends Seeder
         }
     }
 }
+ 
